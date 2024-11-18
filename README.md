@@ -1,1 +1,1 @@
-Next JS Template
+Hello Tractor

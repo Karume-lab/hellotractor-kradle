@@ -1,6 +1,6 @@
 "use server";
 import { KINDLY_WAIT } from "@/lib/constants";
-import { googleOAuthClient } from "@/lib/googleOAuth";
+import { googleOAuthClient } from "@/lib/google-o-auth";
 import { lucia } from "@/lib/lucia";
 import { messages } from "@/lib/message-template";
 import prisma from "@/lib/prisma";

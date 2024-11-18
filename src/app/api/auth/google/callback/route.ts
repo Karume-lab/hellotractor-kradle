@@ -1,4 +1,4 @@
-import { googleOAuthClient } from "@/lib/googleOAuth";
+import { googleOAuthClient } from "@/lib/google-o-auth";
 import { lucia } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { urls } from "@/lib/urls";
