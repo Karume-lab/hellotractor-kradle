@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  agrigear-postgres:
+    image: postgres:latest
+    container_name: next-js-fullstack-rest-template-postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=hello
+      - POSTGRES_DB=agrigear_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
