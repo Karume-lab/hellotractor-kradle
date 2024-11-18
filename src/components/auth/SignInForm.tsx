@@ -44,8 +44,8 @@ const SignInForm = () => {
     const res = await signIn(values);
 
     if (res.success) {
-      router.push(urls.PUBLIC_TASKS);
       toast.success(res.message);
+      router.push(urls.PROFILES);
     } else {
       toast.error(res.message);
     }
@@ -106,7 +106,9 @@ const SignInForm = () => {
               loadingText="Signing in"
             />
             <Button variant={"link"} asChild>
-              <Link href={urls.RESET_PASSWORD}>Forgot your password? Reset it here.</Link>
+              <Link href={urls.RESET_PASSWORD}>
+                Forgot your password? Reset it here.
+              </Link>
             </Button>
           </form>
         </Form>

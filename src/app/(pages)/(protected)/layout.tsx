@@ -2,11 +2,11 @@ import { validateRequest } from "@/lib/lucia";
 import { redirect } from "next/navigation";
 import { urls } from "@/lib/urls";
 import SignOut from "@/components/auth/SignOutButton";
-import { SessionProvider } from "@/providers/SessionProvider";
 import { SharedLayout } from "@/layouts";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { UserRole } from "@prisma/client";
+import { SessionProvider } from "@/providers/SessionProvider";
 
 export default async function ProtectedLayout({
   children,
@@ -19,9 +19,11 @@ export default async function ProtectedLayout({
     redirect(urls.AUTH);
   }
 
+  console.log(session.user.buyer);
+
   return (
     <SharedLayout>
-      <SessionProvider value={session}>
+      <SessionProvider session={session.session} user={session.user}>
         <div className="min-h-screen bg-background">
           <nav className="border-b">
             <div className="container mx-auto py-4 flex justify-end gap-x-4">

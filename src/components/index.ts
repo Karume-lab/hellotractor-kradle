@@ -6,6 +6,8 @@ import ContinueWithGoogleButton from "@/components/auth/ContinueWithGoogleButton
 import SignUpToday from "@/components/auth/SignUpToday";
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
+// account types
+import AccountTypesContainer from "@/components/account-types/AccountTypesContainer";
 // core
 import Header from "@/components/core/Header";
 import InfiniteScrollContainer from "@/components/core/InfiniteScrollContainer";
@@ -32,6 +34,8 @@ export {
   SignUpToday,
   ForgotPasswordForm,
   ResetPasswordForm,
+  // account types
+  AccountTypesContainer,
   //core
   Header,
   InfiniteScrollContainer,

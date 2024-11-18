@@ -12,9 +12,14 @@ model User {
   email              String               @unique
   hashPassword       String?
   role               UserRole             @default(USER)
+  buyer              Buyer?
+  business           Business?
+  trainedOperator    TrainedOperator?
   session            Session[]
   task               Task[]
   passwordResetToken PasswordResetToken[]
+  businessId         String?
+  trainedOperatorId  String?
 }
 
 model Session {
@@ -43,4 +48,35 @@ model PasswordResetToken {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
+}
+
+model Buyer {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  firstName   String
+  lastName    String
+  middleName  String?
+  displayName String?
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Business {
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  isDealer Boolean @default(false)
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TrainedOperator {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Equipment {
+  id String @id @default(cuid())
+}
+
+model Message {
+  id String @id @default(cuid())
 }

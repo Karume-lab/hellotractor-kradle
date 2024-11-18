@@ -9,7 +9,13 @@ export const urls = {
   RESET_PASSWORD_TOKEN: (token: string) => `/auth/reset-password/${token}`,
   FULL_RESET_PASSWORD_TOKEN: (token: string) =>
     `${process.env.NEXT_PUBLIC_URL}/auth/reset-password/${token}`,
-  //tasks
+  // profiles
+  PROFILE: "/profile",
+  PROFILES: "/profiles",
+  PROFILES_CREATION: "/profiles/creation",
+  // explore
+  EXPLORE: "/explore",
+  // tasks
   PUBLIC_TASKS: "/tasks",
   PUBLIC_TASKS_VIEW_EDIT: (taskId: string) => `/tasks/${taskId}`,
   PUBLIC_TASKS_NEW: "/tasks/new",
