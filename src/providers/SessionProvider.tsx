@@ -55,36 +55,25 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
   const accountTypes: T_Account_Type_Mapping[] = [
     ...(user.profile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
-    ...(user.profile?.sellers?.some((seller) => seller.isDealer)
+    ...(user.profile?.seller?.isDealer
       ? [ACCOUNT_TYPES_MAPPING["dealer"]]
       : []),
-    ...(user.profile?.sellers?.length ? [ACCOUNT_TYPES_MAPPING["seller"]] : []),
+    ...(user.profile?.seller ? [ACCOUNT_TYPES_MAPPING["seller"]] : []),
     ...(user.profile?.trainedOperator
       ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]]
       : []),
   ];
 
   const isBuyer = () => user.profile?.buyer !== null;
-  const isSeller = () => user.profile?.sellers?.length! > 0 !== null;
+  const isSeller = () => user.profile?.seller !== null;
   const isTrainedOperator = () => user.profile?.trainedOperator !== null;
   const isAdmin = () => user.role === UserRole.ADMIN;
 
   const getAvailableAccountTypes = (): T_Account_Type_Mapping[] => {
-    const userAccountTypes = [
-      ...accountTypes.map((account) => account.value),
-      ...(user.profile?.sellers?.map((seller) =>
-        seller.isDealer ? "dealer" : "seller"
-      ) || []),
-    ];
+    const userAccountTypes = [...accountTypes.map((account) => account.value)];
 
     const availableAccountTypes = Object.values(ACCOUNT_TYPES_MAPPING).filter(
       (accountType) => {
-        if (
-          accountType.value === "dealer" &&
-          !user.profile?.sellers?.some((seller) => seller.isDealer)
-        ) {
-          return false;
-        }
         return !userAccountTypes.includes(accountType.value);
       }
     );
