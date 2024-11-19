@@ -11,6 +11,7 @@ import {
   Business,
   TrainedOperator,
   Profile,
+  Seller,
 } from "@prisma/client";
 
 const adapter = new PrismaAdapter(prisma.session, prisma.user);
@@ -22,7 +23,8 @@ interface DatabaseUserAttributes {
   profile:
     | (Profile & {
         buyer: Buyer | null;
-        businesses: Business[];
+        seller: Seller | null;
+        businesses: Business[] | null;
         trainedOperator: TrainedOperator | null;
       })
     | null;
@@ -73,6 +75,7 @@ export const validateRequest = cache(
                 buyer: true,
                 businesses: true,
                 trainedOperator: true,
+                seller: true,
               },
             },
           },

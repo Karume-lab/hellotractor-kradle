@@ -41,28 +41,30 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
   session,
   user,
 }) => {
-  const [accountType, setAccountType] = useState<T_Account_Type_Mapping | null>(() => {
-    if (typeof window !== "undefined") {
-      const savedAccountType = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return savedAccountType ? JSON.parse(savedAccountType) : null;
+  const [accountType, setAccountType] = useState<T_Account_Type_Mapping | null>(
+    () => {
+      if (typeof window !== "undefined") {
+        const savedAccountType = localStorage.getItem(LOCAL_STORAGE_KEY);
+        return savedAccountType ? JSON.parse(savedAccountType) : null;
+      }
+      return null;
     }
-    return null;
-  });
+  );
 
   const [isDealer, setIsDealer] = useState(false);
 
   const accountTypes: T_Account_Type_Mapping[] = [
     ...(user.profile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
-    ...(user.profile?.businesses
-      ? user.profile.businesses.map((business) =>
-          business.isDealer
-            ? ACCOUNT_TYPES_MAPPING["dealer"]
-            : ACCOUNT_TYPES_MAPPING["seller"]
-        )
+    ...(user.profile?.businesses?.some((business) => business.isDealer)
+      ? [ACCOUNT_TYPES_MAPPING["dealer"]]
+      : []),
+    ...(user.profile?.businesses?.length
+      ? [ACCOUNT_TYPES_MAPPING["business"]]
       : []),
     ...(user.profile?.trainedOperator
       ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]]
       : []),
+    ...(user.profile?.seller ? [ACCOUNT_TYPES_MAPPING["seller"]] : []),
   ];
 
   const isBuyer = () => user.profile?.buyer !== null;
@@ -74,7 +76,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     const userAccountTypes = [
       ...accountTypes.map((account) => account.value),
       ...(user.profile?.businesses?.map((business) =>
-        business.isDealer ? "dealer" : "seller"
+        business.isDealer ? "dealer" : "business"
       ) || []),
     ];
 

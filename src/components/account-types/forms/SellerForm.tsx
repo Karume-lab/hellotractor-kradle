@@ -15,6 +15,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { createSellerAccount } from "@/app/(pages)/(protected)/account-types/creation/form/actions";
+import { urls } from "@/lib/urls";
 
 const SellerForm = () => {
   const form = useForm<T_ProfileSchema>({
@@ -27,14 +31,33 @@ const SellerForm = () => {
       bio: "",
     },
   });
+
   const router = useRouter();
 
+  const mutation = useMutation({
+    mutationFn: createSellerAccount,
+    onSuccess: ({ message }) => {
+      toast.success(message);
+      router.push(urls.DASHBOARD);
+      router.refresh();
+    },
+    onError: (error: Error) => {
+      if (error.message === "Unauthorized") {
+        toast.error(error.message);
+        router.push(urls.AUTH);
+      } else {
+        toast.error(error.message || "Something went wrong");
+      }
+    },
+  });
+
   const handleOnSubmit = async (values: T_ProfileSchema) => {
-    
+    mutation.mutate(values);
   };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleOnSubmit)}>
+      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="firstName"
@@ -48,6 +71,7 @@ const SellerForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="middleName"
@@ -61,6 +85,7 @@ const SellerForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="lastName"
@@ -74,6 +99,7 @@ const SellerForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="displayName"
@@ -87,6 +113,7 @@ const SellerForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="bio"
@@ -100,7 +127,13 @@ const SellerForm = () => {
             </FormItem>
           )}
         />
-        <LoadingButton type="submit" text="Create" loadingText="Creating" />
+
+        <LoadingButton
+          type="submit"
+          text="Create"
+          loadingText="Creating"
+          isLoading={mutation.isPending}
+        />
       </form>
     </Form>
   );
