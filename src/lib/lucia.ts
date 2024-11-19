@@ -22,7 +22,7 @@ interface DatabaseUserAttributes {
   profile:
     | (Profile & {
         buyer: Buyer | null;
-        business: Business[];
+        businesses: Business[];
         trainedOperator: TrainedOperator | null;
       })
     | null;
@@ -71,7 +71,7 @@ export const validateRequest = cache(
             profile: {
               include: {
                 buyer: true,
-                business: true,
+                businesses: true,
                 trainedOperator: true,
               },
             },
