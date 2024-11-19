@@ -20,6 +20,7 @@ interface SessionProviderPropsContextValue {
   setIsDealer: (isDealer: boolean) => void;
   accountTypes: T_Account_Type_Mapping[];
   isBuyer: () => boolean;
+  isSeller: () => boolean;
   isBusiness: () => boolean;
   isTrainedOperator: () => boolean;
   isAdmin: () => boolean;
@@ -68,6 +69,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
   ];
 
   const isBuyer = () => user.profile?.buyer !== null;
+  const isSeller = () => user.profile?.seller !== null;
   const isBusiness = () => user.profile?.businesses?.length! > 0;
   const isTrainedOperator = () => user.profile?.trainedOperator !== null;
   const isAdmin = () => user.role === UserRole.ADMIN;
@@ -115,6 +117,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     isBusiness,
     isTrainedOperator,
     isAdmin,
+    isSeller,
     getAvailableAccountTypes,
   };
 

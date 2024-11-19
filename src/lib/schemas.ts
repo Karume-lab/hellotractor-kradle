@@ -62,6 +62,13 @@ export const sellerSchema = profileSchema.merge(
 );
 export type T_SellerSchema = z.infer<typeof sellerSchema>;
 
+export const buyerSchema = profileSchema.merge(
+  z.object({
+    // services: z.array(z.string()),
+  })
+);
+export type T_BuyerSchema = z.infer<typeof buyerSchema>;
+
 export const businessSchema = z.object({
   name: z.string(),
   slogan: z.string().optional(),

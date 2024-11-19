@@ -13,14 +13,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { profileSchema, T_ProfileSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { createSellerAccount } from "@/app/(pages)/(protected)/account-types/creation/form/actions";
 import { urls } from "@/lib/urls";
+import { useSession } from "@/providers/SessionProvider";
 
 const SellerForm = () => {
+  const { isSeller } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSeller()) {
+      router.push(urls.DASHBOARD);
+    }
+  }, [isSeller, router]);
   const form = useForm<T_ProfileSchema>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -31,8 +40,6 @@ const SellerForm = () => {
       bio: "",
     },
   });
-
-  const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: createSellerAccount,
@@ -46,7 +53,7 @@ const SellerForm = () => {
         toast.error(error.message);
         router.push(urls.AUTH);
       } else {
-        toast.error(error.message || "Something went wrong");
+        toast.error("Something went wrong");
       }
     },
   });
