@@ -8,14 +8,22 @@ datasource db {
 }
 
 model User {
-  id                 String               @id @default(cuid())
-  email              String               @unique
-  hashPassword       String?
-  role               UserRole             @default(USER)
-  session            Session[]
-  task               Task[]
-  passwordResetToken PasswordResetToken[]
-  profile            Profile?
+  id                  String               @id @default(cuid())
+  email               String               @unique
+  hashPassword        String?
+  role                UserRole             @default(USER)
+  sessions            Session[]
+  passwordResetTokens PasswordResetToken[]
+  profile             Profile?
+  tasks               Task[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  expiresAt DateTime
+  role      UserRole @default(USER)
 }
 
 model Profile {
@@ -26,26 +34,13 @@ model Profile {
   lastName          String
   middleName        String?
   displayName       String?
+  bio               String?
+  profilePicture    FileUpload?
   buyer             Buyer?
-  business          Business[]
+  businesses        Business[]
   trainedOperator   TrainedOperator?
   businessId        String?
   trainedOperatorId String?
-}
-
-model Session {
-  id        String   @id @default(cuid())
-  userId    String
-  expiresAt DateTime
-  role      UserRole @default(USER)
-  user      User     @relation(fields: [userId], references: [id])
-}
-
-model Task {
-  id     String @id @default(cuid())
-  title  String
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum UserRole {
@@ -56,34 +51,167 @@ enum UserRole {
 model PasswordResetToken {
   id        String   @id @default(cuid())
   token     String   @unique
-  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
   expiresAt DateTime
 }
 
 model Buyer {
   id        String  @id @default(cuid())
-  profileId String  @unique
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String  @unique
 }
 
 model Business {
-  id        String  @id @default(cuid())
-  isDealer  Boolean @default(false)
-  profileId String
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  id           String  @id @default(cuid())
+  name         String
+  slogan       String?
+  bio          String?
+  openingHours String
+  isDealer     Boolean @default(false)
+  profile      Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId    String
+
+  licenses     FileUpload[] @relation("BusinessLicense")
+  coverPicture FileUpload?  @relation("BusinessCoverPicture")
+  logo         FileUpload?  @relation("BusinessLogo")
 }
 
 model TrainedOperator {
-  id        String  @id @default(cuid())
-  profileId String  @unique
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  id         String                   @id @default(cuid())
+  services   TrainedOperatorService[]
+  isVerified Boolean                  @default(false)
+  profile    Profile                  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId  String                   @unique
+}
+
+model TrainedOperatorService {
+  id String @id @default(cuid())
+
+  title        String
+  description  String
+  certificates FileUpload[]
+
+  trainedOperator   TrainedOperator? @relation(fields: [trainedOperatorId], references: [id])
+  trainedOperatorId String?
+}
+
+model Attachment {
+  id          String    @id @default(cuid())
+  equipmentId String    @unique
+  color       String?
+  equipment   Equipment @relation("EquipmentToAttachment", fields: [equipmentId], references: [id], onDelete: Cascade)
+}
+
+model Tractor {
+  id           String    @id @default(cuid())
+  mileage      String
+  fuelCapacity String
+  equipmentId  String    @unique
+  equipment    Equipment @relation("EquipmentToTractor", fields: [equipmentId], references: [id], onDelete: Cascade)
 }
 
 model Equipment {
+  id            String              @id @default(cuid())
+  name          String
+  description   String?
+  images        FileUpload[]
+  price         Float
+  condition     EquipmentCondition?
+  averageRating Float
+  isSold        Boolean             @default(false)
+
+  tractor    Tractor?    @relation("EquipmentToTractor")
+  attachment Attachment? @relation("EquipmentToAttachment")
+}
+
+enum EquipmentCondition {
+  BRAND_NEW
+  SELLER_REFURBISHED
+  MANUFACTURER_REFURBISHED
+}
+
+model FileUpload {
+  id                     String                @id @default(cuid())
+  path                   String
+  extension              FileExtension
+  category               FileCategoryEnum
+  description            String?
+  reviewableFileUpload   ReviewableFileUpload? @relation(fields: [reviewableFileUploadId], references: [id])
+  reviewableFileUploadId String?
+
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String  @unique
+
+  trainedOperatorService   TrainedOperatorService @relation(fields: [trainedOperatorServiceId], references: [id], onDelete: Cascade)
+  trainedOperatorServiceId String
+
+  businessLicense        Business  @relation("BusinessLicense", fields: [businessLicenseId], references: [id], onDelete: Cascade)
+  businessLicenseId      String
+  businessCoverPicture   Business? @relation("BusinessCoverPicture", fields: [businessCoverPictureId], references: [id])
+  businessCoverPictureId String    @unique
+  businessLogo           Business? @relation("BusinessLogo", fields: [businessLogoId], references: [id])
+  businessLogoId         String    @unique
+
+  equipmentImage   Equipment @relation(fields: [equipmentImageId], references: [id], onDelete: Cascade)
+  equipmentImageId String
+}
+
+model ReviewableFileUpload {
+  id          String                     @id @default(cuid())
+  FileUploads FileUpload[]
+  status      ReviewableFileUploadStatus @default(PENDING)
+}
+
+enum ReviewableFileUploadStatus {
+  PENDING
+  REJECTED
+  APPROVED
+}
+
+enum FileCategoryEnum {
+  PROFILE_PICTURE
+  TRAINED_OPERATOR_CERTIFICATE
+  BUSINESS_LICENSE
+}
+
+enum FileExtension {
+  PNG
+  PDF
+  JPEG
+  WEBP
+  JPG
+}
+
+model Review {
+  id     String @id @default(cuid())
+  text   String
+  rating Int
+}
+
+model Cart {
+  id String @id @default(cuid())
+}
+
+model WishList {
+  id String @id @default(cuid())
+}
+
+model Location {
   id String @id @default(cuid())
 }
 
 model Message {
   id String @id @default(cuid())
+}
+
+model Notification {
+  id String @id @default(cuid())
+}
+
+model Task {
+  id     String @id @default(cuid())
+  title  String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }
