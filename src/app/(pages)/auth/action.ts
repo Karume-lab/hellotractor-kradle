@@ -26,26 +26,40 @@ export const signUp = async (values: T_SignUpSchema) => {
         email: values.email,
       },
     });
+
     if (existingUser) {
       return { message: "User already exists", success: false };
     }
 
     const hashedPassword = await new Argon2id().hash(values.password);
 
-    const user = await prisma.user.create({
-      data: {
-        email: values.email.toLowerCase(),
-        hashPassword: hashedPassword,
-      },
+    const result = await prisma.$transaction(async (prisma) => {
+      const user = await prisma.user.create({
+        data: {
+          email: values.email.toLowerCase(),
+          hashPassword: hashedPassword,
+        },
+      });
+
+      await prisma.profile.create({
+        data: {
+          userId: user.id,
+          firstName: "",
+          lastName: "",
+        },
+      });
+
+      return user;
     });
 
-    const session = await lucia.createSession(user.id, {});
+    const session = await lucia.createSession(result.id, {});
     const sessionCookie = await lucia.createSessionCookie(session.id);
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes
     );
+
     return {
       message: `Account created successfully, ${KINDLY_WAIT}`,
       success: true,
@@ -60,6 +74,9 @@ export const signIn = async (values: T_SignInSchema) => {
     const user = await prisma.user.findUnique({
       where: {
         email: values.email,
+      },
+      include: {
+        profile: true,
       },
     });
 
@@ -76,6 +93,18 @@ export const signIn = async (values: T_SignInSchema) => {
       return { message: "Invalid email or password", success: false };
     }
 
+    if (!user.profile) {
+      await prisma.$transaction(async (prisma) => {
+        await prisma.profile.create({
+          data: {
+            userId: user.id,
+            firstName: "",
+            lastName: "",
+          },
+        });
+      });
+    }
+
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = await lucia.createSessionCookie(session.id);
     cookies().set(
@@ -83,6 +112,7 @@ export const signIn = async (values: T_SignInSchema) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
+
     return {
       message: `Login success, ${KINDLY_WAIT}`,
       success: true,

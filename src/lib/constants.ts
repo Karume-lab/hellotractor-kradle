@@ -1,4 +1,4 @@
-import { T_AccountType } from "./types";
+import { T_Account_Type_Mapping } from "./types";
 
 export const PAGE_SIZE = 10;
 
@@ -10,11 +10,14 @@ export const QUERY_KEYS = {
   tasks: "tasks",
 };
 export const ACCOUNT_TYPES_MAPPING: Record<
-  Exclude<T_AccountType["value"], null>,
-  T_AccountType
+  Exclude<T_Account_Type_Mapping["value"], null>,
+  T_Account_Type_Mapping
 > = {
   buyer: { value: "buyer", label: "Buyer" },
   seller: { value: "seller", label: "Seller" },
   trainedOperator: { value: "trainedOperator", label: "Trained Operator" },
   dealer: { value: "dealer", label: "Dealer" },
+};
+export const URL_STATES = {
+  accountType: "account-type",
 };

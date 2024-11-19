@@ -9,10 +9,12 @@ export const urls = {
   RESET_PASSWORD_TOKEN: (token: string) => `/auth/reset-password/${token}`,
   FULL_RESET_PASSWORD_TOKEN: (token: string) =>
     `${process.env.NEXT_PUBLIC_URL}/auth/reset-password/${token}`,
-  // profiles
-  PROFILE: "/profile",
-  PROFILES: "/profiles",
-  PROFILES_CREATION: "/profiles/creation",
+  // account types
+  ACCOUNT_TYPE: "/account-type",
+  ACCOUNT_TYPES: "/account-types",
+  ACCOUNT_TYPE_CREATION: "/account-types/creation",
+  ACCOUNT_TYPE_CREATION_FORM: (accountType: string) =>
+    `creation/form?account-type=${accountType}`,
   // explore
   EXPLORE: "/explore",
   // dashboard

@@ -8,6 +8,12 @@ import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 // account types
 import AccountTypesContainer from "@/components/account-types/AccountTypesContainer";
+import {
+  BuyerForm,
+  BusinessForm,
+  TrainedOperatorForm,
+  AccountTypeCreationForm,
+} from "@/components/account-types/forms";
 // core
 import Header from "@/components/core/Header";
 import InfiniteScrollContainer from "@/components/core/InfiniteScrollContainer";
@@ -37,6 +43,9 @@ export {
   ResetPasswordForm,
   // account types
   AccountTypesContainer,
+  BuyerForm,
+  BusinessForm,
+  TrainedOperatorForm,
   //core
   Header,
   InfiniteScrollContainer,

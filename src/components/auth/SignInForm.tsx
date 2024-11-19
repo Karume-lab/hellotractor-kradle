@@ -45,7 +45,7 @@ const SignInForm = () => {
 
     if (res.success) {
       toast.success(res.message);
-      router.push(urls.PROFILES);
+      router.push(urls.ACCOUNT_TYPES);
     } else {
       toast.error(res.message);
     }

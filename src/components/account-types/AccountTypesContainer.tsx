@@ -4,15 +4,26 @@ import AccountTypeButton from "./AccountTypeButton";
 import { useSession } from "@/providers/SessionProvider";
 import AddAccountTypeButton from "./AddAccountTypeButton";
 
-const AccountTypesContainer = () => {
-  const { accountTypes } = useSession();
-
+interface AccountTypesContainerProps {
+  isCreatingAccountType?: boolean;
+}
+const AccountTypesContainer: React.FC<AccountTypesContainerProps> = ({
+  isCreatingAccountType = false,
+}) => {
+  const { accountTypes, getAvailableAccountTypes } = useSession();
+  const accountTypesToUse = isCreatingAccountType
+    ? getAvailableAccountTypes()
+    : accountTypes;
   return (
     <>
-      {accountTypes.map((type) => (
-        <AccountTypeButton key={type.value} accountType={type} />
+      {accountTypesToUse.map((type) => (
+        <AccountTypeButton
+          key={type.value}
+          accountType={type}
+          isCreatingAccountType={isCreatingAccountType}
+        />
       ))}
-      <AddAccountTypeButton />
+      {!isCreatingAccountType && <AddAccountTypeButton />}
     </>
   );
 };

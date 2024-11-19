@@ -8,22 +8,22 @@ import React, {
 } from "react";
 import { Session, User } from "lucia";
 import { UserRole } from "@prisma/client";
-import { T_AccountType } from "@/lib/types";
+import { T_Account_Type_Mapping } from "@/lib/types";
 import { ACCOUNT_TYPES_MAPPING, LOCAL_STORAGE_KEY } from "@/lib/constants";
 
 interface SessionProviderPropsContextValue {
   user: User;
   session: Session;
-  accountType: T_AccountType | null;
-  setAccountType: (type: T_AccountType) => void;
+  accountType: T_Account_Type_Mapping | null;
+  setAccountType: (type: T_Account_Type_Mapping) => void;
   isDealer: boolean;
   setIsDealer: (isDealer: boolean) => void;
-  accountTypes: T_AccountType[];
+  accountTypes: T_Account_Type_Mapping[];
   isBuyer: () => boolean;
   isBusiness: () => boolean;
   isTrainedOperator: () => boolean;
   isAdmin: () => boolean;
-  getAvailableAccountTypes: () => T_AccountType[];
+  getAvailableAccountTypes: () => T_Account_Type_Mapping[];
 }
 
 const SessionProviderContext = createContext<
@@ -41,7 +41,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
   session,
   user,
 }) => {
-  const [accountType, setAccountType] = useState<T_AccountType | null>(() => {
+  const [accountType, setAccountType] = useState<T_Account_Type_Mapping | null>(() => {
     if (typeof window !== "undefined") {
       const savedAccountType = localStorage.getItem(LOCAL_STORAGE_KEY);
       return savedAccountType ? JSON.parse(savedAccountType) : null;
@@ -51,10 +51,10 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
   const [isDealer, setIsDealer] = useState(false);
 
-  const accountTypes: T_AccountType[] = [
+  const accountTypes: T_Account_Type_Mapping[] = [
     ...(user.profile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
-    ...(user.profile?.business
-      ? user.profile.business.map((business) =>
+    ...(user.profile?.businesses
+      ? user.profile.businesses.map((business) =>
           business.isDealer
             ? ACCOUNT_TYPES_MAPPING["dealer"]
             : ACCOUNT_TYPES_MAPPING["seller"]
@@ -65,22 +65,29 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
       : []),
   ];
 
-
   const isBuyer = () => user.profile?.buyer !== null;
-  const isBusiness = () => user.profile?.business?.length! > 0;
+  const isBusiness = () => user.profile?.businesses?.length! > 0;
   const isTrainedOperator = () => user.profile?.trainedOperator !== null;
   const isAdmin = () => user.role === UserRole.ADMIN;
 
-  const getAvailableAccountTypes = (): T_AccountType[] => {
+  const getAvailableAccountTypes = (): T_Account_Type_Mapping[] => {
     const userAccountTypes = [
       ...accountTypes.map((account) => account.value),
-      ...(user.profile?.business?.map((business) =>
+      ...(user.profile?.businesses?.map((business) =>
         business.isDealer ? "dealer" : "seller"
       ) || []),
     ];
 
     const availableAccountTypes = Object.values(ACCOUNT_TYPES_MAPPING).filter(
-      (accountType) => !userAccountTypes.includes(accountType.value)
+      (accountType) => {
+        if (
+          accountType.value === "dealer" &&
+          !user.profile?.businesses?.some((b) => b.isDealer)
+        ) {
+          return false;
+        }
+        return !userAccountTypes.includes(accountType.value);
+      }
     );
 
     return availableAccountTypes;

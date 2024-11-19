@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 import { geistSans, geistMono } from "@/config/fonts";
 import "@/styles/globals.css";
 import { BaseProviders } from "@/components";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 export const metadata = defaultMetadata;
 
@@ -16,7 +17,9 @@ const SharedLayout = ({ children, className = "" }: SharedLayoutProps) => {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased ${className}`}
       >
-        <BaseProviders>{children}</BaseProviders>
+        <BaseProviders>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </BaseProviders>
       </body>
     </html>
   );

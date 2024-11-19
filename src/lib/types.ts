@@ -6,8 +6,15 @@ export interface TasksPage {
   nextCursor: string | null;
 }
 
-export interface T_AccountType {
-  value: "buyer" | "seller" | "trainedOperator" | "dealer" | null;
+export type T_Account_Type_Mapping_Value =
+  | "buyer"
+  | "seller"
+  | "trainedOperator"
+  | "dealer"
+  | null;
+
+export interface T_Account_Type_Mapping {
+  value: T_Account_Type_Mapping_Value;
   label: string;
 }
 

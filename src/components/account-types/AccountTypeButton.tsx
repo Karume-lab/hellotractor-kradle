@@ -4,16 +4,26 @@ import { Button } from "../ui/button";
 import { useSession } from "@/providers/SessionProvider";
 import Link from "next/link";
 import { urls } from "@/lib/urls";
-import { T_AccountType } from "@/lib/types";
+import { T_Account_Type_Mapping } from "@/lib/types";
 
 interface AccountTypeButtonProps {
-  accountType: T_AccountType;
+  accountType: T_Account_Type_Mapping;
+  isCreatingAccountType: boolean;
 }
 
 const AccountTypeButton: React.FC<AccountTypeButtonProps> = ({
   accountType,
+  isCreatingAccountType,
 }) => {
   const { setAccountType } = useSession();
+
+  let redirectTo = "";
+
+  if (isCreatingAccountType) {
+    redirectTo = urls.ACCOUNT_TYPE_CREATION_FORM(accountType.value!);
+  } else {
+    redirectTo = accountType.value === "buyer" ? urls.EXPLORE : urls.DASHBOARD;
+  }
 
   return (
     <Button
@@ -21,10 +31,8 @@ const AccountTypeButton: React.FC<AccountTypeButtonProps> = ({
       asChild
       onClick={() => setAccountType(accountType)}
     >
-      <Link
-        href={accountType.value === "buyer" ? urls.EXPLORE : urls.DASHBOARD}
-      >
-        {accountType.label}
+      <Link href={redirectTo}>
+        {accountType.label ?? "Unknown Account Type"}
       </Link>
     </Button>
   );
