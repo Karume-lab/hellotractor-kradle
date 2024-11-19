@@ -1,8 +1,21 @@
-import { Task } from "@prisma/client";
+import { Prisma, Task, Tractor } from "@prisma/client";
 import { ACCOUNT_TYPES_MAPPING } from "./constants";
 
 export interface TasksPage {
   tasks: Task[];
+  nextCursor: string | null;
+}
+
+export const tractorAttachmentEquipmentDataInclude = {
+  equipment: true,
+} satisfies Prisma.TractorInclude;
+
+export type T_tractorAttachmentEquipmentDataInclude = Prisma.TractorGetPayload<{
+  include: typeof tractorAttachmentEquipmentDataInclude;
+}>;
+
+export interface TractorsPage {
+  tractors: T_tractorAttachmentEquipmentDataInclude[];
   nextCursor: string | null;
 }
 

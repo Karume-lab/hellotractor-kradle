@@ -74,6 +74,8 @@ model Seller {
 
   services Service[]
 
+  equipments Equipment[]
+
   licenses     FileUpload[] @relation("SellerLicense")
   coverPicture FileUpload?  @relation("SellerCoverPicture")
   logo         FileUpload?  @relation("SellerLogo")
@@ -126,8 +128,11 @@ model Equipment {
   averageRating Float               @default(0)
   isSold        Boolean             @default(false)
 
-  tractor    Tractor?    @relation("EquipmentToTractor")
+  tractor Tractor? @relation("EquipmentToTractor")
+
   attachment Attachment? @relation("EquipmentToAttachment")
+  seller     Seller?     @relation(fields: [sellerId], references: [id])
+  sellerId   String?
 }
 
 enum EquipmentCondition {

@@ -8,6 +8,7 @@ export const KINDLY_WAIT = "kindly wait as we redirect you";
 
 export const QUERY_KEYS = {
   tasks: "tasks",
+  tractors: "tractors",
 };
 export const ACCOUNT_TYPES_MAPPING: Record<
   Exclude<T_Account_Type_Mapping["value"], null>,

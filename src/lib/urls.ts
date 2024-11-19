@@ -23,6 +23,7 @@ export const urls = {
   TRACTORS: "/equipment/tractors",
   VIEW_EDIT_TRACTOR: (tractorId: string) => `/equipment/tractors/${tractorId}`,
   NEW_TRACTOR: "/equipment/tractors/new",
+  API_TRACTORS: "/api/data/tractors",
   // tasks
   PUBLIC_TASKS: "/tasks",
   PUBLIC_TASKS_VIEW_EDIT: (taskId: string) => `/tasks/${taskId}`,

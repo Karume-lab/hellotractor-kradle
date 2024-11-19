@@ -26,6 +26,8 @@ import { DataTable } from "@/components/core/DataTable";
 import Dashboard from "@/components/dashboard/Dashboard";
 // tractors
 import { NewTractorForm } from "./dashboard/equipment";
+// explore
+import TractorsContainer from "./explore/TractorsContainer";
 // tasks
 import TasksContainer from "@/components/tasks/TasksContainer";
 import CreateEditTask from "@/components/tasks/CreateEditTask";
@@ -63,6 +65,8 @@ export {
   Dashboard,
   // tractors
   NewTractorForm,
+  // explore
+  TractorsContainer,
   // tasks
   TasksContainer,
   CreateEditTask,

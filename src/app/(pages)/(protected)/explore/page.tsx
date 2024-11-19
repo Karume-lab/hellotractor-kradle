@@ -1,10 +1,8 @@
-"use client";
-import { useSession } from "@/providers/SessionProvider";
 import React from "react";
+import { TractorsContainer } from "@/components";
 
 const ExplorePage = () => {
-  const { accountType } = useSession();
-  return <div>{accountType?.label}</div>;
+  return <TractorsContainer />;
 };
 
 export default ExplorePage;
