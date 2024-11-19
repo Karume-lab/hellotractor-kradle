@@ -10,7 +10,7 @@ export default async function AuthLayout({
 }>) {
   const session = await validateRequest();
 
-  if (session) {
+  if (session.user) {
     redirect(urls.EXPLORE);
   }
 

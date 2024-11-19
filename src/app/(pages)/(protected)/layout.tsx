@@ -19,8 +19,6 @@ export default async function ProtectedLayout({
     redirect(urls.AUTH);
   }
 
-  console.log(session.user.buyer);
-
   return (
     <SharedLayout>
       <SessionProvider session={session.session} user={session.user}>

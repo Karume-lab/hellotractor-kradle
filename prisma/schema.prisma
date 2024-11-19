@@ -13,7 +13,7 @@ model User {
   hashPassword       String?
   role               UserRole             @default(USER)
   buyer              Buyer?
-  business           Business?
+  business           Business[]
   trainedOperator    TrainedOperator?
   session            Session[]
   task               Task[]
@@ -62,8 +62,8 @@ model Buyer {
 
 model Business {
   id       String  @id @default(cuid())
-  userId   String  @unique
   isDealer Boolean @default(false)
+  userId   String
   user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

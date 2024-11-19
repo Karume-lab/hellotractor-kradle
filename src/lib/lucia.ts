@@ -13,7 +13,7 @@ interface DatabaseUserAttributes {
   email: string | null;
   role: UserRole | null;
   buyer: Buyer | null;
-  business: Business | null;
+  business: Business[];
   trainedOperator: TrainedOperator | null;
 }
 export const lucia = new Lucia(adapter, {
@@ -42,6 +42,7 @@ declare module "lucia" {
     DatabaseUserAttributes: DatabaseUserAttributes;
   }
 }
+
 export const validateRequest = cache(
   async (): Promise<
     { user: User; session: Session } | { user: null; session: Session | null }
@@ -67,7 +68,6 @@ export const validateRequest = cache(
 
         if (!userWithRelations) {
           return { user: null, session: result.session };
-
         }
 
         const user = {
@@ -81,11 +81,9 @@ export const validateRequest = cache(
       } catch (error) {
         console.error("Error fetching user with relations:", error);
         return { user: null, session: result.session };
-
       }
     }
 
     return { user: null, session: null };
-
   }
 );

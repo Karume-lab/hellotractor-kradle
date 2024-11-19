@@ -14,6 +14,7 @@ import InfiniteScrollContainer from "@/components/core/InfiniteScrollContainer";
 import ActionConfirmationDialog from "@/components/core/ActionConfirmationDialog";
 import BaseProviders from "@/components/core/BaseProviders";
 import BackButton from "@/components/core/BackButton";
+import ButtonAsLink from "@/components/core/ButtonAsLink";
 import { DataTable } from "@/components/core/DataTable";
 // tasks
 import TasksContainer from "@/components/tasks/TasksContainer";
@@ -43,6 +44,7 @@ export {
   BaseProviders,
   DataTable,
   BackButton,
+  ButtonAsLink,
   // tasks
   TasksContainer,
   CreateEditTask,

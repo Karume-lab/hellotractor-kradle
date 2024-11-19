@@ -15,6 +15,8 @@ export const urls = {
   PROFILES_CREATION: "/profiles/creation",
   // explore
   EXPLORE: "/explore",
+  // dashboard
+  DASHBOARD: "/dashboard",
   // tasks
   PUBLIC_TASKS: "/tasks",
   PUBLIC_TASKS_VIEW_EDIT: (taskId: string) => `/tasks/${taskId}`,

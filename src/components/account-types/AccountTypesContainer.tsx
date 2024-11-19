@@ -1,15 +1,18 @@
 "use client";
 import React from "react";
-import AccountType from "./AccountTypeButton";
+import AccountTypeButton from "./AccountTypeButton";
 import { useSession } from "@/providers/SessionProvider";
+import AddAccountTypeButton from "./AddAccountTypeButton";
 
 const AccountTypesContainer = () => {
-  const { accountTypes } = useSession();
+  const { accountTypes, getAvailableAccountTypes } = useSession();
+
   return (
     <>
       {accountTypes.map((type) => (
-        <AccountType accountType={type} />
+        <AccountTypeButton key={type.value} accountType={type} />
       ))}
+      <AddAccountTypeButton />
     </>
   );
 };
