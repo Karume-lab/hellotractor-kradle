@@ -25,7 +25,6 @@ import ButtonAsLink from "@/components/core/ButtonAsLink";
 import { DataTable } from "@/components/core/DataTable";
 // dashboard
 import Dashboard from "@/components/dashboard/Dashboard";
-import SellerDashboard from "@/components/dashboard/SellerDashboard";
 // tractors
 import { NewTractorForm } from "./dashboard/equipment";
 // tasks
@@ -64,7 +63,6 @@ export {
   ButtonAsLink,
   // dashboard
   Dashboard,
-  SellerDashboard,
   // tractors
   NewTractorForm,
   // tasks

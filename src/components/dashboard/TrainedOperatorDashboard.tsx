@@ -1,7 +1,13 @@
-import React from "react";
+"use client";
+import { urls } from "@/lib/urls";
+import ButtonAsLink from "../core/ButtonAsLink";
 
-const TrainedOperatorForm = () => {
-  return <div>Trained Operator Form</div>;
+const TrainedOperatorDashboard = () => {
+  return (
+    <>
+      <ButtonAsLink redirectTo={urls.TRACTORS} text="Tractors" />
+    </>
+  );
 };
 
-export default TrainedOperatorForm;
+export default TrainedOperatorDashboard;

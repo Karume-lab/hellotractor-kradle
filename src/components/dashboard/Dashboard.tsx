@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import SellerDashboard from "./SellerDashboard";
 import { useSession } from "@/providers/SessionProvider";
 import { urls } from "@/lib/urls";
+import BuyerDashboard from "./BuyerDashboard";
+import BusinessDashboard from "./BuyerDashboard";
+import TrainedOperatorDashboard from "./TrainedOperatorDashboard";
 
 const Dashboard = () => {
   const { accountType } = useSession();
@@ -15,10 +18,10 @@ const Dashboard = () => {
 
   return (
     <>
-      {/* {accountType.value === "buyer" && <BuyerForm />} */}
+      {accountType?.value === "buyer" && <BuyerDashboard />}
       {accountType?.value === "seller" && <SellerDashboard />}
-      {/* {accountType.value === "business" && <BusinessForm />}
-      {accountType.value === "trainedOperator" && <TrainedOperatorForm />} */}
+      {accountType?.value === "business" && <BusinessDashboard />}
+      {accountType?.value === "trainedOperator" && <TrainedOperatorDashboard />}
     </>
   );
 };
