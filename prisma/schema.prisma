@@ -12,14 +12,25 @@ model User {
   email              String               @unique
   hashPassword       String?
   role               UserRole             @default(USER)
-  buyer              Buyer?
-  business           Business[]
-  trainedOperator    TrainedOperator?
   session            Session[]
   task               Task[]
   passwordResetToken PasswordResetToken[]
-  businessId         String?
-  trainedOperatorId  String?
+  profile            Profile?
+}
+
+model Profile {
+  id                String           @id @default(cuid())
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String           @unique
+  firstName         String
+  lastName          String
+  middleName        String?
+  displayName       String?
+  buyer             Buyer?
+  business          Business[]
+  trainedOperator   TrainedOperator?
+  businessId        String?
+  trainedOperatorId String?
 }
 
 model Session {
@@ -51,26 +62,22 @@ model PasswordResetToken {
 }
 
 model Buyer {
-  id          String  @id @default(cuid())
-  userId      String  @unique
-  firstName   String
-  lastName    String
-  middleName  String?
-  displayName String?
-  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String  @id @default(cuid())
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model Business {
-  id       String  @id @default(cuid())
-  isDealer Boolean @default(false)
-  userId   String
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String  @id @default(cuid())
+  isDealer  Boolean @default(false)
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model TrainedOperator {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String  @id @default(cuid())
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model Equipment {

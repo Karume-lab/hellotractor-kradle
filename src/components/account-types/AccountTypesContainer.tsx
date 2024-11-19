@@ -5,7 +5,7 @@ import { useSession } from "@/providers/SessionProvider";
 import AddAccountTypeButton from "./AddAccountTypeButton";
 
 const AccountTypesContainer = () => {
-  const { accountTypes, getAvailableAccountTypes } = useSession();
+  const { accountTypes } = useSession();
 
   return (
     <>

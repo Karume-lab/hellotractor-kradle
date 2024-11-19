@@ -42,8 +42,8 @@ const SignUpForm = () => {
     const res = await signUp(values);
 
     if (res?.success) {
-      router.push(urls.PUBLIC_TASKS);
       toast.success(res.message);
+      router.push(urls.PROFILES);
     } else {
       toast.error(res?.message);
     }

@@ -14,14 +14,11 @@ import { ACCOUNT_TYPES_MAPPING, LOCAL_STORAGE_KEY } from "@/lib/constants";
 interface SessionProviderPropsContextValue {
   user: User;
   session: Session;
-
   accountType: T_AccountType | null;
   setAccountType: (type: T_AccountType) => void;
   isDealer: boolean;
   setIsDealer: (isDealer: boolean) => void;
-
   accountTypes: T_AccountType[];
-
   isBuyer: () => boolean;
   isBusiness: () => boolean;
   isTrainedOperator: () => boolean;
@@ -51,29 +48,33 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     }
     return null;
   });
+
   const [isDealer, setIsDealer] = useState(false);
 
   const accountTypes: T_AccountType[] = [
-    ...(user.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
-    ...(user.business
-      ? user.business.map((business) =>
+    ...(user.profile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
+    ...(user.profile?.business
+      ? user.profile.business.map((business) =>
           business.isDealer
             ? ACCOUNT_TYPES_MAPPING["dealer"]
             : ACCOUNT_TYPES_MAPPING["seller"]
         )
       : []),
-    ...(user.trainedOperator ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]] : []),
+    ...(user.profile?.trainedOperator
+      ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]]
+      : []),
   ];
 
-  const isBuyer = () => user.buyer !== null;
-  const isBusiness = () => user.business !== null;
-  const isTrainedOperator = () => user.trainedOperator !== null;
+
+  const isBuyer = () => user.profile?.buyer !== null;
+  const isBusiness = () => user.profile?.business?.length! > 0;
+  const isTrainedOperator = () => user.profile?.trainedOperator !== null;
   const isAdmin = () => user.role === UserRole.ADMIN;
 
   const getAvailableAccountTypes = (): T_AccountType[] => {
     const userAccountTypes = [
       ...accountTypes.map((account) => account.value),
-      ...(user.business?.map((business) =>
+      ...(user.profile?.business?.map((business) =>
         business.isDealer ? "dealer" : "seller"
       ) || []),
     ];

@@ -1,10 +1,17 @@
+// auth.ts
 import { Lucia, Session, User } from "lucia";
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 import prisma from "./prisma";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import { SITE_COOKIE_KEY } from "./constants";
-import { UserRole, Buyer, Business, TrainedOperator } from "@prisma/client";
+import {
+  UserRole,
+  Buyer,
+  Business,
+  TrainedOperator,
+  Profile,
+} from "@prisma/client";
 
 const adapter = new PrismaAdapter(prisma.session, prisma.user);
 
@@ -12,10 +19,15 @@ interface DatabaseUserAttributes {
   id: string;
   email: string | null;
   role: UserRole | null;
-  buyer: Buyer | null;
-  business: Business[];
-  trainedOperator: TrainedOperator | null;
+  profile:
+    | (Profile & {
+        buyer: Buyer | null;
+        business: Business[];
+        trainedOperator: TrainedOperator | null;
+      })
+    | null;
 }
+
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
     name: SITE_COOKIE_KEY,
@@ -24,14 +36,12 @@ export const lucia = new Lucia(adapter, {
       secure: process.env.NODE_ENV === "production",
     },
   },
-  getUserAttributes(databaseUserAttributes) {
+  getUserAttributes: (databaseUserAttributes) => {
     return {
       id: databaseUserAttributes.id,
       email: databaseUserAttributes.email,
       role: databaseUserAttributes.role,
-      buyer: databaseUserAttributes.buyer,
-      business: databaseUserAttributes.business,
-      trainedOperator: databaseUserAttributes.trainedOperator,
+      profile: databaseUserAttributes.profile,
     };
   },
 });
@@ -48,21 +58,23 @@ export const validateRequest = cache(
     { user: User; session: Session } | { user: null; session: Session | null }
   > => {
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
-
     if (!sessionId) {
       return { user: null, session: null };
     }
 
     const result = await lucia.validateSession(sessionId);
-
     if (result.session) {
       try {
         const userWithRelations = await prisma.user.findUnique({
           where: { id: result.user.id },
           include: {
-            buyer: true,
-            business: true,
-            trainedOperator: true,
+            profile: {
+              include: {
+                buyer: true,
+                business: true,
+                trainedOperator: true,
+              },
+            },
           },
         });
 
@@ -72,9 +84,7 @@ export const validateRequest = cache(
 
         const user = {
           ...result.user,
-          buyer: userWithRelations.buyer,
-          business: userWithRelations.business,
-          trainedOperator: userWithRelations.trainedOperator,
+          profile: userWithRelations.profile,
         };
 
         return { user, session: result.session };
@@ -83,7 +93,6 @@ export const validateRequest = cache(
         return { user: null, session: result.session };
       }
     }
-
     return { user: null, session: null };
   }
 );
