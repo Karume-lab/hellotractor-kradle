@@ -13,7 +13,7 @@ import {
   BusinessForm,
   TrainedOperatorForm,
   SellerForm,
-  AccountTypeCreationForm,
+  NewAccountTypeForm,
 } from "@/components/account-types/forms";
 // core
 import Header from "@/components/core/Header";
@@ -23,6 +23,11 @@ import BaseProviders from "@/components/core/BaseProviders";
 import BackButton from "@/components/core/BackButton";
 import ButtonAsLink from "@/components/core/ButtonAsLink";
 import { DataTable } from "@/components/core/DataTable";
+// dashboard
+import Dashboard from "@/components/dashboard/Dashboard";
+import SellerDashboard from "@/components/dashboard/SellerDashboard";
+// tractors
+import { NewTractorForm } from "./dashboard/equipment";
 // tasks
 import TasksContainer from "@/components/tasks/TasksContainer";
 import CreateEditTask from "@/components/tasks/CreateEditTask";
@@ -48,7 +53,7 @@ export {
   SellerForm,
   BusinessForm,
   TrainedOperatorForm,
-  AccountTypeCreationForm,
+  NewAccountTypeForm,
   //core
   Header,
   InfiniteScrollContainer,
@@ -57,6 +62,11 @@ export {
   DataTable,
   BackButton,
   ButtonAsLink,
+  // dashboard
+  Dashboard,
+  SellerDashboard,
+  // tractors
+  NewTractorForm,
   // tasks
   TasksContainer,
   CreateEditTask,

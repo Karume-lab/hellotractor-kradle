@@ -15,7 +15,7 @@ interface SessionProviderPropsContextValue {
   user: User;
   session: Session;
   accountType: T_Account_Type_Mapping | null;
-  setAccountType: (type: T_Account_Type_Mapping) => void;
+  setAccountType: (type: T_Account_Type_Mapping | null) => void;
   isDealer: boolean;
   setIsDealer: (isDealer: boolean) => void;
   accountTypes: T_Account_Type_Mapping[];

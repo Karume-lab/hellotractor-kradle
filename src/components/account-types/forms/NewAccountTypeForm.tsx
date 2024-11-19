@@ -5,7 +5,7 @@ import { ACCOUNT_TYPES_MAPPING, URL_STATES } from "@/lib/constants";
 import { BusinessForm, BuyerForm, SellerForm, TrainedOperatorForm } from ".";
 import { notFound } from "next/navigation";
 
-const AccountTypeCreationForm = () => {
+const NewAccountTypeForm = () => {
   const [accountType] = useQueryState(URL_STATES.accountType, parseAsString);
 
   const validAccountType =
@@ -26,4 +26,4 @@ const AccountTypeCreationForm = () => {
   );
 };
 
-export default AccountTypeCreationForm;
+export default NewAccountTypeForm;

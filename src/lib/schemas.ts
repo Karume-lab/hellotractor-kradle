@@ -1,4 +1,5 @@
-import { TypeOf, z } from "zod";
+import { z } from "zod";
+import { EquipmentCondition } from "@prisma/client";
 
 export const signInSchema = z.object({
   email: z.string().email(),
@@ -77,3 +78,30 @@ export const businessSchema = z.object({
   services: z.array(z.string()),
 });
 export type T_BusinessSchema = z.infer<typeof businessSchema>;
+
+export const equipmentSchema = z.object({
+  name: z.string().min(1, "Equipment name is required"),
+  description: z.string().optional(),
+  price: z
+    .number()
+    .positive("Price must be a positive number")
+    .refine(
+      (value) => {
+        return /^\d+(\.\d{1,2})?$/.test(value.toString());
+      },
+      {
+        message: "Price must be a valid number with up to 2 decimal places",
+      }
+    ),
+  condition: z.nativeEnum(EquipmentCondition).optional(),
+});
+
+export type T_EquipmentSchema = z.infer<typeof equipmentSchema>;
+
+export const tractorSchema = equipmentSchema.merge(
+  z.object({
+    mileage: z.string(),
+    fuelCapacity: z.string(),
+  })
+);
+export type T_TractorSchema = z.infer<typeof tractorSchema>;

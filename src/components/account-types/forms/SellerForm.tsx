@@ -17,12 +17,13 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createSellerAccount } from "@/app/(pages)/(protected)/account-types/creation/form/actions";
+import { createSellerAccount } from "@/app/(pages)/(protected)/account-types/new/form/actions";
 import { urls } from "@/lib/urls";
 import { useSession } from "@/providers/SessionProvider";
+import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
 
 const SellerForm = () => {
-  const { isSeller } = useSession();
+  const { isSeller, setAccountType } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -45,8 +46,8 @@ const SellerForm = () => {
     mutationFn: createSellerAccount,
     onSuccess: ({ message }) => {
       toast.success(message);
+      setAccountType(ACCOUNT_TYPES_MAPPING["seller"]);
       router.push(urls.DASHBOARD);
-      router.refresh();
     },
     onError: (error: Error) => {
       if (error.message === "Unauthorized") {

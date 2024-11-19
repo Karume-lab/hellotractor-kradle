@@ -1,10 +1,8 @@
-"use client";
-import { useSession } from "@/providers/SessionProvider";
 import React from "react";
+import { Dashboard } from "@/components";
 
-const Dashboard = () => {
-  const { accountType } = useSession();
-  return <div>{accountType?.label}</div>;
+const DashboardPage = () => {
+  return <Dashboard />;
 };
 
-export default Dashboard;
+export default DashboardPage;

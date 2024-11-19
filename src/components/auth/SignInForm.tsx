@@ -26,6 +26,7 @@ import { urls } from "@/lib/urls";
 import LoadingButton from "../core/LoadingButton";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import ButtonAsLink from "../core/ButtonAsLink";
 
 const SignInForm = () => {
   const form = useForm<T_SignInSchema>({
@@ -44,7 +45,6 @@ const SignInForm = () => {
       const { message, success } = await signIn(values);
       if (success) {
         toast.success(message);
-        form.reset();
         router.push(urls.ACCOUNT_TYPES);
       } else {
         toast.error(message);
@@ -105,11 +105,12 @@ const SignInForm = () => {
               text="Sign in"
               loadingText="Signing in"
             />
-            <Button variant={"link"} asChild>
-              <Link href={urls.RESET_PASSWORD}>
-                Forgot your password? Reset it here.
-              </Link>
-            </Button>
+            <ButtonAsLink
+              variant={"link"}
+              asChild
+              text="Forgot your password? Reset it here."
+              redirectTo={urls.RESET_PASSWORD}
+            />
           </form>
         </Form>
       </CardContent>

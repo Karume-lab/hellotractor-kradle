@@ -20,10 +20,9 @@ import { toast } from "sonner";
 import { createBuyerAccount } from "@/app/(pages)/(protected)/account-types/new/form/actions";
 import { urls } from "@/lib/urls";
 import { useSession } from "@/providers/SessionProvider";
-import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
 
 const BuyerForm = () => {
-  const { isBuyer, setAccountType } = useSession();
+  const { isBuyer } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -47,8 +46,8 @@ const BuyerForm = () => {
     mutationFn: createBuyerAccount,
     onSuccess: ({ message }) => {
       toast.success(message);
-      setAccountType(ACCOUNT_TYPES_MAPPING["buyer"]);
       router.push(urls.DASHBOARD);
+      router.refresh();
     },
     onError: (error: Error) => {
       if (error.message === "Unauthorized") {

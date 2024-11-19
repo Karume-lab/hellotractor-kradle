@@ -134,7 +134,7 @@ model Equipment {
   images        FileUpload[]
   price         Float
   condition     EquipmentCondition?
-  averageRating Float
+  averageRating Float               @default(0)
   isSold        Boolean             @default(false)
 
   tractor    Tractor?    @relation("EquipmentToTractor")

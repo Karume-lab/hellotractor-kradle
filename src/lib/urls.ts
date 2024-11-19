@@ -12,13 +12,17 @@ export const urls = {
   // account types
   ACCOUNT_TYPE: "/account-type",
   ACCOUNT_TYPES: "/account-types",
-  ACCOUNT_TYPE_CREATION: "/account-types/creation",
-  ACCOUNT_TYPE_CREATION_FORM: (accountType: string) =>
-    `creation/form?account-type=${accountType}`,
+  NEW_ACCOUNT_TYPE: "/account-types/new",
+  NEW_ACCOUNT_TYPE_FORM: (accountType: string) =>
+    `new/form?account-type=${accountType}`,
   // explore
   EXPLORE: "/explore",
   // dashboard
   DASHBOARD: "/dashboard",
+  // tractors
+  TRACTORS: "/equipment/tractors",
+  VIEW_EDIT_TRACTOR: (tractorId: string) => `/equipment/tractors/${tractorId}`,
+  NEW_TRACTOR: "/equipment/tractors/new",
   // tasks
   PUBLIC_TASKS: "/tasks",
   PUBLIC_TASKS_VIEW_EDIT: (taskId: string) => `/tasks/${taskId}`,
