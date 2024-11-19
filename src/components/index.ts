@@ -12,6 +12,7 @@ import {
   BuyerForm,
   BusinessForm,
   TrainedOperatorForm,
+  SellerForm,
   AccountTypeCreationForm,
 } from "@/components/account-types/forms";
 // core
@@ -44,8 +45,10 @@ export {
   // account types
   AccountTypesContainer,
   BuyerForm,
+  SellerForm,
   BusinessForm,
   TrainedOperatorForm,
+  AccountTypeCreationForm,
   //core
   Header,
   InfiniteScrollContainer,

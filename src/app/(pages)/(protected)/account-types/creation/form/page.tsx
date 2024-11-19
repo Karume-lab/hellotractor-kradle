@@ -1,4 +1,4 @@
-import { AccountTypeCreationForm } from "@/components/account-types/forms";
+import { AccountTypeCreationForm } from "@/components";
 import React from "react";
 
 const AccountTypeCreationFormPage = () => {

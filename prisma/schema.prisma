@@ -37,6 +37,7 @@ model Profile {
   bio               String?
   profilePicture    FileUpload?
   buyer             Buyer?
+  seller            Seller?
   businesses        Business[]
   trainedOperator   TrainedOperator?
   businessId        String?
@@ -62,12 +63,19 @@ model Buyer {
   profileId String  @unique
 }
 
+model Seller {
+  id        String    @id @default(cuid())
+  services  Service[]
+  profile   Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String    @unique
+}
+
 model Business {
   id           String  @id @default(cuid())
   name         String
   slogan       String?
   bio          String?
-  openingHours String
+  openingHours String?
   isDealer     Boolean @default(false)
   profile      Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId    String
@@ -99,6 +107,9 @@ model Service {
 
   business   Business? @relation(fields: [businessId], references: [id])
   businessId String?
+
+  seller   Seller? @relation(fields: [sellerId], references: [id])
+  sellerId String?
 }
 
 model Attachment {

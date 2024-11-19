@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import {
   Card,
   CardContent,
@@ -35,19 +35,19 @@ const SignUpForm = () => {
     },
   });
   const router = useRouter();
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const handleOnSubmit = async (values: T_SignUpSchema) => {
-    setIsDisabled(true);
-    const res = await signUp(values);
-
-    if (res?.success) {
-      toast.success(res.message);
-      router.push(urls.ACCOUNT_TYPES);
-    } else {
-      toast.error(res?.message);
-    }
-    setIsDisabled(false);
+    startTransition(async () => {
+      const { message, success } = await signUp(values);
+      if (success) {
+        toast.success(message);
+        form.reset();
+        router.push(urls.ACCOUNT_TYPES);
+      } else {
+        toast.error(message);
+      }
+    });
   };
 
   return (
@@ -120,7 +120,7 @@ const SignUpForm = () => {
             />
             <LoadingButton
               type="submit"
-              disabled={isDisabled}
+              disabled={isPending}
               text="Sign up"
               loadingText="Signing up"
             />

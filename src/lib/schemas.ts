@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { TypeOf, z } from "zod";
 
 export const signInSchema = z.object({
   email: z.string().email(),
@@ -44,3 +44,29 @@ export const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 export type T_ResetPassword = z.infer<typeof resetPasswordSchema>;
+
+export const profileSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  middleName: z.string().optional(),
+  displayName: z.string().optional(),
+  bio: z.string().optional(),
+  // profilePicture: z.string().optional(),
+});
+export type T_ProfileSchema = z.infer<typeof profileSchema>;
+
+export const sellerSchema = profileSchema.merge(
+  z.object({
+    // services: z.array(z.string()),
+  })
+);
+export type T_SellerSchema = z.infer<typeof sellerSchema>;
+
+export const businessSchema = z.object({
+  name: z.string(),
+  slogan: z.string().optional(),
+  bio: z.string().optional(),
+  openingHours: z.string().optional(),
+  services: z.array(z.string()),
+});
+export type T_BusinessSchema = z.infer<typeof businessSchema>;

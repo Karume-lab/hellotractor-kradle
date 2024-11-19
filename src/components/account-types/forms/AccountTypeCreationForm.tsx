@@ -2,7 +2,7 @@
 import React from "react";
 import { parseAsString, useQueryState } from "nuqs";
 import { ACCOUNT_TYPES_MAPPING, URL_STATES } from "@/lib/constants";
-import { BusinessForm, BuyerForm, TrainedOperatorForm } from ".";
+import { BusinessForm, BuyerForm, SellerForm, TrainedOperatorForm } from ".";
 import { notFound } from "next/navigation";
 
 const AccountTypeCreationForm = () => {
@@ -19,7 +19,8 @@ const AccountTypeCreationForm = () => {
   return (
     <>
       {validAccountType.value === "buyer" && <BuyerForm />}
-      {validAccountType.value === "seller" && <BusinessForm />}
+      {validAccountType.value === "seller" && <SellerForm />}
+      {validAccountType.value === "business" && <BusinessForm />}
       {validAccountType.value === "trainedOperator" && <TrainedOperatorForm />}
     </>
   );
