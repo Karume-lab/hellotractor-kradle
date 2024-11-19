@@ -10,7 +10,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { profileSchema, T_ProfileSchema } from "@/lib/schemas";
+import {
+  profileSchema,
+  sellerSchema,
+  T_ProfileSchema,
+  T_SellerSchema,
+} from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -31,8 +36,8 @@ const SellerForm = () => {
       router.push(urls.DASHBOARD);
     }
   }, [isSeller, router]);
-  const form = useForm<T_ProfileSchema>({
-    resolver: zodResolver(profileSchema),
+  const form = useForm<T_SellerSchema>({
+    resolver: zodResolver(sellerSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -59,7 +64,7 @@ const SellerForm = () => {
     },
   });
 
-  const handleOnSubmit = async (values: T_ProfileSchema) => {
+  const handleOnSubmit = async (values: T_SellerSchema) => {
     mutation.mutate(values);
   };
 
@@ -130,6 +135,61 @@ const SellerForm = () => {
               <FormLabel>Bio</FormLabel>
               <FormControl>
                 <Textarea placeholder="Enter your bio ..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Business Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your business name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="slogan"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Business Slogan</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your business slogan" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="bio"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Business Bio</FormLabel>
+              <FormControl>
+                <Input placeholder="Tell us about your business" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="openingHours"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Opening Hours</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your business opening hours"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -29,6 +29,7 @@ export const createSellerAccount = async (values: T_SellerSchema) => {
   await prisma.seller.create({
     data: {
       profileId: user.profile.id,
+      ...values,
     },
   });
 

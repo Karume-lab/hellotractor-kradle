@@ -58,26 +58,17 @@ export type T_ProfileSchema = z.infer<typeof profileSchema>;
 
 export const sellerSchema = profileSchema.merge(
   z.object({
+    name: z.string(),
+    slogan: z.string().optional(),
+    bio: z.string().optional(),
+    openingHours: z.string().optional(),
     // services: z.array(z.string()),
   })
 );
 export type T_SellerSchema = z.infer<typeof sellerSchema>;
 
-export const buyerSchema = profileSchema.merge(
-  z.object({
-    // services: z.array(z.string()),
-  })
-);
+export const buyerSchema = profileSchema.merge(z.object({}));
 export type T_BuyerSchema = z.infer<typeof buyerSchema>;
-
-export const businessSchema = z.object({
-  name: z.string(),
-  slogan: z.string().optional(),
-  bio: z.string().optional(),
-  openingHours: z.string().optional(),
-  services: z.array(z.string()),
-});
-export type T_BusinessSchema = z.infer<typeof businessSchema>;
 
 export const equipmentSchema = z.object({
   name: z.string().min(1, "Equipment name is required"),

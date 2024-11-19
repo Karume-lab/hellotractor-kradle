@@ -10,7 +10,6 @@ import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 import AccountTypesContainer from "@/components/account-types/AccountTypesContainer";
 import {
   BuyerForm,
-  BusinessForm,
   TrainedOperatorForm,
   SellerForm,
   NewAccountTypeForm,
@@ -50,7 +49,6 @@ export {
   AccountTypesContainer,
   BuyerForm,
   SellerForm,
-  BusinessForm,
   TrainedOperatorForm,
   NewAccountTypeForm,
   //core

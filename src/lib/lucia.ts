@@ -8,7 +8,6 @@ import { SITE_COOKIE_KEY } from "./constants";
 import {
   UserRole,
   Buyer,
-  Business,
   TrainedOperator,
   Profile,
   Seller,
@@ -23,8 +22,7 @@ interface DatabaseUserAttributes {
   profile:
     | (Profile & {
         buyer: Buyer | null;
-        seller: Seller | null;
-        businesses: Business[] | null;
+        sellers: Seller[] | null;
         trainedOperator: TrainedOperator | null;
       })
     | null;
@@ -73,9 +71,8 @@ export const validateRequest = cache(
             profile: {
               include: {
                 buyer: true,
-                businesses: true,
                 trainedOperator: true,
-                seller: true,
+                sellers: true,
               },
             },
           },

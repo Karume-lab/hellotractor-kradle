@@ -15,7 +15,6 @@ export const ACCOUNT_TYPES_MAPPING: Record<
 > = {
   buyer: { value: "buyer", label: "Buyer" },
   seller: { value: "seller", label: "Seller" },
-  business: { value: "business", label: "Business" },
   trainedOperator: { value: "trainedOperator", label: "Trained Operator" },
   dealer: { value: "dealer", label: "Dealer" },
 };

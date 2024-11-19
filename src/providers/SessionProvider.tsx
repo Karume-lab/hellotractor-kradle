@@ -21,7 +21,6 @@ interface SessionProviderPropsContextValue {
   accountTypes: T_Account_Type_Mapping[];
   isBuyer: () => boolean;
   isSeller: () => boolean;
-  isBusiness: () => boolean;
   isTrainedOperator: () => boolean;
   isAdmin: () => boolean;
   getAvailableAccountTypes: () => T_Account_Type_Mapping[];
@@ -56,29 +55,25 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
   const accountTypes: T_Account_Type_Mapping[] = [
     ...(user.profile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
-    ...(user.profile?.businesses?.some((business) => business.isDealer)
+    ...(user.profile?.sellers?.some((seller) => seller.isDealer)
       ? [ACCOUNT_TYPES_MAPPING["dealer"]]
       : []),
-    ...(user.profile?.businesses?.length
-      ? [ACCOUNT_TYPES_MAPPING["business"]]
-      : []),
+    ...(user.profile?.sellers?.length ? [ACCOUNT_TYPES_MAPPING["seller"]] : []),
     ...(user.profile?.trainedOperator
       ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]]
       : []),
-    ...(user.profile?.seller ? [ACCOUNT_TYPES_MAPPING["seller"]] : []),
   ];
 
   const isBuyer = () => user.profile?.buyer !== null;
-  const isSeller = () => user.profile?.seller !== null;
-  const isBusiness = () => user.profile?.businesses?.length! > 0;
+  const isSeller = () => user.profile?.sellers?.length! > 0 !== null;
   const isTrainedOperator = () => user.profile?.trainedOperator !== null;
   const isAdmin = () => user.role === UserRole.ADMIN;
 
   const getAvailableAccountTypes = (): T_Account_Type_Mapping[] => {
     const userAccountTypes = [
       ...accountTypes.map((account) => account.value),
-      ...(user.profile?.businesses?.map((business) =>
-        business.isDealer ? "dealer" : "business"
+      ...(user.profile?.sellers?.map((seller) =>
+        seller.isDealer ? "dealer" : "seller"
       ) || []),
     ];
 
@@ -86,7 +81,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
       (accountType) => {
         if (
           accountType.value === "dealer" &&
-          !user.profile?.businesses?.some((b) => b.isDealer)
+          !user.profile?.sellers?.some((seller) => seller.isDealer)
         ) {
           return false;
         }
@@ -114,7 +109,6 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     setIsDealer,
     accountTypes,
     isBuyer,
-    isBusiness,
     isTrainedOperator,
     isAdmin,
     isSeller,

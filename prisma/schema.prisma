@@ -37,10 +37,9 @@ model Profile {
   bio               String?
   profilePicture    FileUpload?
   buyer             Buyer?
-  seller            Seller?
-  businesses        Business[]
+  sellers           Seller[]
   trainedOperator   TrainedOperator?
-  businessId        String?
+  sellerId          String?
   trainedOperatorId String?
 }
 
@@ -64,13 +63,6 @@ model Buyer {
 }
 
 model Seller {
-  id        String    @id @default(cuid())
-  services  Service[]
-  profile   Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId String    @unique
-}
-
-model Business {
   id           String  @id @default(cuid())
   name         String
   slogan       String?
@@ -82,9 +74,9 @@ model Business {
 
   services Service[]
 
-  licenses     FileUpload[] @relation("BusinessLicense")
-  coverPicture FileUpload?  @relation("BusinessCoverPicture")
-  logo         FileUpload?  @relation("BusinessLogo")
+  licenses     FileUpload[] @relation("SellerLicense")
+  coverPicture FileUpload?  @relation("SellerCoverPicture")
+  logo         FileUpload?  @relation("SellerLogo")
 }
 
 model TrainedOperator {
@@ -104,9 +96,6 @@ model Service {
 
   trainedOperator   TrainedOperator? @relation(fields: [trainedOperatorId], references: [id])
   trainedOperatorId String?
-
-  business   Business? @relation(fields: [businessId], references: [id])
-  businessId String?
 
   seller   Seller? @relation(fields: [sellerId], references: [id])
   sellerId String?
@@ -162,12 +151,12 @@ model FileUpload {
   trainedOperatorService   Service @relation(fields: [trainedOperatorServiceId], references: [id], onDelete: Cascade)
   trainedOperatorServiceId String
 
-  businessLicense        Business  @relation("BusinessLicense", fields: [businessLicenseId], references: [id], onDelete: Cascade)
-  businessLicenseId      String
-  businessCoverPicture   Business? @relation("BusinessCoverPicture", fields: [businessCoverPictureId], references: [id])
-  businessCoverPictureId String    @unique
-  businessLogo           Business? @relation("BusinessLogo", fields: [businessLogoId], references: [id])
-  businessLogoId         String    @unique
+  sellerLicense        Seller  @relation("SellerLicense", fields: [sellerLicenseId], references: [id], onDelete: Cascade)
+  sellerLicenseId      String
+  sellerCoverPicture   Seller? @relation("SellerCoverPicture", fields: [sellerCoverPictureId], references: [id])
+  sellerCoverPictureId String  @unique
+  sellerLogo           Seller? @relation("SellerLogo", fields: [sellerLogoId], references: [id])
+  sellerLogoId         String  @unique
 
   equipmentImage   Equipment @relation(fields: [equipmentImageId], references: [id], onDelete: Cascade)
   equipmentImageId String

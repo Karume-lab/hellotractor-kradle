@@ -5,7 +5,6 @@ import SellerDashboard from "./SellerDashboard";
 import { useSession } from "@/providers/SessionProvider";
 import { urls } from "@/lib/urls";
 import BuyerDashboard from "./BuyerDashboard";
-import BusinessDashboard from "./BuyerDashboard";
 import TrainedOperatorDashboard from "./TrainedOperatorDashboard";
 
 const Dashboard = () => {
@@ -20,7 +19,6 @@ const Dashboard = () => {
     <>
       {accountType?.value === "buyer" && <BuyerDashboard />}
       {accountType?.value === "seller" && <SellerDashboard />}
-      {accountType?.value === "business" && <BusinessDashboard />}
       {accountType?.value === "trainedOperator" && <TrainedOperatorDashboard />}
     </>
   );

@@ -8,7 +8,6 @@ export interface TasksPage {
 
 export type T_Account_Type_Mapping_Value =
   | "buyer"
-  | "business"
   | "seller"
   | "trainedOperator"
   | "dealer"
