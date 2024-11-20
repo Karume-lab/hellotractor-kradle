@@ -110,6 +110,7 @@ export const serviceSchema = z.object({
     ),
   certificates: z.array(z.any()).optional(),
 });
+export type T_ServiceSchema = z.infer<typeof serviceSchema>;
 
 export const trainedOperatorSchema = z.object({
   services: z.array(serviceSchema),
