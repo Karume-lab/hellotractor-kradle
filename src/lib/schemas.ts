@@ -94,12 +94,25 @@ export const tractorSchema = equipmentSchema.merge(
 );
 export type T_TractorSchema = z.infer<typeof tractorSchema>;
 
-export const trainedOperatorSchema = z.object({});
-export type T_TrainedOperatorSchema = z.infer<typeof trainedOperatorSchema>;
-
 export const serviceSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  // certificates: z.string(),
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
+  price: z
+    .number()
+    .positive("Price must be a positive number")
+    .refine(
+      (value) => {
+        return /^\d+(\.\d{1,2})?$/.test(value.toString());
+      },
+      {
+        message: "Price must be a valid number with up to 2 decimal places",
+      }
+    ),
+  certificates: z.array(z.any()).optional(),
 });
-export type T_ServiceSchema = z.infer<typeof serviceSchema>;
+
+export const trainedOperatorSchema = z.object({
+  services: z.array(serviceSchema),
+});
+
+export type T_TrainedOperatorSchema = z.infer<typeof trainedOperatorSchema>;

@@ -16,7 +16,7 @@ import {
   buyerXProfileSchema,
   T_BuyerXProfileSchema,
 } from "@/lib/combined-schemas";
-import { profileDefault } from "@/lib/form-defaults";
+import { profileDefaultValues } from "@/lib/form-defaults";
 
 const CreateEditBuyerForm = () => {
   const { isBuyer, setAccountType } = useSession();
@@ -30,7 +30,7 @@ const CreateEditBuyerForm = () => {
 
   const form = useForm<T_BuyerXProfileSchema>({
     resolver: zodResolver(buyerXProfileSchema),
-    defaultValues: profileDefault,
+    defaultValues: profileDefaultValues,
   });
 
   const mutation = useMutation({
