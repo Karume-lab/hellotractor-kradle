@@ -12,9 +12,9 @@ export const urls = {
   // account types
   ACCOUNT_TYPE: "/account-type",
   ACCOUNT_TYPES: "/account-types",
-  NEW_ACCOUNT_TYPE: "/account-types/new",
-  NEW_ACCOUNT_TYPE_FORM: (accountType: string) =>
-    `new/form?account-type=${accountType}`,
+  CREATE_ACCOUNT_TYPE: "/account-types/create",
+  CREATE_ACCOUNT_TYPE_FORM: (accountType: string) =>
+    `create/form?account-type=${accountType}`,
   // explore
   EXPLORE: "/explore",
   // dashboard
@@ -22,7 +22,7 @@ export const urls = {
   // tractors
   TRACTORS: "/equipment/tractors",
   VIEW_EDIT_TRACTOR: (tractorId: string) => `/equipment/tractors/${tractorId}`,
-  NEW_TRACTOR: "/equipment/tractors/new",
+  CREATE_TRACTOR: "/equipment/tractors/create",
   API_TRACTORS: "/api/data/tractors",
   // tasks
   PUBLIC_TASKS: "/tasks",

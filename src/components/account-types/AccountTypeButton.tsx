@@ -20,7 +20,7 @@ const AccountTypeButton: React.FC<AccountTypeButtonProps> = ({
   let redirectTo = "";
 
   if (isCreatingAccountType) {
-    redirectTo = urls.NEW_ACCOUNT_TYPE_FORM(accountType.value!);
+    redirectTo = urls.CREATE_ACCOUNT_TYPE_FORM(accountType.value!);
   } else {
     redirectTo = accountType.value === "buyer" ? urls.EXPLORE : urls.DASHBOARD;
   }

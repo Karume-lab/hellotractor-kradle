@@ -9,25 +9,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
-  profileSchema,
-  sellerSchema,
-  T_ProfileSchema,
-  T_SellerSchema,
-} from "@/lib/schemas";
+  sellerXProfileSchema,
+  T_SellerXProfileSchema,
+} from "@/lib/combined-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createSellerAccount } from "@/app/(pages)/(protected)/account-types/new/form/actions";
 import { urls } from "@/lib/urls";
 import { useSession } from "@/providers/SessionProvider";
 import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
+import CreateEditProfileForm from "./CreateEditProfileForm";
+import { createEditSellerAccount } from "@/app/(pages)/(protected)/account-types/create/form/actions";
 
-const SellerForm = () => {
+const CreateEditSellerForm = () => {
   const { isSeller, setAccountType } = useSession();
   const router = useRouter();
 
@@ -36,19 +34,18 @@ const SellerForm = () => {
       router.push(urls.DASHBOARD);
     }
   }, [isSeller, router]);
-  const form = useForm<T_SellerSchema>({
-    resolver: zodResolver(sellerSchema),
+  const form = useForm<T_SellerXProfileSchema>({
+    resolver: zodResolver(sellerXProfileSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      middleName: "",
-      displayName: "",
-      bio: "",
+      businessName: "",
+      businessSlogal: "",
+      businessBio: "",
+      businessOpeningHours: "",
     },
   });
 
   const mutation = useMutation({
-    mutationFn: createSellerAccount,
+    mutationFn: createEditSellerAccount,
     onSuccess: ({ message }) => {
       toast.success(message);
       setAccountType(ACCOUNT_TYPES_MAPPING["seller"]);
@@ -64,85 +61,17 @@ const SellerForm = () => {
     },
   });
 
-  const handleOnSubmit = async (values: T_SellerSchema) => {
+  const handleOnSubmit = async (values: T_SellerXProfileSchema) => {
     mutation.mutate(values);
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
+        <CreateEditProfileForm form={form} />
         <FormField
           control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter your first name ..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="middleName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Middle Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter your middle name ..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter your last name ..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="displayName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Display Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter your display name ..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="bio"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Enter your bio ..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
+          name="businessName"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Business Name</FormLabel>
@@ -155,7 +84,7 @@ const SellerForm = () => {
         />
         <FormField
           control={form.control}
-          name="slogan"
+          name="businessSlogal"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Business Slogan</FormLabel>
@@ -168,7 +97,7 @@ const SellerForm = () => {
         />
         <FormField
           control={form.control}
-          name="bio"
+          name="businessBio"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Business Bio</FormLabel>
@@ -181,10 +110,10 @@ const SellerForm = () => {
         />
         <FormField
           control={form.control}
-          name="openingHours"
+          name="businessOpeningHours"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Opening Hours</FormLabel>
+              <FormLabel>Business Opening Hours</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter your business opening hours"
@@ -207,4 +136,4 @@ const SellerForm = () => {
   );
 };
 
-export default SellerForm;
+export default CreateEditSellerForm;

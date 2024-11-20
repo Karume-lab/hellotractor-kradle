@@ -18,9 +18,9 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { urls } from "@/lib/urls";
 import { createTractor } from "@/app/(pages)/(protected)/equipment/tractors/new/actions";
-import EquipmentForm from "../EquipmentForm";
+import EquipmentForm from "../CreateEditEquipmentForm";
 
-const NewTractorForm = () => {
+const CreateEditTractorForm = () => {
   const router = useRouter();
   const form = useForm<T_TractorSchema>({
     resolver: zodResolver(tractorSchema),
@@ -98,4 +98,4 @@ const NewTractorForm = () => {
   );
 };
 
-export default NewTractorForm;
+export default CreateEditTractorForm;

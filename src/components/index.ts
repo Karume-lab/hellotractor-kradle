@@ -9,10 +9,10 @@ import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
 // account types
 import AccountTypesContainer from "@/components/account-types/AccountTypesContainer";
 import {
-  BuyerForm,
-  TrainedOperatorForm,
-  SellerForm,
-  NewAccountTypeForm,
+  CreateEditBuyerForm,
+  CreateEditTrainedOperatorForm,
+  CreateEditSellerForm,
+  CreateAccountTypeForm,
 } from "@/components/account-types/forms";
 // core
 import Header from "@/components/core/Header";
@@ -25,7 +25,7 @@ import { DataTable } from "@/components/core/DataTable";
 // dashboard
 import Dashboard from "@/components/dashboard/Dashboard";
 // tractors
-import { NewTractorForm } from "./dashboard/equipment";
+import CreateEditTractorForm from "./dashboard/equipment/tractors/CreateEditTractorForm";
 // explore
 import TractorsContainer from "./explore/TractorsContainer";
 // tasks
@@ -49,10 +49,10 @@ export {
   ResetPasswordForm,
   // account types
   AccountTypesContainer,
-  BuyerForm,
-  SellerForm,
-  TrainedOperatorForm,
-  NewAccountTypeForm,
+  CreateEditBuyerForm,
+  CreateEditSellerForm,
+  CreateEditTrainedOperatorForm,
+  CreateAccountTypeForm,
   //core
   Header,
   InfiniteScrollContainer,
@@ -64,7 +64,7 @@ export {
   // dashboard
   Dashboard,
   // tractors
-  NewTractorForm,
+  CreateEditTractorForm,
   // explore
   TractorsContainer,
   // tasks

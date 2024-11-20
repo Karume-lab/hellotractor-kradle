@@ -1,8 +1,8 @@
 import { AccountTypesContainer } from "@/components";
 import React from "react";
 
-const NewAccountTypePage = () => {
+const CreateAccountTypePage = () => {
   return <AccountTypesContainer isCreatingAccountType />;
 };
 
-export default NewAccountTypePage;
+export default CreateAccountTypePage;

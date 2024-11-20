@@ -6,7 +6,7 @@ const TractorsPage = () => {
   return (
     <>
       <span>List of tractors</span>
-      <ButtonAsLink redirectTo={urls.NEW_TRACTOR} text="Add Tractor" />
+      <ButtonAsLink redirectTo={urls.CREATE_TRACTOR} text="Add Tractor" />
     </>
   );
 };

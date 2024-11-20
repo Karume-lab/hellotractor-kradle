@@ -63,14 +63,10 @@ model Buyer {
 }
 
 model Seller {
-  id           String  @id @default(cuid())
-  name         String
-  slogan       String?
-  bio          String?
-  openingHours String?
-  isDealer     Boolean @default(false)
-  profile      Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId    String  @unique
+  id        String  @id @default(cuid())
+  isDealer  Boolean @default(false)
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String  @unique
 
   services Service[]
 
@@ -79,6 +75,11 @@ model Seller {
   licenses     FileUpload[] @relation("SellerLicense")
   coverPicture FileUpload?  @relation("SellerCoverPicture")
   logo         FileUpload?  @relation("SellerLogo")
+
+  businessOpeningHours   String?
+  businessName   String?
+  businessSlogal String?
+  businessBio    String?
 }
 
 model TrainedOperator {

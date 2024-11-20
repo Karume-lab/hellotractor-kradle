@@ -1,11 +1,11 @@
-import { NewTractorForm } from "@/components";
 import React from "react";
+import { CreateEditTractorForm } from "@/components";
 
 const NewTractorPage = () => {
   return (
     <>
       <div>Create Tractor</div>
-      <NewTractorForm />
+      <CreateEditTractorForm />
     </>
   );
 };

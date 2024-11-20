@@ -1,19 +1,20 @@
 "use server";
 import { KINDLY_WAIT } from "@/lib/constants";
 import { googleOAuthClient } from "@/lib/google-o-auth";
-import { lucia } from "@/lib/lucia";
+import { lucia, validateRequest } from "@/lib/lucia";
 import { messages } from "@/lib/message-template";
 import prisma from "@/lib/prisma";
 import {
   forgotPasswordSchema,
   resetPasswordSchema,
+  T_ProfileSchema,
   T_ResetPassword,
   T_SignInSchema,
   T_SignUpSchema,
 } from "@/lib/schemas";
 import { urls } from "@/lib/urls";
 import { generateCodeVerifier, generateState } from "arctic";
-import { generateId } from "lucia";
+import { generateId, User } from "lucia";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
@@ -26,28 +27,27 @@ export const signUp = async (values: T_SignUpSchema) => {
         email: values.email,
       },
     });
-
     if (existingUser) {
       return { message: "User already exists", success: false };
     }
-
     const hashedPassword = await new Argon2id().hash(values.password);
 
-    const result = await prisma.$transaction(async (prisma) => {
-      const user = await prisma.user.create({
+    const result = await prisma.$transaction(async (tx) => {
+      const user = await tx.user.create({
         data: {
           email: values.email.toLowerCase(),
           hashPassword: hashedPassword,
         },
       });
 
-      await prisma.profile.create({
-        data: {
-          userId: user.id,
+      await createEditProfile(
+        {
           firstName: "",
           lastName: "",
         },
-      });
+        user.id,
+        tx
+      );
 
       return user;
     });
@@ -59,16 +59,15 @@ export const signUp = async (values: T_SignUpSchema) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-
     return {
       message: `Account created successfully, ${KINDLY_WAIT}`,
       success: true,
     };
   } catch (error) {
+    console.log(error);
     return { message: "Something went wrong", success: false };
   }
 };
-
 export const signIn = async (values: T_SignInSchema) => {
   try {
     const user = await prisma.user.findUnique({
@@ -79,32 +78,28 @@ export const signIn = async (values: T_SignInSchema) => {
         profile: true,
       },
     });
-
     if (!user || !user.hashPassword) {
       return { message: "Invalid email or password", success: false };
     }
-
     const doesPasswordMatch = await new Argon2id().verify(
       user.hashPassword,
       values.password
     );
-
     if (!doesPasswordMatch) {
       return { message: "Invalid email or password", success: false };
     }
-
     if (!user.profile) {
-      await prisma.$transaction(async (prisma) => {
-        await prisma.profile.create({
-          data: {
-            userId: user.id,
+      await prisma.$transaction(async (tx) => {
+        await createEditProfile(
+          {
             firstName: "",
             lastName: "",
           },
-        });
+          user.id,
+          tx
+        );
       });
     }
-
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = await lucia.createSessionCookie(session.id);
     cookies().set(
@@ -112,12 +107,12 @@ export const signIn = async (values: T_SignInSchema) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-
     return {
       message: `Login success, ${KINDLY_WAIT}`,
       success: true,
     };
   } catch (error) {
+    console.log(error);
     return { message: "Something went wrong", success: false };
   }
 };
@@ -258,3 +253,24 @@ export async function resetPasswordAction(values: T_ResetPassword) {
     message: `Password reset successfully. ${KINDLY_WAIT}`,
   };
 }
+export const createEditProfile = async (
+  values: T_ProfileSchema,
+  userId?: string,
+  tx: any = prisma
+) => {
+  const { user } = await validateRequest();
+  if (!userId && !user) {
+    throw new Error("Unauthorized");
+  }
+  const finalUserId = userId || user?.id;
+  if (!finalUserId) {
+    throw new Error("No valid userId found");
+  }
+  await tx.profile.create({
+    data: {
+      ...values,
+      userId: finalUserId,
+    },
+  });
+  return { message: "Profile created successfully" };
+};

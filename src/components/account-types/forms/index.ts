@@ -1,11 +1,13 @@
-import BuyerForm from "./BuyerForm";
-import SellerForm from "./SellerForm";
-import TrainedOperatorForm from "./TrainedOperatorForm";
-import NewAccountTypeForm from "./NewAccountTypeForm";
+import CreateEditBuyerForm from "./CreateEditBuyerForm";
+import CreateEditSellerForm from "./CreateEditSellerForm";
+import CreateEditTrainedOperatorForm from "./CreateEditTrainedOperatorForm";
+import CreateAccountTypeForm from "./CreateAccountTypeForm";
+import CreateEditProfileForm from "./CreateEditProfileForm";
 
 export {
-  BuyerForm,
-  SellerForm,
-  TrainedOperatorForm,
-  NewAccountTypeForm,
+  CreateEditBuyerForm,
+  CreateEditSellerForm,
+  CreateEditTrainedOperatorForm,
+  CreateAccountTypeForm,
+  CreateEditProfileForm,
 };
