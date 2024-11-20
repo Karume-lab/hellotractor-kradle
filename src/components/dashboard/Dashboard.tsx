@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SellerDashboard from "./SellerDashboard";
 import { useSession } from "@/providers/SessionProvider";
@@ -8,12 +8,15 @@ import BuyerDashboard from "./BuyerDashboard";
 import TrainedOperatorDashboard from "./TrainedOperatorDashboard";
 
 const Dashboard = () => {
-  const { accountType } = useSession();
+  const { accountType, isSwitchingAccountType } = useSession();
   const router = useRouter();
 
-  if (!accountType) {
-    router.replace(urls.EXPLORE);
-  }
+  useEffect(() => {
+    if (!isSwitchingAccountType && !accountType) {
+      router.replace(urls.EXPLORE);
+    }
+  }, [accountType, isSwitchingAccountType, router]);
+
 
   return (
     <>

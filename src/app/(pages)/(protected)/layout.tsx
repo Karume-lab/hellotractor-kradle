@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { UserRole } from "@prisma/client";
 import { SessionProvider } from "@/providers/SessionProvider";
+import { AccountTypeSwitcher } from "@/components";
 
 export default async function ProtectedLayout({
   children,
@@ -25,12 +26,13 @@ export default async function ProtectedLayout({
         <div className="min-h-screen bg-background">
           <nav className="border-b">
             <div className="container mx-auto py-4 flex justify-end gap-x-4">
-              <SignOut children="Sign out" />
+              <AccountTypeSwitcher />
               {session.user.role === UserRole.ADMIN && (
                 <Button asChild>
                   <Link href={urls.PUBLIC_ADMIN}>Admin Panel</Link>
                 </Button>
               )}
+              <SignOut children="Sign out" />
             </div>
           </nav>
           <main className="container mx-auto py-4">{children}</main>
