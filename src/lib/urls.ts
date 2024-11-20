@@ -44,6 +44,8 @@ export const publicPaths = new Set<string>([
   urls.AUTH,
   urls.GOOGLE_REDIRECT_URI,
   urls.LANDING_PAGE,
+  urls.EXPLORE,
+  urls.API_TRACTORS,
 ]);
 
 export const publicApiPaths = new Set<string>([urls.API_TASKS]);
