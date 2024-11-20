@@ -74,7 +74,10 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
     const availableAccountTypes = Object.values(ACCOUNT_TYPES_MAPPING).filter(
       (accountType) => {
-        return !userAccountTypes.includes(accountType.value);
+        return (
+          !userAccountTypes.includes(accountType.value) &&
+          accountType.value !== "dealer"
+        );
       }
     );
 
