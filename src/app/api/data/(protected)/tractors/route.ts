@@ -1,16 +1,13 @@
 import { PAGE_SIZE } from "@/lib/constants";
-import { validateRequest } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
-import { tractorAttachmentEquipmentDataInclude, TractorsPage } from "@/lib/types";
+import {
+  tractorAttachmentEquipmentDataInclude,
+  TractorsPage,
+} from "@/lib/types";
 import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const { user } = await validateRequest();
-    if (!user) {
-      return Response.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
     const searchQuery = req.nextUrl.searchParams.get("q") || "";
 

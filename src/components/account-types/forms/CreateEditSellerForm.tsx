@@ -24,6 +24,7 @@ import { useSession } from "@/providers/SessionProvider";
 import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
 import CreateEditProfileForm from "./CreateEditProfileForm";
 import { createEditSellerAccount } from "@/app/(pages)/(protected)/account-types/create/form/actions";
+import { profileDefault } from "@/lib/form-defaults";
 
 const CreateEditSellerForm = () => {
   const { isSeller, setAccountType } = useSession();
@@ -37,6 +38,7 @@ const CreateEditSellerForm = () => {
   const form = useForm<T_SellerXProfileSchema>({
     resolver: zodResolver(sellerXProfileSchema),
     defaultValues: {
+      ...profileDefault,
       businessName: "",
       businessSlogal: "",
       businessBio: "",

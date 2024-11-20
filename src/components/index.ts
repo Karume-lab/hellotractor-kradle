@@ -6,6 +6,7 @@ import ContinueWithGoogleButton from "@/components/auth/ContinueWithGoogleButton
 import SignUpToday from "@/components/auth/SignUpToday";
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
+import AccountTypeSwitcher from "@/components/auth/AccountTypeSwitcher";
 // account types
 import AccountTypesContainer from "@/components/account-types/AccountTypesContainer";
 import {
@@ -47,6 +48,7 @@ export {
   SignUpToday,
   ForgotPasswordForm,
   ResetPasswordForm,
+  AccountTypeSwitcher,
   // account types
   AccountTypesContainer,
   CreateEditBuyerForm,

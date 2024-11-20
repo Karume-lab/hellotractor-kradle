@@ -125,7 +125,7 @@ export const signOut = async () => {
     sessionCookie.value,
     sessionCookie.attributes
   );
-  return redirect(urls.AUTH);
+  return redirect(urls.LANDING_PAGE);
 };
 
 export const getGoogleOAuthConsentUrl = async () => {

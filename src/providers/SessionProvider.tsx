@@ -24,6 +24,8 @@ interface SessionProviderPropsContextValue {
   isTrainedOperator: () => boolean;
   isAdmin: () => boolean;
   getAvailableAccountTypes: () => T_Account_Type_Mapping[];
+  isSwitchingAccountType: boolean;
+  setIsSwitchingAccountType: (isSwitching: boolean) => void;
 }
 
 const SessionProviderContext = createContext<
@@ -52,6 +54,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
   );
 
   const [isDealer, setIsDealer] = useState(false);
+  const [isSwitchingAccountType, setIsSwitchingAccountType] = useState(false);
 
   const accountTypes: T_Account_Type_Mapping[] = [
     ...(user.profile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
@@ -74,7 +77,10 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
     const availableAccountTypes = Object.values(ACCOUNT_TYPES_MAPPING).filter(
       (accountType) => {
-        return !userAccountTypes.includes(accountType.value);
+        return (
+          !userAccountTypes.includes(accountType.value) &&
+          accountType.value !== "dealer"
+        );
       }
     );
 
@@ -102,6 +108,8 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     isAdmin,
     isSeller,
     getAvailableAccountTypes,
+    isSwitchingAccountType,
+    setIsSwitchingAccountType,
   };
 
   return (
