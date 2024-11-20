@@ -1,10 +1,11 @@
 import { Metadata } from "next";
+import { siteConfig } from "./site-config";
 
 export const defaultMetadata: Metadata = {
   title: {
-    default: "Your App Name",
-    template: "%s | Your App Name",
+    default: `${siteConfig.name}`,
+    template: `%s | ${siteConfig.name}`,
   },
-  description: "Your app description",
-  keywords: ["your", "keywords", "here"],
+  description: "Find a tractor for you at an affordable price",
+  keywords: ["tractor", "agriculture", "market place"],
 };
