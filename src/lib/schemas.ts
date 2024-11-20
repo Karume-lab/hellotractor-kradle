@@ -84,7 +84,6 @@ export const equipmentSchema = z.object({
     ),
   condition: z.nativeEnum(EquipmentCondition).optional(),
 });
-
 export type T_EquipmentSchema = z.infer<typeof equipmentSchema>;
 
 export const tractorSchema = equipmentSchema.merge(
@@ -94,3 +93,13 @@ export const tractorSchema = equipmentSchema.merge(
   })
 );
 export type T_TractorSchema = z.infer<typeof tractorSchema>;
+
+export const trainedOperatorSchema = z.object({});
+export type T_TrainedOperatorSchema = z.infer<typeof trainedOperatorSchema>;
+
+export const serviceSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  // certificates: z.string(),
+});
+export type T_ServiceSchema = z.infer<typeof serviceSchema>;

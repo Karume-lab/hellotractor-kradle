@@ -76,10 +76,10 @@ model Seller {
   coverPicture FileUpload?  @relation("SellerCoverPicture")
   logo         FileUpload?  @relation("SellerLogo")
 
-  businessOpeningHours   String?
-  businessName   String?
-  businessSlogal String?
-  businessBio    String?
+  businessOpeningHours String?
+  businessName         String?
+  businessSlogal       String?
+  businessBio          String?
 }
 
 model TrainedOperator {
@@ -96,6 +96,8 @@ model Service {
   title        String
   description  String
   certificates FileUpload[]
+
+  price Float
 
   trainedOperator   TrainedOperator? @relation(fields: [trainedOperatorId], references: [id])
   trainedOperatorId String?
