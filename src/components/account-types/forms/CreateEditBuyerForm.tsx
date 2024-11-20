@@ -1,7 +1,6 @@
 "use client";
 import LoadingButton from "@/components/core/LoadingButton";
 import { Form } from "@/components/ui/form";
-import { buyerSchema, T_BuyerSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -17,6 +16,7 @@ import {
   buyerXProfileSchema,
   T_BuyerXProfileSchema,
 } from "@/lib/combined-schemas";
+import { profileDefault } from "@/lib/form-defaults";
 
 const CreateEditBuyerForm = () => {
   const { isBuyer, setAccountType } = useSession();
@@ -30,13 +30,7 @@ const CreateEditBuyerForm = () => {
 
   const form = useForm<T_BuyerXProfileSchema>({
     resolver: zodResolver(buyerXProfileSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      middleName: "",
-      displayName: "",
-      bio: "",
-    },
+    defaultValues: profileDefault,
   });
 
   const mutation = useMutation({
