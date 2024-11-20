@@ -44,7 +44,7 @@ const CreateEditBuyerForm = () => {
     onSuccess: ({ message }) => {
       toast.success(message);
       setAccountType(ACCOUNT_TYPES_MAPPING["buyer"]);
-      router.push(urls.DASHBOARD);
+      router.push(urls.EXPLORE);
     },
     onError: (error: Error) => {
       if (error.message === "Unauthorized") {
