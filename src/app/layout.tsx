@@ -1,6 +1,6 @@
 import { defaultMetadata } from "@/config/metadata";
 import { PropsWithChildren } from "react";
-import { geistSans, geistMono } from "@/config/fonts";
+import { manrope, merriweather } from "@/config/fonts";
 import "@/styles/globals.css";
 
 export const metadata = defaultMetadata;
@@ -13,7 +13,7 @@ const RootLayout = ({ children, className = "" }: RootLayoutProps) => {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased ${className}`}
+        className={`${manrope.variable} ${merriweather.variable} antialiased ${className}`}
       >
         {children}
       </body>

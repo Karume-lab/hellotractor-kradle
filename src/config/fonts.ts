@@ -1,13 +1,13 @@
-import localFont from "next/font/local";
+import { Manrope, Merriweather } from 'next/font/google'
 
-export const geistSans = localFont({
-  src: "./../app/fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+export const manrope = Manrope({
+  subsets: ['latin'], // Include subsets
+  weight: ['200', '300', '400', '500', '600', '700', '800'], // Regular and bold weights
+  variable: '--font-manrope', // Optional: Map to a CSS variable
 });
 
-export const geistMono = localFont({
-  src: "./../app/fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+export const merriweather = Merriweather({
+  subsets: ['latin'],
+  weight: ['300', '400', '700', '900'],
+  variable: '--font-merriweather',
 });
