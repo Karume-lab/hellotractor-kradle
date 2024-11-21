@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { serviceSchema, T_ServiceSchema } from "@/lib/schemas";
+import FileUploadDropZone from "@/components/core/FileUploadDropZone";
 
 interface CreateEditServiceFormProps {
   initialData?: T_ServiceSchema;
@@ -98,6 +99,8 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
             </FormItem>
           )}
         />
+
+        <FileUploadDropZone />
 
         <div className="flex gap-2">
           <Button type="submit">Save Service</Button>

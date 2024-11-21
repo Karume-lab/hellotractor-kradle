@@ -23,6 +23,7 @@ import ActionConfirmationDialog from "@/components/core/ActionConfirmationDialog
 import BaseProviders from "@/components/core/BaseProviders";
 import BackButton from "@/components/core/BackButton";
 import ButtonAsLink from "@/components/core/ButtonAsLink";
+import FileUploadDropZone from "./core/FileUploadDropZone";
 import { DataTable } from "@/components/core/DataTable";
 // dashboard
 import Dashboard from "@/components/dashboard/Dashboard";
@@ -67,6 +68,7 @@ export {
   DataTable,
   BackButton,
   ButtonAsLink,
+  FileUploadDropZone,
   // dashboard
   Dashboard,
   // tractors
