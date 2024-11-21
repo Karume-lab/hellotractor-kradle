@@ -1,6 +1,6 @@
 "use client";
+
 import LoadingButton from "@/components/core/LoadingButton";
-import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -10,27 +10,33 @@ import { toast } from "sonner";
 import { urls } from "@/lib/urls";
 import { useSession } from "@/providers/SessionProvider";
 import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
-import CreateEditProfileForm from "./CreateEditProfileForm";
 import { createEditBuyerAccount } from "@/app/(pages)/(protected)/account-types/create/form/actions";
+import { buyerSchema, T_BuyerSchema } from "@/lib/schemas";
 import {
-  buyerXProfileSchema,
-  T_BuyerXProfileSchema,
-} from "@/lib/combined-schemas";
-import { profileDefaultValues } from "@/lib/form-defaults";
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import CreateEditContactForm from "./CreateEditContactForm";
 
 const CreateEditBuyerForm = () => {
   const { isBuyer, setAccountType } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (isBuyer()) {
+    if (isBuyer) {
       router.push(urls.EXPLORE);
     }
   }, [isBuyer, router]);
 
-  const form = useForm<T_BuyerXProfileSchema>({
-    resolver: zodResolver(buyerXProfileSchema),
-    defaultValues: profileDefaultValues,
+  const form = useForm<T_BuyerSchema>({
+    resolver: zodResolver(buyerSchema),
+    defaultValues: {},
   });
 
   const mutation = useMutation({
@@ -50,17 +56,15 @@ const CreateEditBuyerForm = () => {
     },
   });
 
-  const handleOnSubmit = async (values: T_BuyerXProfileSchema) => {
+  const handleOnSubmit = (values: T_BuyerSchema) => {
     mutation.mutate(values);
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
-        <CreateEditProfileForm form={form} />
         <LoadingButton
-          type="submit"
-          text="Create"
+          text="Create a buyer account"
           loadingText="Creating"
           isLoading={mutation.isPending}
         />

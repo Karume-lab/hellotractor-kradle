@@ -4,21 +4,16 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { T_ServiceSchema } from "@/lib/schemas";
 import CreateEditServiceForm from "./forms/CreateEditServiceForm";
+import { useRouter } from "next/navigation";
 
-interface ServicesContainerProps {
-  handleOnServicesSave: (services: T_ServiceSchema[]) => void;
-  isSubmittingAll: boolean;
-}
-
-const ServicesContainer: React.FC<ServicesContainerProps> = ({
-  handleOnServicesSave,
-  isSubmittingAll,
-}) => {
+const ContactsContainer = () => {
   const form = useForm<{ services: T_ServiceSchema[] }>({
     defaultValues: {
       services: [],
     },
   });
+
+  const router = useRouter();
 
   const { fields, append, remove, update } = useFieldArray({
     control: form.control,
@@ -27,6 +22,10 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
 
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
+
+  const handleSaveServices = (values: T_ServiceSchema[]) => {
+    console.log(values);
+  };
 
   const handleSaveService = (values: T_ServiceSchema) => {
     if (editingIndex !== null) {
@@ -50,11 +49,6 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
   const handleCancel = () => {
     setEditingIndex(null);
     setIsFormVisible(false);
-  };
-
-  const handleSaveAllServices = () => {
-    const servicesWithoutIds = fields.map(({ id, ...service }) => service);
-    handleOnServicesSave(servicesWithoutIds);
   };
 
   return (
@@ -122,11 +116,15 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
           />
         </div>
       )}
-      <Button onClick={handleSaveAllServices} disabled={isSubmittingAll}>
+      <Button
+        onClick={() =>
+          handleSaveServices(fields.map(({ id, ...service }) => service))
+        }
+      >
         Save all services
       </Button>
     </div>
   );
 };
 
-export default ServicesContainer;
+export default ContactsContainer;

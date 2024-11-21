@@ -2,22 +2,25 @@
 import React from "react";
 import { parseAsString, useQueryState } from "nuqs";
 import { ACCOUNT_TYPES_MAPPING, URL_STATES } from "@/lib/constants";
-import { notFound } from "next/navigation";
 import {
   CreateEditBuyerForm,
   CreateEditSellerForm,
   CreateEditTrainedOperatorForm,
 } from "@/components";
+import { urls } from "@/lib/urls";
+import { useRouter } from "next/navigation";
 
-const NewAccountTypeForm = () => {
+const CreateAccountTypeForm = () => {
   const [accountType] = useQueryState(URL_STATES.accountType, parseAsString);
+  const router = useRouter();
 
   const validAccountType =
     accountType &&
     ACCOUNT_TYPES_MAPPING[accountType as keyof typeof ACCOUNT_TYPES_MAPPING];
 
   if (!validAccountType) {
-    return notFound();
+    router.push(urls.CREATE_ACCOUNT_TYPE);
+    return;
   }
 
   return (
@@ -31,4 +34,4 @@ const NewAccountTypeForm = () => {
   );
 };
 
-export default NewAccountTypeForm;
+export default CreateAccountTypeForm;

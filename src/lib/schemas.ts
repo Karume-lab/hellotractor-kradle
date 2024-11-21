@@ -113,7 +113,13 @@ export const serviceSchema = z.object({
 export type T_ServiceSchema = z.infer<typeof serviceSchema>;
 
 export const trainedOperatorSchema = z.object({
-  services: z.array(serviceSchema),
+  services: z.array(serviceSchema).optional(),
 });
 
 export type T_TrainedOperatorSchema = z.infer<typeof trainedOperatorSchema>;
+
+export const contactSchema = z.object({
+  email: z.string().optional(),
+  phoneNumber: z.string().optional(),
+});
+export type T_ContactSchema = z.infer<typeof contactSchema>;

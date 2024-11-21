@@ -14,7 +14,7 @@ import {
 } from "@/lib/schemas";
 import { urls } from "@/lib/urls";
 import { generateCodeVerifier, generateState } from "arctic";
-import { generateId, User } from "lucia";
+import { generateId } from "lucia";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
@@ -32,27 +32,14 @@ export const signUp = async (values: T_SignUpSchema) => {
     }
     const hashedPassword = await new Argon2id().hash(values.password);
 
-    const result = await prisma.$transaction(async (tx) => {
-      const user = await tx.user.create({
-        data: {
-          email: values.email.toLowerCase(),
-          hashPassword: hashedPassword,
-        },
-      });
-
-      await createEditProfile(
-        {
-          firstName: "",
-          lastName: "",
-        },
-        user.id,
-        tx
-      );
-
-      return user;
+    const user = await prisma.user.create({
+      data: {
+        email: values.email.toLowerCase(),
+        hashPassword: hashedPassword,
+      },
     });
 
-    const session = await lucia.createSession(result.id, {});
+    const session = await lucia.createSession(user.id, {});
     const sessionCookie = await lucia.createSessionCookie(session.id);
     cookies().set(
       sessionCookie.name,

@@ -11,7 +11,7 @@ import { UserRole } from "@prisma/client";
 import { T_Account_Type_Mapping } from "@/lib/types";
 import { ACCOUNT_TYPES_MAPPING, LOCAL_STORAGE_KEY } from "@/lib/constants";
 
-interface SessionProviderPropsContextValue {
+interface SessionProviderContextValue {
   user: User;
   session: Session;
   accountType: T_Account_Type_Mapping | null;
@@ -19,17 +19,18 @@ interface SessionProviderPropsContextValue {
   isDealer: boolean;
   setIsDealer: (isDealer: boolean) => void;
   accountTypes: T_Account_Type_Mapping[];
-  isBuyer: () => boolean;
-  isSeller: () => boolean;
-  isTrainedOperator: () => boolean;
-  isAdmin: () => boolean;
+  isBuyer: boolean;
+  isSeller: boolean;
+  isTrainedOperator: boolean;
+  isAdmin: boolean;
+  hasProfile: boolean;
   getAvailableAccountTypes: () => T_Account_Type_Mapping[];
   isSwitchingAccountType: boolean;
   setIsSwitchingAccountType: (isSwitching: boolean) => void;
 }
 
 const SessionProviderContext = createContext<
-  SessionProviderPropsContextValue | undefined
+  SessionProviderContextValue | undefined
 >(undefined);
 
 interface SessionProviderProps {
@@ -56,35 +57,39 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
   const [isDealer, setIsDealer] = useState(false);
   const [isSwitchingAccountType, setIsSwitchingAccountType] = useState(false);
 
+  const [updatedUserProfile, setUpdatedUserProfile] = useState(user.profile);
+
+  useEffect(() => {
+    setUpdatedUserProfile(user.profile);
+  }, [user.profile]);
+
   const accountTypes: T_Account_Type_Mapping[] = [
-    ...(user.profile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
-    ...(user.profile?.seller?.isDealer
+    ...(updatedUserProfile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
+    ...(updatedUserProfile?.seller?.isDealer
       ? [ACCOUNT_TYPES_MAPPING["dealer"]]
       : []),
-    ...(user.profile?.seller ? [ACCOUNT_TYPES_MAPPING["seller"]] : []),
-    ...(user.profile?.trainedOperator
+    ...(updatedUserProfile?.seller ? [ACCOUNT_TYPES_MAPPING["seller"]] : []),
+    ...(updatedUserProfile?.trainedOperator
       ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]]
       : []),
   ];
 
-  const isBuyer = () => user.profile?.buyer !== null;
-  const isSeller = () => user.profile?.seller !== null;
-  const isTrainedOperator = () => user.profile?.trainedOperator !== null;
-  const isAdmin = () => user.role === UserRole.ADMIN;
+  const isBuyer = Boolean(updatedUserProfile?.buyer);
+  const isSeller = Boolean(updatedUserProfile?.seller);
+  const isTrainedOperator = Boolean(updatedUserProfile?.trainedOperator);
+  const isAdmin = user.role === UserRole.ADMIN;
+
+  const hasProfile = Boolean(updatedUserProfile);
 
   const getAvailableAccountTypes = (): T_Account_Type_Mapping[] => {
-    const userAccountTypes = [...accountTypes.map((account) => account.value)];
+    const userAccountTypes = accountTypes.map((account) => account.value);
 
-    const availableAccountTypes = Object.values(ACCOUNT_TYPES_MAPPING).filter(
-      (accountType) => {
-        return (
-          !userAccountTypes.includes(accountType.value) &&
-          accountType.value !== "dealer"
-        );
-      }
-    );
-
-    return availableAccountTypes;
+    return Object.values(ACCOUNT_TYPES_MAPPING).filter((accountType) => {
+      return (
+        !userAccountTypes.includes(accountType.value) &&
+        accountType.value !== "dealer"
+      );
+    });
   };
 
   useEffect(() => {
@@ -104,9 +109,10 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     setIsDealer,
     accountTypes,
     isBuyer,
+    isSeller,
     isTrainedOperator,
     isAdmin,
-    isSeller,
+    hasProfile,
     getAvailableAccountTypes,
     isSwitchingAccountType,
     setIsSwitchingAccountType,
@@ -121,7 +127,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
 export const useSession = () => {
   const context = useContext(SessionProviderContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useSession must be used within a SessionProvider");
   }
   return context;
