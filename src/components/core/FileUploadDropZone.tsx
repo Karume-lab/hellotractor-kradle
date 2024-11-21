@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Upload, X, FileText, Image, File as FileIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
   const [files, setFiles] = useState<File[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState<string[]>([]);
 
-  const getFileIcon = (file: File) => {
+  const getFileIcon = useCallback((file: File) => {
     const ext = file.name.split(".").pop()?.toLowerCase();
     const iconMap: { [key: string]: React.ReactNode } = {
       jpg: <Image className="text-blue-500" />,
@@ -33,7 +33,118 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
       docx: <FileText className="text-red-500" />,
     };
     return iconMap[ext || ""] || <FileIcon className="text-gray-500" />;
-  };
+  }, []);
+
+  const simulateUpload = useCallback(
+    async (file: File, currentFiles: File[]) => {
+      const toastId = toast.loading(`Uploading ${file.name}...`);
+
+      if (uploadingFiles.includes(file.name)) {
+        toast.error(`${file.name} is already being uploaded`, { id: toastId });
+        return currentFiles;
+      }
+
+      try {
+        await new Promise<void>((resolve) => {
+          setUploadingFiles((prev) => [...prev, file.name]);
+
+          setTimeout(() => {
+            const updatedFiles = [
+              ...currentFiles,
+              ...(currentFiles.some(
+                (existingFile) => existingFile.name === file.name
+              )
+                ? []
+                : [file]),
+            ];
+
+            onFilesChange?.(updatedFiles);
+            resolve();
+          }, 2000);
+        });
+
+        toast.success(`File uploaded: ${file.name}`, { id: toastId });
+        return currentFiles.some(
+          (existingFile) => existingFile.name === file.name
+        )
+          ? currentFiles
+          : [...currentFiles, file];
+      } catch (error) {
+        toast.error(`Upload failed for ${file.name}`, { id: toastId });
+        return currentFiles;
+      } finally {
+        setUploadingFiles((prev) =>
+          prev.filter((fileName) => fileName !== file.name)
+        );
+      }
+    },
+    [onFilesChange, uploadingFiles]
+  );
+
+  const handleFileSelection = useCallback(
+    async (selectedFiles: File[]) => {
+      const existingFilesSize = files.reduce(
+        (total, file) => total + file.size,
+        0
+      );
+      const newFilesSize = selectedFiles.reduce(
+        (total, file) => total + file.size,
+        0
+      );
+      const totalSize = existingFilesSize + newFilesSize;
+
+      if (files.length + selectedFiles.length > MAX_UPLOAD_FILES_NUMBER) {
+        toast.error(`Cannot upload files`, {
+          description: `Maximum of ${MAX_UPLOAD_FILES_NUMBER} files allowed.`,
+        });
+        return;
+      }
+
+      if (totalSize > MAX_FILE_SIZE_BYTES) {
+        toast.error(`Exceeds total file size limit`, {
+          description: `Total file size cannot exceed ${MAX_FILE_SIZE} MB.`,
+        });
+        return;
+      }
+
+      const oversizedFiles = selectedFiles.filter(
+        (file) => file.size > MAX_FILE_SIZE_BYTES
+      );
+      if (oversizedFiles.length > 0) {
+        oversizedFiles.forEach((file) => {
+          toast.error("File too large", {
+            description: `${file.name} exceeds the maximum size of ${MAX_FILE_SIZE} MB.`,
+          });
+        });
+      }
+
+      const validFiles = selectedFiles.filter(
+        (file) =>
+          file.size <= MAX_FILE_SIZE_BYTES &&
+          !files.some((existingFile) => existingFile.name === file.name)
+      );
+
+      if (validFiles.length === 0) {
+        if (selectedFiles.some((file) => file.size > MAX_FILE_SIZE_BYTES)) {
+          return;
+        }
+
+        toast.error("Duplicate files", {
+          description: `All selected files have already been uploaded.`,
+        });
+        return;
+      }
+
+      let updatedFiles = [...files];
+      for (const file of validFiles) {
+        updatedFiles = await simulateUpload(file, updatedFiles);
+      }
+
+      setFiles(updatedFiles);
+      onFilesChange?.(updatedFiles);
+    },
+    [files, simulateUpload, onFilesChange]
+  );
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     maxFiles: MAX_UPLOAD_FILES_NUMBER,
@@ -46,111 +157,21 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
     multiple: true,
   });
 
-  const simulateUpload = (file: File) => {
-    const toastId = toast.loading(`Uploading ${file.name}...`);
+  const removeFile = useCallback(
+    (fileToRemove: File) => {
+      const updatedFiles = files.filter((file) => file !== fileToRemove);
+      setFiles(updatedFiles);
+      onFilesChange?.(updatedFiles);
+      toast.info("File removed", { description: fileToRemove.name });
+    },
+    [files, onFilesChange]
+  );
 
-    return new Promise<void>((resolve) => {
-      if (uploadingFiles.includes(file.name)) {
-        toast.error(`${file.name} is already being uploaded`, { id: toastId });
-        resolve();
-        return;
-      }
-
-      setUploadingFiles((prev) => [...prev, file.name]);
-
-      setTimeout(() => {
-        setFiles((prev) => {
-          const isDuplicate = prev.some(
-            (existingFile) => existingFile.name === file.name
-          );
-          const updatedFiles = isDuplicate ? prev : [...prev, file];
-
-          // Call the onFilesChange callback with updated files
-          onFilesChange?.(updatedFiles);
-
-          return updatedFiles;
-        });
-
-        setUploadingFiles((prev) =>
-          prev.filter((fileName) => fileName !== file.name)
-        );
-
-        toast.success(`File uploaded: ${file.name}`, { id: toastId });
-        resolve();
-      }, 2000);
-    });
-  };
-
-  const handleFileSelection = async (selectedFiles: File[]) => {
-    const existingFilesSize = files.reduce(
-      (total, file) => total + file.size,
-      0
-    );
-    const newFilesSize = selectedFiles.reduce(
-      (total, file) => total + file.size,
-      0
-    );
-    const totalSize = existingFilesSize + newFilesSize;
-
-    if (files.length + selectedFiles.length > MAX_UPLOAD_FILES_NUMBER) {
-      toast.error(`Cannot upload files`, {
-        description: `Maximum of ${MAX_UPLOAD_FILES_NUMBER} files allowed.`,
-      });
-      return;
-    }
-
-    if (totalSize > MAX_FILE_SIZE_BYTES) {
-      toast.error(`Exceeds total file size limit`, {
-        description: `Total file size cannot exceed ${MAX_FILE_SIZE} MB.`,
-      });
-      return;
-    }
-
-    const oversizedFiles = selectedFiles.filter(
-      (file) => file.size > MAX_FILE_SIZE_BYTES
-    );
-    if (oversizedFiles.length > 0) {
-      oversizedFiles.forEach((file) => {
-        toast.error("File too large", {
-          description: `${file.name} exceeds the maximum size of ${MAX_FILE_SIZE} MB.`,
-        });
-      });
-    }
-
-    const validFiles = selectedFiles.filter(
-      (file) =>
-        file.size <= MAX_FILE_SIZE_BYTES &&
-        !files.some((existingFile) => existingFile.name === file.name)
-    );
-
-    if (validFiles.length === 0) {
-      if (selectedFiles.some((file) => file.size > MAX_FILE_SIZE_BYTES)) {
-        return;
-      }
-
-      toast.error("Duplicate files", {
-        description: `All selected files have already been uploaded.`,
-      });
-      return;
-    }
-
-    for (const file of validFiles) {
-      await simulateUpload(file);
-    }
-  };
-
-  const removeFile = (fileToRemove: File) => {
-    const updatedFiles = files.filter((file) => file !== fileToRemove);
-    setFiles(updatedFiles);
-    onFilesChange?.(updatedFiles);
-    toast.info("File removed", { description: fileToRemove.name });
-  };
-
-  const clearAllFiles = () => {
+  const clearAllFiles = useCallback(() => {
     setFiles([]);
     onFilesChange?.([]);
     toast.success("All files cleared");
-  };
+  }, [onFilesChange]);
 
   return (
     <Card className="w-full max-w-2xl mx-auto">

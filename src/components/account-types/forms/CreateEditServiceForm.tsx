@@ -43,7 +43,7 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
   const handleSubmit = (values: T_ServiceSchema) => {
     const finalData = {
       ...values,
-      certificates, // Pass the actual files
+      certificates,
     };
     onSave(finalData);
   };
