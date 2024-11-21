@@ -2,9 +2,7 @@
 import React, { useEffect } from "react";
 import { urls } from "@/lib/urls";
 import { toast } from "sonner";
-import ServicesContainer from "../ServicesContainer";
 import {
-  T_ServiceSchema,
   T_TrainedOperatorSchema,
   trainedOperatorSchema,
 } from "@/lib/schemas";
@@ -15,6 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createEditTrainedOperatorAccount } from "@/app/(pages)/(protected)/account-types/create/form/actions";
 import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
+import { Form } from "@/components/ui/form";
+import LoadingButton from "@/components/core/LoadingButton";
 
 const CreateEditTrainedOperatorForm = () => {
   const { isTrainedOperator, setAccountType, accountTypes, setAccountTypes } =
@@ -36,14 +36,14 @@ const CreateEditTrainedOperatorForm = () => {
 
   const mutation = useMutation({
     mutationFn: createEditTrainedOperatorAccount,
-    onSuccess: ({ message, trainedOperator }) => {
+    onSuccess: ({ message }) => {
       toast.success(message);
       setAccountType(ACCOUNT_TYPES_MAPPING["trainedOperator"]);
       setAccountTypes([
         ...accountTypes,
         ACCOUNT_TYPES_MAPPING["trainedOperator"],
       ]);
-      router.push(urls.DASHBOARD);
+      router.push(urls.CREATE_SERVICES);
     },
     onError: (error: Error) => {
       if (error.message === "Unauthorized") {
@@ -55,21 +55,20 @@ const CreateEditTrainedOperatorForm = () => {
     },
   });
 
-  const handleOnServicesSave = (services: T_ServiceSchema[]) => {
-    form.setValue("services", services);
-    mutation.mutate({
-      ...form.getValues(),
-      services: services,
-    });
+  const handleOnSubmit = (values: T_TrainedOperatorSchema) => {
+    mutation.mutate(values);
   };
 
   return (
-    <div>
-      <ServicesContainer
-        handleOnServicesSave={handleOnServicesSave}
-        isSubmittingAll={mutation.isPending}
-      />
-    </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
+        <LoadingButton
+          text="Create a trained operator account"
+          loadingText="Creating"
+          isLoading={mutation.isPending}
+        />
+      </form>
+    </Form>
   );
 };
 

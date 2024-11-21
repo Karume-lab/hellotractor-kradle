@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { urls } from "@/lib/urls";
-import { createTractor } from "@/app/(pages)/(protected)/equipment/tractors/new/actions";
+import { createTractor } from "@/app/(pages)/(protected)/equipment/tractors/create/actions";
 import EquipmentForm from "../CreateEditEquipmentForm";
 
 const CreateEditTractorForm = () => {

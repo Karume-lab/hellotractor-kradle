@@ -9,8 +9,11 @@ import { useSession } from "@/providers/SessionProvider";
 
 const AccountTypeSwitcher = () => {
   const router = useRouter();
-  const { accountType, setAccountType, setIsSwitchingAccountType } =
-    useSession();
+  const {
+    accountType,
+    setAccountType,
+    setIsSwitchingAccountType,
+  } = useSession();
 
   const handleOnClick = () => {
     toast.success(`Switching account, ${KINDLY_WAIT}`);

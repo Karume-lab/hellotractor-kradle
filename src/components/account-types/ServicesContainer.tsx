@@ -4,16 +4,13 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { T_ServiceSchema } from "@/lib/schemas";
 import CreateEditServiceForm from "./forms/CreateEditServiceForm";
+import { useMutation } from "@tanstack/react-query";
+import { createTrainedOperatorServices } from "@/app/(pages)/(protected)/account-types/create/form/actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { urls } from "@/lib/urls";
 
-interface ServicesContainerProps {
-  handleOnServicesSave: (services: T_ServiceSchema[]) => void;
-  isSubmittingAll: boolean;
-}
-
-const ServicesContainer: React.FC<ServicesContainerProps> = ({
-  handleOnServicesSave,
-  isSubmittingAll,
-}) => {
+const ServicesContainer: React.FC = () => {
   const form = useForm<{ services: T_ServiceSchema[] }>({
     defaultValues: {
       services: [],
@@ -52,9 +49,27 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
     setIsFormVisible(false);
   };
 
-  const handleSaveAllServices = () => {
+  const router = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: createTrainedOperatorServices,
+    onSuccess: ({ message }) => {
+      toast.success(message);
+      router.push(urls.DASHBOARD);
+    },
+    onError: (error: Error) => {
+      if (error.message === "Unauthorized") {
+        toast.error(error.message);
+        router.push(urls.AUTH);
+      } else {
+        toast.error("Something went wrong");
+      }
+    },
+  });
+
+  const handleSaveAllServices = async () => {
     const servicesWithoutIds = fields.map(({ id, ...service }) => service);
-    handleOnServicesSave(servicesWithoutIds);
+    mutation.mutate(servicesWithoutIds);
   };
 
   return (
@@ -122,7 +137,8 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
           />
         </div>
       )}
-      <Button onClick={handleSaveAllServices} disabled={isSubmittingAll}>
+
+      <Button onClick={handleSaveAllServices} disabled={mutation.isPending}>
         Save all services
       </Button>
     </div>

@@ -3,11 +3,14 @@
 import { validateRequest } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import {
+  serviceSchema,
   T_BuyerSchema,
   T_ProfileSchema,
   T_SellerSchema,
+  T_ServiceSchema,
   T_TrainedOperatorSchema,
 } from "@/lib/schemas";
+import { z } from "zod";
 
 export const createEditSellerAccount = async (
   values: T_SellerSchema,
@@ -162,7 +165,7 @@ export const createEditProfile = async (
 
     return {
       message: "Profile updated successfully",
-      buyer: updatedProfile,
+      profile: updatedProfile,
     };
   } else {
     const newProfile = await prisma.profile.create({
@@ -174,7 +177,51 @@ export const createEditProfile = async (
 
     return {
       message: "Profile created successfully",
-      buyer: newProfile,
+      profile: newProfile,
     };
   }
+};
+export const createTrainedOperatorServices = async (
+  values: T_ServiceSchema[]
+) => {
+  const { user } = await validateRequest();
+  if (!user || !user.profile?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const servicePromises = values.map(async (service) => {
+    const serviceData: any = {
+      title: service.title,
+      description: service.description,
+      price: service.price,
+
+      certificates: service.certificates?.length
+        ? service.certificates.map((certificate) => ({
+            path: certificate.path,
+            extension: certificate.extension,
+            category: certificate.category,
+            description: certificate.description,
+          }))
+        : undefined,
+      ...(user?.profile?.trainedOperatorId
+        ? { trainedOperatorId: user?.profile.trainedOperatorId }
+        : {}),
+    };
+
+    const newService = await prisma.service.create({
+      data: serviceData,
+    });
+
+    return {
+      message: `Service ${newService.title} created successfully`,
+      service: newService,
+    };
+  });
+
+  const results = await Promise.all(servicePromises);
+
+  return {
+    message: `Processed ${results.length} services successfully.`,
+    results,
+  };
 };
