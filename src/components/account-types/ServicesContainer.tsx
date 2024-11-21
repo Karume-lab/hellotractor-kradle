@@ -69,7 +69,8 @@ const ServicesContainer: React.FC = () => {
 
   const handleSaveAllServices = async () => {
     const servicesWithoutIds = fields.map(({ id, ...service }) => service);
-    mutation.mutate(servicesWithoutIds);
+    // mutation.mutate(servicesWithoutIds);
+    console.log(servicesWithoutIds);
   };
 
   return (

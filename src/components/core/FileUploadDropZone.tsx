@@ -1,13 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Upload,
-  X,
-  FileText,
-  Image,
-  File as FileIcon,
-  Loader2,
-} from "lucide-react";
+import { Upload, X, FileText, Image, File as FileIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
@@ -19,7 +12,13 @@ import {
   MAX_UPLOAD_FILES_NUMBER,
 } from "@/lib/constants";
 
-const FileUploadDropZone: React.FC = () => {
+interface FileUploadDropZoneProps {
+  onFilesChange?: (files: File[]) => void;
+}
+
+const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
+  onFilesChange,
+}) => {
   const [files, setFiles] = useState<File[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState<string[]>([]);
 
@@ -64,7 +63,12 @@ const FileUploadDropZone: React.FC = () => {
           const isDuplicate = prev.some(
             (existingFile) => existingFile.name === file.name
           );
-          return isDuplicate ? prev : [...prev, file];
+          const updatedFiles = isDuplicate ? prev : [...prev, file];
+
+          // Call the onFilesChange callback with updated files
+          onFilesChange?.(updatedFiles);
+
+          return updatedFiles;
         });
 
         setUploadingFiles((prev) =>
@@ -136,12 +140,15 @@ const FileUploadDropZone: React.FC = () => {
   };
 
   const removeFile = (fileToRemove: File) => {
-    setFiles(files.filter((file) => file !== fileToRemove));
+    const updatedFiles = files.filter((file) => file !== fileToRemove);
+    setFiles(updatedFiles);
+    onFilesChange?.(updatedFiles);
     toast.info("File removed", { description: fileToRemove.name });
   };
 
   const clearAllFiles = () => {
     setFiles([]);
+    onFilesChange?.([]);
     toast.success("All files cleared");
   };
 

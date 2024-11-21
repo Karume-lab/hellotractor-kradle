@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -38,8 +38,14 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
     mode: "onChange",
   });
 
+  const [certificates, setCertificates] = useState<File[]>([]);
+
   const handleSubmit = (values: T_ServiceSchema) => {
-    onSave(values);
+    const finalData = {
+      ...values,
+      certificates, // Pass the actual files
+    };
+    onSave(finalData);
   };
 
   return (
@@ -100,7 +106,18 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
           )}
         />
 
-        <FileUploadDropZone />
+        <FileUploadDropZone
+          onFilesChange={(files) => {
+            setCertificates(files);
+            form.setValue("certificates", files);
+          }}
+        />
+
+        {certificates.length > 0 && (
+          <div className="text-sm text-gray-600">
+            {certificates.length} file(s) uploaded
+          </div>
+        )}
 
         <div className="flex gap-2">
           <Button type="submit">Save Service</Button>
