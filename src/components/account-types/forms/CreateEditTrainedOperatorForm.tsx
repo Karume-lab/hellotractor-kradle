@@ -17,7 +17,8 @@ import { createEditTrainedOperatorAccount } from "@/app/(pages)/(protected)/acco
 import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
 
 const CreateEditTrainedOperatorForm = () => {
-  const { isTrainedOperator, setAccountType } = useSession();
+  const { isTrainedOperator, setAccountType, accountTypes, setAccountTypes } =
+    useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -38,6 +39,10 @@ const CreateEditTrainedOperatorForm = () => {
     onSuccess: ({ message, trainedOperator }) => {
       toast.success(message);
       setAccountType(ACCOUNT_TYPES_MAPPING["trainedOperator"]);
+      setAccountTypes([
+        ...accountTypes,
+        ACCOUNT_TYPES_MAPPING["trainedOperator"],
+      ]);
       router.push(urls.DASHBOARD);
     },
     onError: (error: Error) => {

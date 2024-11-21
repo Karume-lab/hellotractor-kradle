@@ -22,7 +22,8 @@ import { createEditSellerAccount } from "@/app/(pages)/(protected)/account-types
 import { sellerSchema, T_SellerSchema } from "@/lib/schemas";
 
 const CreateEditSellerForm = () => {
-  const { isSeller, setAccountType } = useSession();
+  const { isSeller, setAccountType, accountTypes, setAccountTypes } =
+    useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const CreateEditSellerForm = () => {
       router.push(urls.DASHBOARD);
     }
   }, [isSeller, router]);
-  
+
   const form = useForm<T_SellerSchema>({
     resolver: zodResolver(sellerSchema),
     defaultValues: {
@@ -46,6 +47,7 @@ const CreateEditSellerForm = () => {
     onSuccess: ({ message }) => {
       toast.success(message);
       setAccountType(ACCOUNT_TYPES_MAPPING["seller"]);
+      setAccountTypes([...accountTypes, ACCOUNT_TYPES_MAPPING["seller"]]);
       router.push(urls.DASHBOARD);
     },
     onError: (error: Error) => {

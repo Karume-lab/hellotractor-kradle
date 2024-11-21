@@ -25,7 +25,8 @@ import { Textarea } from "@/components/ui/textarea";
 import CreateEditContactForm from "./CreateEditContactForm";
 
 const CreateEditBuyerForm = () => {
-  const { isBuyer, setAccountType } = useSession();
+  const { isBuyer, setAccountType, accountTypes, setAccountTypes } =
+    useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const CreateEditBuyerForm = () => {
     onSuccess: ({ message }) => {
       toast.success(message);
       setAccountType(ACCOUNT_TYPES_MAPPING["buyer"]);
+      setAccountTypes([...accountTypes, ACCOUNT_TYPES_MAPPING["buyer"]]);
       router.push(urls.EXPLORE);
     },
     onError: (error: Error) => {
