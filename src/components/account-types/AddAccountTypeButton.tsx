@@ -8,7 +8,7 @@ const AddAccountTypeButton = ({}) => {
   const { getAvailableAccountTypes } = useSession();
   return (
     <>
-      {getAvailableAccountTypes().length && (
+      {!!getAvailableAccountTypes().length && (
         <ButtonAsLink redirectTo={urls.CREATE_ACCOUNT_TYPE}>
           <PlusCircle />
           <span>Add new account type</span>

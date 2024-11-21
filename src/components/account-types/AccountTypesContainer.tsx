@@ -14,6 +14,7 @@ const AccountTypesContainer: React.FC<AccountTypesContainerProps> = ({
   const accountTypesToUse = isCreatingAccountType
     ? getAvailableAccountTypes()
     : accountTypes;
+
   return (
     <>
       {accountTypesToUse.map((type) => (

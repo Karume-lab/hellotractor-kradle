@@ -1,7 +1,7 @@
 import { AccountTypesContainer } from "@/components";
 import React from "react";
 
-const ProfilePage = async () => {
+const ProfilePage = () => {
   return <AccountTypesContainer />;
 };
 
