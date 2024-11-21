@@ -15,6 +15,9 @@ export const urls = {
   CREATE_ACCOUNT_TYPE: "/account-types/create",
   CREATE_ACCOUNT_TYPE_FORM: (accountType: string) =>
     `create/form?account-type=${accountType}`,
+  CREATE_PROFILE: (accountType: string) =>
+    `/account-types/profile?account-type=${accountType}`,
+  CREATE_SERVICES: "/account-types/create/set-up/services",
   // explore
   EXPLORE: "/explore",
   // dashboard

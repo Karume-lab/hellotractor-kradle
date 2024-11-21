@@ -15,12 +15,14 @@ const AccountTypeButton: React.FC<AccountTypeButtonProps> = ({
   accountType,
   isCreatingAccountType,
 }) => {
-  const { setAccountType } = useSession();
+  const { hasProfile, setAccountType } = useSession();
 
   let redirectTo = "";
 
   if (isCreatingAccountType) {
-    redirectTo = urls.CREATE_ACCOUNT_TYPE_FORM(accountType.value!);
+    redirectTo = hasProfile
+      ? urls.CREATE_ACCOUNT_TYPE_FORM(accountType.value!)
+      : urls.CREATE_PROFILE(accountType.value!);
   } else {
     redirectTo = accountType.value === "buyer" ? urls.EXPLORE : urls.DASHBOARD;
   }
@@ -29,7 +31,9 @@ const AccountTypeButton: React.FC<AccountTypeButtonProps> = ({
     <Button
       className="uppercase"
       asChild
-      onClick={() => setAccountType(accountType)}
+      onClick={
+        !isCreatingAccountType ? () => setAccountType(accountType) : undefined
+      }
     >
       <Link href={redirectTo}>
         {accountType.label ?? "Unknown Account Type"}

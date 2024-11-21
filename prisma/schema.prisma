@@ -60,6 +60,8 @@ model Buyer {
   id        String  @id @default(cuid())
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @unique
+
+  contacts Contact[]
 }
 
 model Seller {
@@ -67,6 +69,8 @@ model Seller {
   isDealer  Boolean @default(false)
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @unique
+
+  contacts Contact[]
 
   services Service[]
 
@@ -76,18 +80,20 @@ model Seller {
   coverPicture FileUpload?  @relation("SellerCoverPicture")
   logo         FileUpload?  @relation("SellerLogo")
 
-  businessOpeningHours   String?
-  businessName   String?
-  businessSlogal String?
-  businessBio    String?
+  businessOpeningHours String?
+  businessName         String?
+  businessSlogal       String?
+  businessBio          String?
 }
 
 model TrainedOperator {
   id         String    @id @default(cuid())
   services   Service[]
-  isVerified Boolean   @default(false)
+  isVerified Boolean?  @default(false)
   profile    Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId  String    @unique
+
+  contacts Contact[]
 }
 
 model Service {
@@ -96,6 +102,8 @@ model Service {
   title        String
   description  String
   certificates FileUpload[]
+
+  price Float
 
   trainedOperator   TrainedOperator? @relation(fields: [trainedOperatorId], references: [id])
   trainedOperatorId String?
@@ -225,4 +233,20 @@ model Task {
   title  String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
+}
+
+model Contact {
+  id String @id @default(cuid())
+
+  phoneNumber String?
+  email       String?
+
+  seller   Seller? @relation(fields: [sellerId], references: [id])
+  sellerId String?
+
+  buyer   Buyer?  @relation(fields: [buyerId], references: [id])
+  buyerId String?
+
+  trainedOperator   TrainedOperator? @relation(fields: [trainedOperatorId], references: [id])
+  trainedOperatorId String?
 }

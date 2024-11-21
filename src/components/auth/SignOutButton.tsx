@@ -4,7 +4,6 @@ import { Button } from "../ui/button";
 import { signOut } from "@/app/(pages)/auth/action";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/providers/SessionProvider";
-import { useRouter } from "next/navigation";
 
 interface SignOutProps {
   children: React.ReactNode;

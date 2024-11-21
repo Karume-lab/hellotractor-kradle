@@ -15,6 +15,7 @@ import {
   CreateEditSellerForm,
   CreateAccountTypeForm,
 } from "@/components/account-types/forms";
+import CreateEditServiceForm from "@/components/account-types/forms/CreateEditServiceForm";
 // core
 import Header from "@/components/core/Header";
 import InfiniteScrollContainer from "@/components/core/InfiniteScrollContainer";
@@ -55,6 +56,7 @@ export {
   CreateEditSellerForm,
   CreateEditTrainedOperatorForm,
   CreateAccountTypeForm,
+  CreateEditServiceForm,
   //core
   Header,
   InfiniteScrollContainer,

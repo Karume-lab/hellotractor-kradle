@@ -84,7 +84,6 @@ export const equipmentSchema = z.object({
     ),
   condition: z.nativeEnum(EquipmentCondition).optional(),
 });
-
 export type T_EquipmentSchema = z.infer<typeof equipmentSchema>;
 
 export const tractorSchema = equipmentSchema.merge(
@@ -94,3 +93,33 @@ export const tractorSchema = equipmentSchema.merge(
   })
 );
 export type T_TractorSchema = z.infer<typeof tractorSchema>;
+
+export const serviceSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
+  price: z
+    .number()
+    .positive("Price must be a positive number")
+    .refine(
+      (value) => {
+        return /^\d+(\.\d{1,2})?$/.test(value.toString());
+      },
+      {
+        message: "Price must be a valid number with up to 2 decimal places",
+      }
+    ),
+  certificates: z.array(z.any()).optional(),
+});
+export type T_ServiceSchema = z.infer<typeof serviceSchema>;
+
+export const trainedOperatorSchema = z.object({
+  services: z.array(serviceSchema).optional(),
+});
+
+export type T_TrainedOperatorSchema = z.infer<typeof trainedOperatorSchema>;
+
+export const contactSchema = z.object({
+  email: z.string().optional(),
+  phoneNumber: z.string().optional(),
+});
+export type T_ContactSchema = z.infer<typeof contactSchema>;

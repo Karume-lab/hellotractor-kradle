@@ -11,25 +11,26 @@ import { UserRole } from "@prisma/client";
 import { T_Account_Type_Mapping } from "@/lib/types";
 import { ACCOUNT_TYPES_MAPPING, LOCAL_STORAGE_KEY } from "@/lib/constants";
 
-interface SessionProviderPropsContextValue {
+interface SessionProviderContextValue {
   user: User;
   session: Session;
   accountType: T_Account_Type_Mapping | null;
   setAccountType: (type: T_Account_Type_Mapping | null) => void;
   isDealer: boolean;
-  setIsDealer: (isDealer: boolean) => void;
   accountTypes: T_Account_Type_Mapping[];
-  isBuyer: () => boolean;
-  isSeller: () => boolean;
-  isTrainedOperator: () => boolean;
-  isAdmin: () => boolean;
+  setAccountTypes: (types: T_Account_Type_Mapping[]) => void;
+  isBuyer: boolean;
+  isSeller: boolean;
+  isTrainedOperator: boolean;
+  isAdmin: boolean;
+  hasProfile: boolean;
   getAvailableAccountTypes: () => T_Account_Type_Mapping[];
   isSwitchingAccountType: boolean;
   setIsSwitchingAccountType: (isSwitching: boolean) => void;
 }
 
 const SessionProviderContext = createContext<
-  SessionProviderPropsContextValue | undefined
+  SessionProviderContextValue | undefined
 >(undefined);
 
 interface SessionProviderProps {
@@ -53,38 +54,41 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     }
   );
 
-  const [isDealer, setIsDealer] = useState(false);
+  const [accountTypes, setAccountTypes] = useState<T_Account_Type_Mapping[]>(
+    () => {
+      const updatedUserProfile = user.profile;
+      const isDealer = Boolean(updatedUserProfile?.seller?.isDealer);
+
+      return [
+        ...(updatedUserProfile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
+        ...(isDealer ? [ACCOUNT_TYPES_MAPPING["dealer"]] : []),
+        ...(updatedUserProfile?.seller
+          ? [ACCOUNT_TYPES_MAPPING["seller"]]
+          : []),
+        ...(updatedUserProfile?.trainedOperator
+          ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]]
+          : []),
+      ];
+    }
+  );
+
   const [isSwitchingAccountType, setIsSwitchingAccountType] = useState(false);
 
-  const accountTypes: T_Account_Type_Mapping[] = [
-    ...(user.profile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
-    ...(user.profile?.seller?.isDealer
-      ? [ACCOUNT_TYPES_MAPPING["dealer"]]
-      : []),
-    ...(user.profile?.seller ? [ACCOUNT_TYPES_MAPPING["seller"]] : []),
-    ...(user.profile?.trainedOperator
-      ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]]
-      : []),
-  ];
-
-  const isBuyer = () => user.profile?.buyer !== null;
-  const isSeller = () => user.profile?.seller !== null;
-  const isTrainedOperator = () => user.profile?.trainedOperator !== null;
-  const isAdmin = () => user.role === UserRole.ADMIN;
+  const isDealer = Boolean(user.profile?.seller?.isDealer);
+  const isBuyer = Boolean(user.profile?.buyer);
+  const isSeller = Boolean(user.profile?.seller);
+  const isTrainedOperator = Boolean(user.profile?.trainedOperator);
+  const isAdmin = user.role === UserRole.ADMIN;
+  const hasProfile = Boolean(user.profile);
 
   const getAvailableAccountTypes = (): T_Account_Type_Mapping[] => {
-    const userAccountTypes = [...accountTypes.map((account) => account.value)];
-
-    const availableAccountTypes = Object.values(ACCOUNT_TYPES_MAPPING).filter(
-      (accountType) => {
-        return (
-          !userAccountTypes.includes(accountType.value) &&
-          accountType.value !== "dealer"
-        );
-      }
-    );
-
-    return availableAccountTypes;
+    const userAccountTypes = accountTypes.map((account) => account.value);
+    return Object.values(ACCOUNT_TYPES_MAPPING).filter((accountType) => {
+      return (
+        !userAccountTypes.includes(accountType.value) &&
+        accountType.value !== "dealer"
+      );
+    });
   };
 
   useEffect(() => {
@@ -100,13 +104,14 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     session,
     accountType,
     setAccountType,
-    isDealer,
-    setIsDealer,
     accountTypes,
+    setAccountTypes,
+    isDealer,
     isBuyer,
+    isSeller,
     isTrainedOperator,
     isAdmin,
-    isSeller,
+    hasProfile,
     getAvailableAccountTypes,
     isSwitchingAccountType,
     setIsSwitchingAccountType,
@@ -121,7 +126,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
 export const useSession = () => {
   const context = useContext(SessionProviderContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useSession must be used within a SessionProvider");
   }
   return context;

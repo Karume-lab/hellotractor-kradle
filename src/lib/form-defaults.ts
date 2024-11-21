@@ -1,4 +1,4 @@
-export const profileDefault = {
+export const profileDefaultValues = {
   firstName: "",
   lastName: "",
   middleName: "",

@@ -9,10 +9,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  sellerXProfileSchema,
-  T_SellerXProfileSchema,
-} from "@/lib/combined-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -22,23 +18,23 @@ import { toast } from "sonner";
 import { urls } from "@/lib/urls";
 import { useSession } from "@/providers/SessionProvider";
 import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
-import CreateEditProfileForm from "./CreateEditProfileForm";
 import { createEditSellerAccount } from "@/app/(pages)/(protected)/account-types/create/form/actions";
-import { profileDefault } from "@/lib/form-defaults";
+import { sellerSchema, T_SellerSchema } from "@/lib/schemas";
 
 const CreateEditSellerForm = () => {
-  const { isSeller, setAccountType } = useSession();
+  const { isSeller, setAccountType, accountTypes, setAccountTypes } =
+    useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (isSeller()) {
+    if (isSeller) {
       router.push(urls.DASHBOARD);
     }
   }, [isSeller, router]);
-  const form = useForm<T_SellerXProfileSchema>({
-    resolver: zodResolver(sellerXProfileSchema),
+
+  const form = useForm<T_SellerSchema>({
+    resolver: zodResolver(sellerSchema),
     defaultValues: {
-      ...profileDefault,
       businessName: "",
       businessSlogal: "",
       businessBio: "",
@@ -51,6 +47,7 @@ const CreateEditSellerForm = () => {
     onSuccess: ({ message }) => {
       toast.success(message);
       setAccountType(ACCOUNT_TYPES_MAPPING["seller"]);
+      setAccountTypes([...accountTypes, ACCOUNT_TYPES_MAPPING["seller"]]);
       router.push(urls.DASHBOARD);
     },
     onError: (error: Error) => {
@@ -63,14 +60,13 @@ const CreateEditSellerForm = () => {
     },
   });
 
-  const handleOnSubmit = async (values: T_SellerXProfileSchema) => {
+  const handleOnSubmit = async (values: T_SellerSchema) => {
     mutation.mutate(values);
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
-        <CreateEditProfileForm form={form} />
         <FormField
           control={form.control}
           name="businessName"
