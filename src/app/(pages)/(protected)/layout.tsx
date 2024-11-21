@@ -21,8 +21,8 @@ export default async function ProtectedLayout({
   }
 
   return (
-    <SharedLayout>
-      <SessionProvider session={session.session} user={session.user}>
+    <SessionProvider session={session.session} user={session.user}>
+      <SharedLayout>
         <div className="min-h-screen bg-background">
           <nav className="border-b">
             <div className="container mx-auto py-4 flex justify-end gap-x-4">
@@ -37,7 +37,7 @@ export default async function ProtectedLayout({
           </nav>
           <main className="container mx-auto py-4">{children}</main>
         </div>
-      </SessionProvider>
-    </SharedLayout>
+      </SharedLayout>
+    </SessionProvider>
   );
 }
