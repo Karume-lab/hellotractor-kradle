@@ -1,16 +1,16 @@
 "use server";
-import { T_TractorXEquipmentSchema } from "@/lib/combined-schemas";
+import { T_AttachmentXEquipmentSchema } from "@/lib/combined-schemas";
 import { validateRequest } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
-import { equipmentSchema, tractorSchema } from "@/lib/schemas";
+import { attachmentSchema, equipmentSchema } from "@/lib/schemas";
 
-interface T_TractorXEquipmentWithId extends T_TractorXEquipmentSchema {
+interface T_AttachmentXEquipmentWithId extends T_AttachmentXEquipmentSchema {
   attachmentId?: string;
   equipmentId?: string;
 }
 
-export const createEditTractor = async (
-  values: T_TractorXEquipmentWithId,
+export const createEditAttachment = async (
+  values: T_AttachmentXEquipmentWithId,
   isEditing: boolean = false
 ) => {
   const { user } = await validateRequest();
@@ -19,12 +19,12 @@ export const createEditTractor = async (
   }
 
   try {
-    const tractorValues = tractorSchema.parse(values);
+    const attachmentValues = attachmentSchema.parse(values);
     const equipmentValues = equipmentSchema.parse(values);
 
     return await prisma.$transaction(async (tx) => {
       if (isEditing) {
-        if (!values.equipmentId || !values.equipmentId) {
+        if (!values.attachmentId || !values.equipmentId) {
           throw new Error("Missing ID(s) for editing.");
         }
 
@@ -32,23 +32,25 @@ export const createEditTractor = async (
           where: {
             id: values.equipmentId,
           },
-          data: { ...equipmentValues },
+          data: {
+            ...equipmentValues,
+          },
         });
 
-        const updatedTractor = await tx.tractor.update({
+        const updatedAttachment = await tx.attachment.update({
           where: {
             id: values.attachmentId,
           },
           data: {
-            ...tractorValues,
+            ...attachmentValues,
             equipmentId: updatedEquipment.id,
           },
         });
 
         return {
-          message: "Tractor updated successfully",
+          message: "Attachment updated successfully",
           equipment: updatedEquipment,
-          attachment: updatedTractor,
+          attachment: updatedAttachment,
         };
       } else {
         const equipment = await tx.equipment.create({
@@ -58,17 +60,17 @@ export const createEditTractor = async (
           },
         });
 
-        const tractor = await tx.tractor.create({
+        const attachment = await tx.attachment.create({
           data: {
             equipmentId: equipment.id,
-            ...tractorValues,
+            ...attachmentValues,
           },
         });
 
         return {
-          message: "Tractor created successfully",
+          message: "Attachment created successfully",
           equipment,
-          attachment: tractor,
+          attachment,
         };
       }
     });

@@ -24,8 +24,11 @@ export const urls = {
   DASHBOARD: "/dashboard",
   // tractors
   TRACTORS: "/equipment/tractors",
+  // attachments
+  ATTACHMENTS: "/equipment/attachments",
   VIEW_EDIT_TRACTOR: (tractorId: string) => `/equipment/tractors/${tractorId}`,
   CREATE_TRACTOR: "/equipment/tractors/create",
+  CREATE_ATTACHMENT: "/equipment/attachments/create",
   API_TRACTORS: "/api/data/tractors",
   // tasks
   PUBLIC_TASKS: "/tasks",

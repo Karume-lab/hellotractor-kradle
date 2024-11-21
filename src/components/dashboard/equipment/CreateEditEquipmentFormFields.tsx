@@ -18,11 +18,11 @@ import {
 } from "@/components/ui/select";
 import { EquipmentCondition } from "@prisma/client";
 
-interface CreateEditEquipmentFormProps {
+interface CreateEditEquipmentFormFieldsProps {
   form: any;
 }
 
-const CreateEditEquipmentForm: React.FC<CreateEditEquipmentFormProps> = ({
+const CreateEditEquipmentFormFields: React.FC<CreateEditEquipmentFormFieldsProps> = ({
   form,
 }) => (
   <>
@@ -107,4 +107,4 @@ const CreateEditEquipmentForm: React.FC<CreateEditEquipmentFormProps> = ({
   </>
 );
 
-export default CreateEditEquipmentForm;
+export default CreateEditEquipmentFormFields;

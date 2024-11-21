@@ -86,12 +86,15 @@ export const equipmentSchema = z.object({
 });
 export type T_EquipmentSchema = z.infer<typeof equipmentSchema>;
 
-export const tractorSchema = equipmentSchema.merge(
-  z.object({
-    mileage: z.string(),
-    fuelCapacity: z.string(),
-  })
-);
+export const attachmentSchema = z.object({
+  color: z.string().optional(),
+});
+export type T_AttachmentSchema = z.infer<typeof attachmentSchema>;
+
+export const tractorSchema = z.object({
+  mileage: z.string(),
+  fuelCapacity: z.string(),
+});
 export type T_TractorSchema = z.infer<typeof tractorSchema>;
 
 export const serviceSchema = z.object({

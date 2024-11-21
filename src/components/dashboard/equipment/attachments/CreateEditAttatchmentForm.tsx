@@ -16,31 +16,30 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { urls } from "@/lib/urls";
-import { createEditTractor } from "@/app/(pages)/(protected)/equipment/tractors/create/actions";
 import CreateEditEquipmentFormFields from "../CreateEditEquipmentFormFields";
-import {
-  T_TractorXEquipmentSchema,
-  tractorXEquipmentSchema,
-} from "@/lib/combined-schemas";
 import { equipmentDefaultValues } from "@/lib/form-defaults";
+import { createEditAttachment } from "@/app/(pages)/(protected)/equipment/attachments/create/actions";
+import {
+  attachmentXEquipmentSchema,
+  T_AttachmentXEquipmentSchema,
+} from "@/lib/combined-schemas";
 
-const CreateEditTractorForm = () => {
+const CreateEditAttachmentForm = () => {
   const router = useRouter();
-  const form = useForm<T_TractorXEquipmentSchema>({
-    resolver: zodResolver(tractorXEquipmentSchema),
+  const form = useForm<T_AttachmentXEquipmentSchema>({
+    resolver: zodResolver(attachmentXEquipmentSchema),
     defaultValues: {
       ...equipmentDefaultValues,
-      fuelCapacity: "",
-      mileage: "",
+      color: "",
     },
   });
 
   const mutation = useMutation({
-    mutationFn: createEditTractor,
+    mutationFn: createEditAttachment,
     onSuccess: ({ message }) => {
       toast.success(message);
       form.reset();
-      router.push(urls.TRACTORS);
+      router.push(urls.ATTACHMENTS);
     },
     onError: (error: Error) => {
       if (error.message === "Unauthorized") {
@@ -52,7 +51,7 @@ const CreateEditTractorForm = () => {
     },
   });
 
-  const handleOnSubmit = async (values: T_TractorXEquipmentSchema) => {
+  const handleOnSubmit = async (values: T_AttachmentXEquipmentSchema) => {
     mutation.mutate(values);
   };
 
@@ -62,13 +61,13 @@ const CreateEditTractorForm = () => {
         <CreateEditEquipmentFormFields form={form} />
         <FormField
           control={form.control}
-          name="fuelCapacity"
+          name="color"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Fuel Capacity</FormLabel>
+              <FormLabel>Color</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter tractor fuel capacity ..."
+                  placeholder="Enter color ..."
                   {...field}
                 />
               </FormControl>
@@ -76,19 +75,7 @@ const CreateEditTractorForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="mileage"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mileage</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter tractor mileage ..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <LoadingButton
           type="submit"
           text="Create"
@@ -100,4 +87,4 @@ const CreateEditTractorForm = () => {
   );
 };
 
-export default CreateEditTractorForm;
+export default CreateEditAttachmentForm;

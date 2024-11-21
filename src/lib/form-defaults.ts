@@ -5,3 +5,9 @@ export const profileDefaultValues = {
   displayName: "",
   bio: "",
 };
+
+export const equipmentDefaultValues = {
+  name: "",
+  description: "",
+  condition: undefined,
+};

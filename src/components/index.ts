@@ -28,6 +28,8 @@ import { DataTable } from "@/components/core/DataTable";
 import Dashboard from "@/components/dashboard/Dashboard";
 // tractors
 import CreateEditTractorForm from "./dashboard/equipment/tractors/CreateEditTractorForm";
+// attachments
+import CreateEditAttachmentForm from "./dashboard/equipment/attachments/CreateEditAttatchmentForm";
 // explore
 import TractorsContainer from "./explore/TractorsContainer";
 // tasks
@@ -69,6 +71,8 @@ export {
   Dashboard,
   // tractors
   CreateEditTractorForm,
+  // attachment
+  CreateEditAttachmentForm,
   // explore
   TractorsContainer,
   // tasks

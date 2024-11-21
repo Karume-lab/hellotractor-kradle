@@ -6,6 +6,7 @@ const SellerDashboard = () => {
   return (
     <>
       <ButtonAsLink redirectTo={urls.TRACTORS} text="Tractors" />
+      <ButtonAsLink redirectTo={urls.ATTACHMENTS} text="Attachments" />
     </>
   );
 };

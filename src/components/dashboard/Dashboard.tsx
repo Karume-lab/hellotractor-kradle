@@ -17,11 +17,12 @@ const Dashboard = () => {
     }
   }, [accountType, isSwitchingAccountType, router]);
 
-
   return (
     <>
       {accountType?.value === "buyer" && <BuyerDashboard />}
-      {accountType?.value === "seller" && <SellerDashboard />}
+      {(accountType?.value === "dealer" || accountType?.value === "seller") && (
+        <SellerDashboard />
+      )}
       {accountType?.value === "trainedOperator" && <TrainedOperatorDashboard />}
     </>
   );
