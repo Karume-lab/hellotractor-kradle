@@ -94,13 +94,13 @@ const ServicesContainer: React.FC = () => {
                 </p>
               </div>
               <div className="flex gap-2">
-                <Button
+                {/* <Button
                   type="button"
                   variant="secondary"
                   onClick={() => handleEditService(index)}
                 >
                   Edit
-                </Button>
+                </Button> */}
                 <Button
                   type="button"
                   variant="destructive"
