@@ -1,20 +1,27 @@
 "use client";
-import React, { useState, useRef } from "react";
-import { Upload, X, FileText, Image, File as FileIcon } from "lucide-react";
+import React, { useState } from "react";
+import {
+  Upload,
+  X,
+  FileText,
+  Image,
+  File as FileIcon,
+  Loader2,
+} from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { MAX_FILE_SIZE, MAX_FILE_SIZE_BYTES, MAX_UPLOAD_FILES_NUMBER } from "@/lib/constants";
+import {
+  MAX_FILE_SIZE,
+  MAX_FILE_SIZE_BYTES,
+  MAX_UPLOAD_FILES_NUMBER,
+} from "@/lib/constants";
 
 const FileUploadDropZone: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
-  const [uploadProgress, setUploadProgress] = useState<{
-    [key: string]: number;
-  }>({});
-  const uploadTimersRef = useRef<{ [key: string]: NodeJS.Timeout }>({});
+  const [uploadingFiles, setUploadingFiles] = useState<string[]>([]);
 
   const getFileIcon = (file: File) => {
     const ext = file.name.split(".").pop()?.toLowerCase();
@@ -41,83 +48,100 @@ const FileUploadDropZone: React.FC = () => {
   });
 
   const simulateUpload = (file: File) => {
-    let progress = 0;
+    const toastId = toast.loading(`Uploading ${file.name}...`);
+
     return new Promise<void>((resolve) => {
-      const interval = setInterval(() => {
-        progress += Math.random() * 15 + 5;
-        setUploadProgress((prev) => ({
-          ...prev,
-          [file.name]: Math.min(progress, 100),
-        }));
+      if (uploadingFiles.includes(file.name)) {
+        toast.error(`${file.name} is already being uploaded`, { id: toastId });
+        resolve();
+        return;
+      }
 
-        if (progress >= 100) {
-          clearInterval(interval);
-          delete uploadTimersRef.current[file.name];
-          setUploadProgress((prev) => {
-            const updated = { ...prev };
-            delete updated[file.name];
-            return updated;
-          });
-          resolve();
-        }
-      }, 200);
+      setUploadingFiles((prev) => [...prev, file.name]);
 
-      uploadTimersRef.current[file.name] = interval;
+      setTimeout(() => {
+        setFiles((prev) => {
+          const isDuplicate = prev.some(
+            (existingFile) => existingFile.name === file.name
+          );
+          return isDuplicate ? prev : [...prev, file];
+        });
+
+        setUploadingFiles((prev) =>
+          prev.filter((fileName) => fileName !== file.name)
+        );
+
+        toast.success(`File uploaded: ${file.name}`, { id: toastId });
+        resolve();
+      }, 2000);
     });
   };
 
   const handleFileSelection = async (selectedFiles: File[]) => {
+    const existingFilesSize = files.reduce(
+      (total, file) => total + file.size,
+      0
+    );
+    const newFilesSize = selectedFiles.reduce(
+      (total, file) => total + file.size,
+      0
+    );
+    const totalSize = existingFilesSize + newFilesSize;
+
     if (files.length + selectedFiles.length > MAX_UPLOAD_FILES_NUMBER) {
       toast.error(`Cannot upload files`, {
-        description: `Maximum of ${MAX_UPLOAD_FILES_NUMBER} files allowed. Please select ${MAX_UPLOAD_FILES_NUMBER} or fewer files.`,
+        description: `Maximum of ${MAX_UPLOAD_FILES_NUMBER} files allowed.`,
       });
       return;
     }
 
-    const validFiles = selectedFiles.filter((file) => {
-      const isValidSize = file.size <= MAX_FILE_SIZE_BYTES
-      if (!isValidSize) {
+    if (totalSize > MAX_FILE_SIZE_BYTES) {
+      toast.error(`Exceeds total file size limit`, {
+        description: `Total file size cannot exceed ${MAX_FILE_SIZE} MB.`,
+      });
+      return;
+    }
+
+    const oversizedFiles = selectedFiles.filter(
+      (file) => file.size > MAX_FILE_SIZE_BYTES
+    );
+    if (oversizedFiles.length > 0) {
+      oversizedFiles.forEach((file) => {
         toast.error("File too large", {
           description: `${file.name} exceeds the maximum size of ${MAX_FILE_SIZE} MB.`,
         });
-      }
-      return isValidSize;
-    });
+      });
+    }
 
-    const uniqueNewFiles = validFiles.filter(
-      (file) => !files.some((existingFile) => existingFile.name === file.name)
+    const validFiles = selectedFiles.filter(
+      (file) =>
+        file.size <= MAX_FILE_SIZE_BYTES &&
+        !files.some((existingFile) => existingFile.name === file.name)
     );
 
-    const updatedFiles = [...files, ...uniqueNewFiles];
-    setFiles(updatedFiles);
+    if (validFiles.length === 0) {
+      if (selectedFiles.some((file) => file.size > MAX_FILE_SIZE_BYTES)) {
+        return;
+      }
 
-    for (const file of uniqueNewFiles) {
+      toast.error("Duplicate files", {
+        description: `All selected files have already been uploaded.`,
+      });
+      return;
+    }
+
+    for (const file of validFiles) {
       await simulateUpload(file);
-      toast.success("File uploaded", { description: file.name });
     }
   };
 
   const removeFile = (fileToRemove: File) => {
-    if (uploadTimersRef.current[fileToRemove.name]) {
-      clearInterval(uploadTimersRef.current[fileToRemove.name]);
-      delete uploadTimersRef.current[fileToRemove.name];
-    }
-
     setFiles(files.filter((file) => file !== fileToRemove));
-    setUploadProgress((prev) => {
-      const updated = { ...prev };
-      delete updated[fileToRemove.name];
-      return updated;
-    });
-
     toast.info("File removed", { description: fileToRemove.name });
   };
 
   const clearAllFiles = () => {
-    Object.values(uploadTimersRef.current).forEach(clearInterval);
-    uploadTimersRef.current = {};
     setFiles([]);
-    setUploadProgress({});
     toast.success("All files cleared");
   };
 
@@ -151,6 +175,7 @@ const FileUploadDropZone: React.FC = () => {
             {...getInputProps({
               onChange: (e) =>
                 handleFileSelection(Array.from(e.target.files || [])),
+              disabled: files.length >= MAX_UPLOAD_FILES_NUMBER,
             })}
           />
           <div className="flex flex-col items-center justify-center space-y-3">
@@ -166,11 +191,6 @@ const FileUploadDropZone: React.FC = () => {
               Max file size: {MAX_FILE_SIZE} MB | Max files:{" "}
               {MAX_UPLOAD_FILES_NUMBER}
             </p>
-            {files.length < MAX_UPLOAD_FILES_NUMBER && (
-              <Button type="button" onClick={open}>
-                Select Files
-              </Button>
-            )}
           </div>
         </div>
 
@@ -207,12 +227,6 @@ const FileUploadDropZone: React.FC = () => {
                         <X className="h-4 w-4 text-red-500" />
                       </Button>
                     </div>
-                    {uploadProgress[file.name] && (
-                      <Progress
-                        value={uploadProgress[file.name]}
-                        className="mt-2"
-                      />
-                    )}
                   </div>
                 </div>
               ))}
