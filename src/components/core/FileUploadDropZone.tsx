@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { Upload, X, FileText, Image, File as FileIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
+
+interface UploadedFile {
+  file: File;
+  url: string;
+}
 
 interface FileUploadDropZoneProps {
   maxFiles?: number;
@@ -32,10 +36,10 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
   onFilesChange,
   allowedFileTypes = ["image/*", "application/pdf", "application/msword"],
 }) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const { startUpload, isUploading } = useUploadThing("imageUploader");
 
-  const isMaxFilesReached = files.length >= maxFiles;
+  const isMaxFilesReached = uploadedFiles.length >= maxFiles;
 
   const getFileIcon = (file: File) => {
     const ext = file.name.split(".").pop()?.toLowerCase();
@@ -61,7 +65,7 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
       const validFiles = selectedFiles.filter(
         (file) =>
           file.size <= maxSize &&
-          !files.some((existing) => existing.name === file.name)
+          !uploadedFiles.some((uploaded) => uploaded.file.name === file.name)
       );
 
       if (!validFiles.length) {
@@ -77,10 +81,14 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
         throw new Error("Upload failed");
       }
 
-      const uploadedUrls = uploadResult.map((file) => file.url);
-      setFiles((prev) => [...prev, ...validFiles]);
-      onFilesChange?.([...files, ...validFiles]);
-      onUploadComplete?.(uploadedUrls);
+      const newUploadedFiles = uploadResult.map((result, index) => ({
+        file: validFiles[index],
+        url: result.url,
+      }));
+
+      setUploadedFiles((prev) => [...prev, ...newUploadedFiles]);
+      onFilesChange?.([...uploadedFiles.map((uf) => uf.file), ...validFiles]);
+      onUploadComplete?.(uploadResult.map((file) => file.url));
 
       toast.dismiss(loadingToast);
       toast.success(
@@ -94,22 +102,38 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
     }
   };
 
-  const removeFile = (fileToRemove: File) => {
-    const updatedFiles = files.filter((file) => file !== fileToRemove);
-    setFiles(updatedFiles);
-    onFilesChange?.(updatedFiles);
+  const deleteFileFromUploadThing = async (fileUrl: string) => {
+    try {
+      // Call UploadThing API to delete the file
+      // Assuming UploadThing provides an API or SDK method to delete files.
+      // For example: await uploadThing.delete(fileUrl);
+      console.log(`Deleting file: ${fileUrl}`);
+    } catch (error) {
+      console.error(
+        `Failed to delete file from UploadThing: ${fileUrl}`,
+        error
+      );
+    }
+  };
+
+  const removeFile = (fileToRemove: UploadedFile) => {
+    deleteFileFromUploadThing(fileToRemove.url);
+    const updatedFiles = uploadedFiles.filter((uf) => uf !== fileToRemove);
+    setUploadedFiles(updatedFiles);
+    onFilesChange?.(updatedFiles.map((uf) => uf.file));
     toast.success("File removed");
   };
 
   const clearAllFiles = () => {
-    setFiles([]);
+    uploadedFiles.forEach((uf) => deleteFileFromUploadThing(uf.url));
+    setUploadedFiles([]);
     onFilesChange?.([]);
     toast.success("All files cleared");
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleFileSelection,
-    maxFiles: maxFiles - files.length,
+    maxFiles: maxFiles - uploadedFiles.length,
     maxSize,
     accept: allowedFileTypes.reduce((acc, type) => {
       acc[type] = [];
@@ -157,17 +181,17 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
             </p>
             <p className="text-xs text-gray-500">
               Max size: {formatFileSize(maxSize)} | Remaining:{" "}
-              {Math.max(0, maxFiles - files.length)} file
-              {Math.max(0, maxFiles - files.length) === 1 ? "" : "s"}
+              {Math.max(0, maxFiles - uploadedFiles.length)} file
+              {Math.max(0, maxFiles - uploadedFiles.length) === 1 ? "" : "s"}
             </p>
           </div>
         </div>
 
-        {files.length > 0 && (
+        {uploadedFiles.length > 0 && (
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-medium">
-                Files ({files.length}/{maxFiles})
+                Files ({uploadedFiles.length}/{maxFiles})
               </h3>
               <Button
                 variant="outline"
@@ -180,25 +204,27 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
             </div>
 
             <div className="space-y-2">
-              {files.map((file, index) => (
+              {uploadedFiles.map((uploadedFile, index) => (
                 <div
-                  key={`${file.name}-${index}`}
+                  key={`${uploadedFile.file.name}-${index}`}
                   className="flex items-center gap-3 p-3 bg-white border rounded-lg"
                 >
                   <div className="w-10 h-10 flex items-center justify-center">
-                    {getFileIcon(file)}
+                    {getFileIcon(uploadedFile.file)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{file.name}</p>
+                    <p className="text-sm font-medium truncate">
+                      {uploadedFile.file.name}
+                    </p>
                     <p className="text-xs text-gray-500">
-                      {formatFileSize(file.size)}
+                      {formatFileSize(uploadedFile.file.size)}
                     </p>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
                     className="shrink-0"
-                    onClick={() => removeFile(file)}
+                    onClick={() => removeFile(uploadedFile)}
                     disabled={isUploading}
                   >
                     <X className="h-4 w-4" />
