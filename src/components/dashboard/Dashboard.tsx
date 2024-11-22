@@ -5,9 +5,11 @@ import SellerDashboard from "./SellerDashboard";
 import { useSession } from "@/providers/SessionProvider";
 import { urls } from "@/lib/urls";
 import BuyerDashboard from "./BuyerDashboard";
+import AdminDashboard from "./AdminDashboard";
 
 const Dashboard = () => {
-  const { accountType, isSwitchingAccountType } = useSession();
+  const { accountType, isSwitchingAccountType, isAdmin, isBuyer, isSeller } =
+    useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -18,8 +20,9 @@ const Dashboard = () => {
 
   return (
     <>
-      {accountType?.value === "buyer" && <BuyerDashboard />}
-      {accountType?.value === "seller" && <SellerDashboard />}
+      {isBuyer && <BuyerDashboard />}
+      {isSeller && <SellerDashboard />}
+      {isAdmin && <AdminDashboard />}
     </>
   );
 };

@@ -1,5 +1,6 @@
-import { Prisma, Task, Tractor } from "@prisma/client";
+import { Prisma, Task } from "@prisma/client";
 import { ACCOUNT_TYPES_MAPPING } from "./constants";
+import { LucideProps } from "lucide-react";
 
 export interface TasksPage {
   tasks: Task[];
@@ -19,10 +20,7 @@ export interface TractorsPage {
   nextCursor: string | null;
 }
 
-export type T_Account_Type_Mapping_Value =
-  | "buyer"
-  | "seller"
-  | null;
+export type T_Account_Type_Mapping_Value = "buyer" | "seller" | null;
 
 export interface T_Account_Type_Mapping {
   value: T_Account_Type_Mapping_Value;
@@ -30,3 +28,9 @@ export interface T_Account_Type_Mapping {
 }
 
 export type T_Account_Types_Mapping = typeof ACCOUNT_TYPES_MAPPING;
+
+export type T_SideBarItem = {
+  label: string;
+  Icon: React.FC<LucideProps>;
+  redirectTo: string;
+};

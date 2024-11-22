@@ -1,7 +1,9 @@
-import { Header } from "@/components";
+import { AuthenticatedHeader, Header } from "@/components";
 import { SharedLayout } from "@/layouts";
 import { validateRequest } from "@/lib/lucia";
 import { SessionProvider } from "@/providers/SessionProvider";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import SideBar from "@/components/core/SideBar";
 
 export default async function LandingLayout({
   children,
@@ -11,12 +13,18 @@ export default async function LandingLayout({
   const session = await validateRequest();
 
   return session?.user ? (
-    <SessionProvider session={session.session} user={session.user}>
-      <SharedLayout>
-        <Header />
-        {children}
-      </SharedLayout>
-    </SessionProvider>
+    <SidebarProvider>
+      <SessionProvider session={session.session} user={session.user}>
+        <SharedLayout>
+          <AuthenticatedHeader />
+          <SidebarTrigger />
+          <SideBar />
+          <main>
+            <div>{children}</div>
+          </main>
+        </SharedLayout>
+      </SessionProvider>
+    </SidebarProvider>
   ) : (
     <SharedLayout>
       <Header />

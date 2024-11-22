@@ -25,6 +25,8 @@ import BackButton from "@/components/core/BackButton";
 import LinkAsButton from "@/components/core/LinkAsButton";
 import FileUploadDropZone from "./core/FileUploadDropZone";
 import { DataTable } from "@/components/core/DataTable";
+import BaseSideBar from "./core/BaseSideBar";
+import AuthenticatedHeader from "./core/AuthenticatedHeader";
 // dashboard
 import Dashboard from "@/components/dashboard/Dashboard";
 // tractors
@@ -71,6 +73,8 @@ export {
   BackButton,
   LinkAsButton,
   FileUploadDropZone,
+  AuthenticatedHeader,
+  BaseSideBar,
   // dashboard
   Dashboard,
   // tractors
