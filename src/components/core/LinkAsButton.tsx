@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Loader from "../ui/Loader";
 
-interface ButtonAsLinkProps
+interface LinkAsButtonkProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     ButtonProps {
   redirectTo: string;
@@ -16,7 +16,7 @@ interface ButtonAsLinkProps
   icon?: React.ReactNode;
 }
 
-const ButtonAsLink = React.forwardRef<HTMLButtonElement, ButtonAsLinkProps>(
+const LinkAsButtonk = React.forwardRef<HTMLButtonElement, LinkAsButtonkProps>(
   (
     {
       redirectTo,
@@ -57,6 +57,6 @@ const ButtonAsLink = React.forwardRef<HTMLButtonElement, ButtonAsLinkProps>(
   }
 );
 
-ButtonAsLink.displayName = "ButtonAsLink";
+LinkAsButtonk.displayName = "LinkAsButtonk";
 
-export default ButtonAsLink;
+export default LinkAsButtonk;

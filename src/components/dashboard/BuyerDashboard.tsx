@@ -1,11 +1,11 @@
 "use client";
 import { urls } from "@/lib/urls";
-import ButtonAsLink from "../core/ButtonAsLink";
+import LinkAsButton from "../core/LinkAsButton";
 
 const BusinessDashboard = () => {
   return (
     <>
-      <ButtonAsLink redirectTo={urls.TRACTORS} text="Tractors" />
+      <LinkAsButton redirectTo={urls.TRACTORS} text="Tractors" />
     </>
   );
 };

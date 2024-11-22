@@ -22,7 +22,7 @@ import InfiniteScrollContainer from "@/components/core/InfiniteScrollContainer";
 import ActionConfirmationDialog from "@/components/core/ActionConfirmationDialog";
 import BaseProviders from "@/components/core/BaseProviders";
 import BackButton from "@/components/core/BackButton";
-import ButtonAsLink from "@/components/core/ButtonAsLink";
+import LinkAsButton from "@/components/core/LinkAsButton";
 import FileUploadDropZone from "./core/FileUploadDropZone";
 import { DataTable } from "@/components/core/DataTable";
 // dashboard
@@ -67,7 +67,7 @@ export {
   BaseProviders,
   DataTable,
   BackButton,
-  ButtonAsLink,
+  LinkAsButton,
   FileUploadDropZone,
   // dashboard
   Dashboard,

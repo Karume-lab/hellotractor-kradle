@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { urls } from "@/lib/urls";
-import ButtonAsLink from "../core/ButtonAsLink";
+import LinkAsButton from "../core/LinkAsButton";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { KINDLY_WAIT } from "@/lib/constants";
@@ -25,7 +25,7 @@ const AccountTypeSwitcher = () => {
   return (
     <>
       {accountType && (
-        <ButtonAsLink
+        <LinkAsButton
           redirectTo={urls.ACCOUNT_TYPES}
           text="Switch Account"
           onClick={handleOnClick}

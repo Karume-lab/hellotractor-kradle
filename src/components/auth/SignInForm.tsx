@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { urls } from "@/lib/urls";
 import LoadingButton from "../core/LoadingButton";
-import ButtonAsLink from "../core/ButtonAsLink";
+import LinkAsButton from "../core/LinkAsButton";
 
 const SignInForm = () => {
   const form = useForm<T_SignInSchema>({
@@ -103,7 +103,7 @@ const SignInForm = () => {
               text="Sign in"
               loadingText="Signing in"
             />
-            <ButtonAsLink
+            <LinkAsButton
               variant={"link"}
               asChild
               text="Forgot your password? Reset it here."
