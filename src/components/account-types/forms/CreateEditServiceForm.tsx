@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,8 +12,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { serviceSchema, T_ServiceSchema } from "@/lib/schemas";
 import FileUploadDropZone from "@/components/core/FileUploadDropZone";
+import { serviceSchema, T_ServiceSchema } from "@/lib/schemas";
 
 interface CreateEditServiceFormProps {
   initialData?: T_ServiceSchema;
@@ -27,6 +26,7 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
   onSave,
   onCancel,
 }) => {
+  const [certificates, setCertificates] = useState([]);
   const form = useForm<T_ServiceSchema>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
@@ -38,12 +38,10 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
     mode: "onChange",
   });
 
-  const [certificates, setCertificates] = useState<File[]>([]);
-
   const handleSubmit = (values: T_ServiceSchema) => {
     const finalData = {
       ...values,
-      certificates,
+      certificates, // Include file metadata
     };
     onSave(finalData);
   };
@@ -58,13 +56,12 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
             <FormItem>
               <FormLabel>Service Title</FormLabel>
               <FormControl>
-                <Input placeholder="Service name" {...field} />
+                <Input placeholder="Service title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="description"
@@ -72,7 +69,7 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Service details" {...field} />
+                <Textarea placeholder="Service description" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -107,18 +104,15 @@ const CreateEditServiceForm: React.FC<CreateEditServiceFormProps> = ({
         />
 
         <FileUploadDropZone
-          onFilesChange={(files) => {
-            setCertificates(files);
-            form.setValue("certificates", files);
-          }}
+          onUploadComplete={(fileMetadata) =>
+            setCertificates(fileMetadata as any)
+          }
         />
-
         {certificates.length > 0 && (
           <div className="text-sm text-gray-600">
             {certificates.length} file(s) uploaded
           </div>
         )}
-
         <div className="flex gap-2">
           <Button type="submit">Save Service</Button>
           <Button type="button" variant="secondary" onClick={onCancel}>

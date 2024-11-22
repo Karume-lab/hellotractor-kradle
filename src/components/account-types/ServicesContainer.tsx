@@ -53,8 +53,8 @@ const ServicesContainer: React.FC<ServicesContainerProps> = ({
       id,
       services: servicesWithoutIds,
     };
-    mutation.mutate(values);
-    // console.log(values);
+    // mutation.mutate(values);
+    console.log(values);
   };
 
   return (

@@ -1,34 +1,52 @@
-import { MAX_FILE_SIZE_STRING } from "@/lib/constants";
+// app/api/uploadthing/core.ts
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { validateRequest } from "@/lib/lucia";
 
 const f = createUploadthing();
 
-const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
-
-// FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
-  // Define as many FileRoutes as you like, each with a unique routeSlug
-  imageUploader: f({ image: { maxFileSize: MAX_FILE_SIZE_STRING } })
-    // Set permissions and file types for this FileRoute
+  imageUploader: f({
+    image: {
+      maxFileSize: "4MB",
+      maxFileCount: 5,
+    },
+    pdf: {
+      maxFileSize: "8MB",
+      maxFileCount: 1,
+    },
+    text: {
+      maxFileSize: "2MB",
+      maxFileCount: 3,
+    },
+  })
     .middleware(async ({ req }) => {
-      // This code runs on your server before upload
-      const user = await auth(req);
+      const session = await validateRequest();
 
-      // If you throw, the user will not be able to upload
-      if (!user) throw new UploadThingError("Unauthorized");
+      if (!session) {
+        throw new UploadThingError("Unauthorized");
+      }
 
-      // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id };
+      return { userId: session.user?.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.userId);
+      try {
+        // Here you could add additional processing like:
+        // - Storing file metadata in your database
+        // - Processing images
+        // - Sending notifications
 
-      console.log("file url", file.url);
-
-      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userId };
+        return {
+          fileUrl: file.url,
+          fileKey: file.key,
+          fileName: file.name,
+          fileSize: file.size,
+          userId: metadata.userId,
+        };
+      } catch (error) {
+        console.error("Upload processing error:", error);
+        throw new UploadThingError("Failed to process upload");
+      }
     }),
 } satisfies FileRouter;
 

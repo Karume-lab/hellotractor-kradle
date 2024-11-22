@@ -28,4 +28,8 @@ export const URL_QUERY_STATES = {
 export const MAX_FILE_SIZE = 4;
 export const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE * 1024 * 1024;
 export const MAX_FILE_SIZE_STRING = `${MAX_FILE_SIZE}MB`;
-export const MAX_UPLOAD_FILES_NUMBER = 2;
+export const MAX_DOCS_UPLOAD_FILES_NUMBER = 2;
+export const MIN_DOCS_UPLOAD_FILES_NUMBER = 1;
+
+export const GET_UPLOAD_THING_FILE_URL = (fileKey: string) =>
+  `https://utfs.io/f/${fileKey}`;
