@@ -11,6 +11,7 @@ import {
   MAX_FILE_SIZE_BYTES,
   MAX_UPLOAD_FILES_NUMBER,
 } from "@/lib/constants";
+import { useUploadThing } from "@/lib/uploadthing";
 
 interface FileUploadDropZoneProps {
   onFilesChange?: (files: File[]) => void;
@@ -81,6 +82,15 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
     [onFilesChange, uploadingFiles]
   );
 
+  const { startUpload, isUploading } = useUploadThing("imageUploader", {
+    onClientUploadComplete: (res) => {
+      const uploadedUrls = res?.map((file) => file.url) || [];
+      toast.success("Files uploaded successfully!");
+    },
+    onUploadError: (error) => {
+      toast.error(`Upload failed: ${error.message}`);
+    },
+  });
   const handleFileSelection = useCallback(
     async (selectedFiles: File[]) => {
       const existingFilesSize = files.reduce(
@@ -107,17 +117,6 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
         return;
       }
 
-      const oversizedFiles = selectedFiles.filter(
-        (file) => file.size > MAX_FILE_SIZE_BYTES
-      );
-      if (oversizedFiles.length > 0) {
-        oversizedFiles.forEach((file) => {
-          toast.error("File too large", {
-            description: `${file.name} exceeds the maximum size of ${MAX_FILE_SIZE} MB.`,
-          });
-        });
-      }
-
       const validFiles = selectedFiles.filter(
         (file) =>
           file.size <= MAX_FILE_SIZE_BYTES &&
@@ -125,25 +124,24 @@ const FileUploadDropZone: React.FC<FileUploadDropZoneProps> = ({
       );
 
       if (validFiles.length === 0) {
-        if (selectedFiles.some((file) => file.size > MAX_FILE_SIZE_BYTES)) {
-          return;
-        }
-
-        toast.error("Duplicate files", {
-          description: `All selected files have already been uploaded.`,
-        });
+        toast.error("No valid files to upload");
         return;
       }
 
-      let updatedFiles = [...files];
-      for (const file of validFiles) {
-        updatedFiles = await simulateUpload(file, updatedFiles);
-      }
+      setUploadingFiles(validFiles.map((file) => file.name));
 
-      setFiles(updatedFiles);
-      onFilesChange?.(updatedFiles);
+      try {
+        await startUpload(validFiles);
+
+        setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+        onFilesChange?.([...files, ...validFiles]);
+      } catch (error) {
+        toast.error("Upload failed");
+      } finally {
+        setUploadingFiles([]);
+      }
     },
-    [files, simulateUpload, onFilesChange]
+    [files, startUpload, onFilesChange]
   );
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
