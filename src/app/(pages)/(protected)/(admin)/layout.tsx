@@ -17,8 +17,7 @@ export default async function AdminLayout({
 
   return (
     <SessionProvider session={session.session} user={session.user}>
-      <div className="min-h-screen bg-background">
-      </div>
+      <div className="min-h-screen bg-background">{children}</div>
     </SessionProvider>
   );
 }
