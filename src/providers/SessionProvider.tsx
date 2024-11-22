@@ -16,12 +16,10 @@ interface SessionProviderContextValue {
   session: Session;
   accountType: T_Account_Type_Mapping | null;
   setAccountType: (type: T_Account_Type_Mapping | null) => void;
-  isDealer: boolean;
   accountTypes: T_Account_Type_Mapping[];
   setAccountTypes: (types: T_Account_Type_Mapping[]) => void;
   isBuyer: boolean;
   isSeller: boolean;
-  isTrainedOperator: boolean;
   isAdmin: boolean;
   hasProfile: boolean;
   getAvailableAccountTypes: () => T_Account_Type_Mapping[];
@@ -61,12 +59,8 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
       return [
         ...(updatedUserProfile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
-        ...(isDealer ? [ACCOUNT_TYPES_MAPPING["dealer"]] : []),
         ...(updatedUserProfile?.seller
           ? [ACCOUNT_TYPES_MAPPING["seller"]]
-          : []),
-        ...(updatedUserProfile?.trainedOperator
-          ? [ACCOUNT_TYPES_MAPPING["trainedOperator"]]
           : []),
       ];
     }
@@ -77,17 +71,13 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
   const isDealer = Boolean(user.profile?.seller?.isDealer);
   const isBuyer = Boolean(user.profile?.buyer);
   const isSeller = Boolean(user.profile?.seller);
-  const isTrainedOperator = Boolean(user.profile?.trainedOperator);
   const isAdmin = user.role === UserRole.ADMIN;
   const hasProfile = Boolean(user.profile);
 
   const getAvailableAccountTypes = (): T_Account_Type_Mapping[] => {
     const userAccountTypes = accountTypes.map((account) => account.value);
     return Object.values(ACCOUNT_TYPES_MAPPING).filter((accountType) => {
-      return (
-        !userAccountTypes.includes(accountType.value) &&
-        accountType.value !== "dealer"
-      );
+      return !userAccountTypes.includes(accountType.value);
     });
   };
 
@@ -106,10 +96,8 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
     setAccountType,
     accountTypes,
     setAccountTypes,
-    isDealer,
     isBuyer,
     isSeller,
-    isTrainedOperator,
     isAdmin,
     hasProfile,
     getAvailableAccountTypes,

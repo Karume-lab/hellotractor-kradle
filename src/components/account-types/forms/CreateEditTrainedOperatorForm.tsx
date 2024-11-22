@@ -1,31 +1,27 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { urls } from "@/lib/urls";
 import { toast } from "sonner";
-import {
-  T_TrainedOperatorSchema,
-  trainedOperatorSchema,
-} from "@/lib/schemas";
+import { T_TrainedOperatorSchema, trainedOperatorSchema } from "@/lib/schemas";
 import { useRouter } from "next/navigation";
-import { useSession } from "@/providers/SessionProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { createEditTrainedOperatorAccount } from "@/app/(pages)/(protected)/account-types/create/form/actions";
-import { ACCOUNT_TYPES_MAPPING } from "@/lib/constants";
-import { Form } from "@/components/ui/form";
+import { createEditTrainedOperator } from "@/app/(pages)/(protected)/account-types/create/form/actions";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import LoadingButton from "@/components/core/LoadingButton";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
 const CreateEditTrainedOperatorForm = () => {
-  const { isTrainedOperator, setAccountType, accountTypes, setAccountTypes } =
-    useSession();
   const router = useRouter();
-
-  useEffect(() => {
-    if (isTrainedOperator) {
-      router.push(urls.DASHBOARD);
-    }
-  }, [isTrainedOperator, router]);
 
   const form = useForm<T_TrainedOperatorSchema>({
     resolver: zodResolver(trainedOperatorSchema),
@@ -35,23 +31,17 @@ const CreateEditTrainedOperatorForm = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: createEditTrainedOperatorAccount,
-    onSuccess: ({ message }) => {
+    mutationFn: createEditTrainedOperator,
+    onSuccess: ({ message, trainedOperator }) => {
       toast.success(message);
-      setAccountType(ACCOUNT_TYPES_MAPPING["trainedOperator"]);
-      setAccountTypes([
-        ...accountTypes,
-        ACCOUNT_TYPES_MAPPING["trainedOperator"],
-      ]);
-      router.push(urls.CREATE_SERVICES);
+      router.push(
+        urls.PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_SETUP_CONTACT_INFO(
+          trainedOperator.id
+        )
+      );
     },
     onError: (error: Error) => {
-      if (error.message === "Unauthorized") {
-        toast.error(error.message);
-        router.push(urls.AUTH);
-      } else {
-        toast.error("Something went wrong");
-      }
+      toast.error("Something went wrong");
     },
   });
 
@@ -62,8 +52,78 @@ const CreateEditTrainedOperatorForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name={"firstName"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>First Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter first name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={"middleName"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Middle Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter middle name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={"lastName"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Last Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter last name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={"displayName"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Display Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter display name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name={"bio"}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bio</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Enter your bio" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <LoadingButton
-          text="Create a trained operator account"
+          text="Create"
           loadingText="Creating"
           isLoading={mutation.isPending}
         />

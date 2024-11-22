@@ -22,8 +22,6 @@ export interface TractorsPage {
 export type T_Account_Type_Mapping_Value =
   | "buyer"
   | "seller"
-  | "trainedOperator"
-  | "dealer"
   | null;
 
 export interface T_Account_Type_Mapping {

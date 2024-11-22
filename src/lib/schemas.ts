@@ -116,6 +116,11 @@ export const serviceSchema = z.object({
 export type T_ServiceSchema = z.infer<typeof serviceSchema>;
 
 export const trainedOperatorSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  middleName: z.string().optional(),
+  displayName: z.string().optional(),
+  bio: z.string().optional(),
   services: z.array(serviceSchema).optional(),
 });
 

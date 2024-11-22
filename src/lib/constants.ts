@@ -17,12 +17,11 @@ export const ACCOUNT_TYPES_MAPPING: Record<
 > = {
   buyer: { value: "buyer", label: "Buyer" },
   seller: { value: "seller", label: "Seller" },
-  trainedOperator: { value: "trainedOperator", label: "Trained Operator" },
-  dealer: { value: "dealer", label: "Dealer" },
 };
 
 export const URL_STATES = {
   accountType: "account-type",
+  trainedOperatorId: "trained-operator-id",
 };
 
 export const MAX_FILE_SIZE = 5;

@@ -42,6 +42,15 @@ export const urls = {
   // admin
   PUBLIC_ADMIN: "/admin",
   PUBLIC_ADMIN_MANAGE: "/admin/manage",
+  PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS: "/admin/manage/trained-operators",
+  PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_CREATE:
+    "/admin/manage/trained-operators/create",
+  PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_SETUP_CONTACT_INFO: (
+    trainedOperatorId: string
+  ) =>
+    `/admin/manage/trained-operators/create/setup/contact-info?trained-operator-id=${trainedOperatorId}`,
+  PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_SETUP_SERVICES:
+    "/admin/manage/trained-operators/create/setup/services",
   PUBLIC_ADMIN_MANAGE_TASKS: "/admin/manage/tasks",
   API_ADMIN: "/api/data/admin",
 };

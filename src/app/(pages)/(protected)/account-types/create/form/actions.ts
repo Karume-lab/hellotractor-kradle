@@ -3,14 +3,13 @@
 import { validateRequest } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import {
-  serviceSchema,
   T_BuyerSchema,
   T_ProfileSchema,
   T_SellerSchema,
   T_ServiceSchema,
   T_TrainedOperatorSchema,
 } from "@/lib/schemas";
-import { z } from "zod";
+import { UserRole } from "@prisma/client";
 
 export const createEditSellerAccount = async (
   values: T_SellerSchema,
@@ -94,12 +93,13 @@ export const createEditBuyerAccount = async (
   }
 };
 
-export const createEditTrainedOperatorAccount = async (
+export const createEditTrainedOperator = async (
   values: T_TrainedOperatorSchema,
+  id?: string,
   isEditing: boolean = false
 ) => {
   const { user } = await validateRequest();
-  if (!user || !user.profile?.id) {
+  if (!user || user.role !== UserRole.ADMIN) {
     throw new Error("Unauthorized");
   }
 
@@ -116,10 +116,10 @@ export const createEditTrainedOperatorAccount = async (
       : undefined,
   };
 
-  if (isEditing) {
+  if (isEditing && id) {
     const updatedTrainedOperator = await prisma.trainedOperator.update({
       where: {
-        profileId: user?.profile?.id,
+        id: id,
       },
       data: transformedData,
     });
@@ -131,11 +131,7 @@ export const createEditTrainedOperatorAccount = async (
   } else {
     const newTrainedOperator = await prisma.trainedOperator.create({
       data: {
-        profileId: user.profile.id,
         ...transformedData,
-      },
-      include: {
-        profile: true,
       },
     });
 
@@ -181,15 +177,21 @@ export const createEditProfile = async (
     };
   }
 };
+
+interface CreateTrainedOperatorServicesArgs {
+  trainedOperatorId: string | null;
+  services: T_ServiceSchema[];
+}
+
 export const createTrainedOperatorServices = async (
-  values: T_ServiceSchema[]
+  args: CreateTrainedOperatorServicesArgs
 ) => {
   const { user } = await validateRequest();
   if (!user || !user.profile?.id) {
     throw new Error("Unauthorized");
   }
 
-  const servicePromises = values.map(async (service) => {
+  const servicePromises = args.services.map(async (service) => {
     const serviceData: any = {
       title: service.title,
       description: service.description,
@@ -209,7 +211,10 @@ export const createTrainedOperatorServices = async (
     };
 
     const newService = await prisma.service.create({
-      data: serviceData,
+      data: {
+        trainedOperatorId: args.trainedOperatorId,
+        ...serviceData,
+      },
     });
 
     return {

@@ -9,13 +9,20 @@ import { createTrainedOperatorServices } from "@/app/(pages)/(protected)/account
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { urls } from "@/lib/urls";
+import { parseAsString, useQueryState } from "nuqs";
+import { URL_STATES } from "@/lib/constants";
 
-const ServicesContainer: React.FC = () => {
+const ServicesContainer = () => {
   const form = useForm<{ services: T_ServiceSchema[] }>({
     defaultValues: {
       services: [],
     },
   });
+
+  const [trainedOperatorId] = useQueryState(
+    URL_STATES.trainedOperatorId,
+    parseAsString
+  );
 
   const { fields, append, remove, update } = useFieldArray({
     control: form.control,
@@ -35,10 +42,10 @@ const ServicesContainer: React.FC = () => {
     setIsFormVisible(false);
   };
 
-  const handleEditService = (index: number) => {
-    setEditingIndex(index);
-    setIsFormVisible(true);
-  };
+  // const handleEditService = (index: number) => {
+  //   setEditingIndex(index);
+  //   setIsFormVisible(true);
+  // };
 
   const handleDeleteService = (index: number) => {
     remove(index);
@@ -60,7 +67,7 @@ const ServicesContainer: React.FC = () => {
     onError: (error: Error) => {
       if (error.message === "Unauthorized") {
         toast.error(error.message);
-        router.push(urls.AUTH);
+        router.push(urls.PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS);
       } else {
         toast.error("Something went wrong");
       }
@@ -69,8 +76,12 @@ const ServicesContainer: React.FC = () => {
 
   const handleSaveAllServices = async () => {
     const servicesWithoutIds = fields.map(({ id, ...service }) => service);
-    // mutation.mutate(servicesWithoutIds);
-    console.log(servicesWithoutIds);
+    const values = {
+      trainedOperatorId,
+      services: servicesWithoutIds,
+    };
+    mutation.mutate(values);
+    // console.log(values);
   };
 
   return (

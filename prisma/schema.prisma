@@ -27,9 +27,9 @@ model User {
 }
 
 model Profile {
-  id                String           @id @default(cuid())
-  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            String           @unique
+  id                String      @id @default(cuid())
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String      @unique
   firstName         String
   lastName          String
   middleName        String?
@@ -38,7 +38,6 @@ model Profile {
   profilePicture    FileUpload?
   buyer             Buyer?
   seller            Seller?
-  trainedOperator   TrainedOperator?
   sellerId          String?
   trainedOperatorId String?
 }
@@ -87,11 +86,18 @@ model Seller {
 }
 
 model TrainedOperator {
-  id         String    @id @default(cuid())
-  services   Service[]
-  isVerified Boolean?  @default(false)
-  profile    Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId  String    @unique
+  id String @id @default(cuid())
+
+  firstName   String
+  lastName    String
+  middleName  String?
+  displayName String?
+  bio         String?
+
+  isVerified Boolean? @default(true)
+
+  profilePicture FileUpload?
+  services       Service[]
 
   contacts Contact[]
 }
@@ -161,6 +167,9 @@ model FileUpload {
 
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @unique
+
+  trainedOperator   TrainedOperator @relation(fields: [trainedOperatorId], references: [id], onDelete: Cascade)
+  trainedOperatorId String          @unique
 
   trainedOperatorService   Service @relation(fields: [trainedOperatorServiceId], references: [id], onDelete: Cascade)
   trainedOperatorServiceId String

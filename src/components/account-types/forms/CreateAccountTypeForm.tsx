@@ -5,7 +5,6 @@ import { ACCOUNT_TYPES_MAPPING, URL_STATES } from "@/lib/constants";
 import {
   CreateEditBuyerForm,
   CreateEditSellerForm,
-  CreateEditTrainedOperatorForm,
 } from "@/components";
 import { urls } from "@/lib/urls";
 import { useRouter } from "next/navigation";
@@ -27,9 +26,6 @@ const CreateAccountTypeForm = () => {
     <>
       {validAccountType.value === "buyer" && <CreateEditBuyerForm />}
       {validAccountType.value === "seller" && <CreateEditSellerForm />}
-      {validAccountType.value === "trainedOperator" && (
-        <CreateEditTrainedOperatorForm />
-      )}
     </>
   );
 };
