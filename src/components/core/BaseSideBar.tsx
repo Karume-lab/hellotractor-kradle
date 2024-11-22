@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -26,10 +27,10 @@ const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
               {items.map(({ Icon, redirectTo, label }) => (
                 <SidebarMenuItem key={label}>
                   <SidebarMenuButton asChild>
-                    <a href={redirectTo}>
+                    <Link href={redirectTo}>
                       <Icon />
                       <span>{label}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
