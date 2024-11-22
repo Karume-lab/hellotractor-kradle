@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ACCOUNT_TYPES_MAPPING, URL_STATES } from "@/lib/constants";
+import { ACCOUNT_TYPES_MAPPING, URL_QUERY_STATES } from "@/lib/constants";
 import { profileDefaultValues } from "@/lib/form-defaults";
 import { profileSchema, T_ProfileSchema } from "@/lib/schemas";
 import { urls } from "@/lib/urls";
@@ -32,7 +32,7 @@ const CreateEditProfileForm = () => {
   });
 
   const router = useRouter();
-  const [accountType] = useQueryState(URL_STATES.accountType, parseAsString);
+  const [accountType] = useQueryState(URL_QUERY_STATES.accountType, parseAsString);
 
   const validAccountType =
     accountType &&

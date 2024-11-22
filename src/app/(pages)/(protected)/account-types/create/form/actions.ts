@@ -4,6 +4,8 @@ import { validateRequest } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import {
   T_BuyerSchema,
+  T_ContactSchema,
+  T_DealerSchema,
   T_ProfileSchema,
   T_SellerSchema,
   T_ServiceSchema,
@@ -142,6 +144,76 @@ export const createEditTrainedOperator = async (
   }
 };
 
+interface CreateEditDealerArgs {
+  id?: string;
+  name: string;
+  contacts: T_ContactSchema[];
+}
+
+export const createEditDealer = async (
+  args: CreateEditDealerArgs,
+  id?: string,
+  isEditing: boolean = false
+) => {
+  try {
+    const { user } = await validateRequest();
+    if (!user || user.role !== UserRole.ADMIN) {
+      throw new Error("Unauthorized");
+    }
+
+    if (isEditing && id) {
+      const updatedDealer = await prisma.dealer.update({
+        where: { id },
+        data: {
+          name: args.name,
+          contacts: {
+            deleteMany: {},
+            create: args.contacts.map((contact) => ({
+              email: contact.email,
+              phoneNumber: contact.phoneNumber,
+            })),
+          },
+        },
+        include: {
+          contacts: true,
+        },
+      });
+      return {
+        message: "Dealer updated successfully",
+        dealer: updatedDealer,
+      };
+    } else {
+      const newDealer = await prisma.dealer.create({
+        data: {
+          name: args.name,
+          ...(args.contacts.length > 0
+            ? {
+                contacts: {
+                  create: args.contacts.map((contact) => ({
+                    email: contact.email,
+                    phoneNumber: contact.phoneNumber,
+                  })),
+                },
+              }
+            : {}),
+        },
+        include: {
+          contacts: true,
+        },
+      });
+      return {
+        message: "Dealer created successfully",
+        dealer: newDealer,
+      };
+    }
+  } catch (error) {
+    console.error("Error in createEditDealer:", error);
+    throw new Error(
+      error instanceof Error ? error.message : "Failed to process dealer"
+    );
+  }
+};
+
 export const createEditProfile = async (
   values: T_ProfileSchema,
   isEditing: boolean = false
@@ -219,6 +291,53 @@ export const createTrainedOperatorServices = async (
 
     return {
       message: `Service ${newService.title} created successfully`,
+      service: newService,
+    };
+  });
+
+  const results = await Promise.all(servicePromises);
+
+  return {
+    message: `Processed ${results.length} services successfully.`,
+    results,
+  };
+};
+
+interface CreateDealerServicesArgs {
+  dealerId: string | null;
+  services: T_ServiceSchema[];
+}
+
+export const createDealerServices = async (args: CreateDealerServicesArgs) => {
+  const { user } = await validateRequest();
+
+  if (!user || !user.profile?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  const servicePromises = args.services.map(async (service) => {
+    const serviceData: any = {
+      title: service.title,
+      description: service.description,
+      price: service.price,
+      dealerId: args.dealerId,
+
+      certificates: service.certificates?.length
+        ? service.certificates.map((certificate) => ({
+            path: certificate.path,
+            extension: certificate.extension,
+            category: certificate.category,
+            description: certificate.description,
+          }))
+        : undefined,
+    };
+
+    const newService = await prisma.service.create({
+      data: serviceData,
+    });
+
+    return {
+      message: `Service "${newService.title}" created successfully.`,
       service: newService,
     };
   });

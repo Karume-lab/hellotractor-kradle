@@ -4,25 +4,21 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { T_ServiceSchema } from "@/lib/schemas";
 import CreateEditServiceForm from "./forms/CreateEditServiceForm";
-import { useMutation } from "@tanstack/react-query";
-import { createTrainedOperatorServices } from "@/app/(pages)/(protected)/account-types/create/form/actions";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { urls } from "@/lib/urls";
-import { parseAsString, useQueryState } from "nuqs";
-import { URL_STATES } from "@/lib/constants";
 
-const ServicesContainer = () => {
+interface ServicesContainerProps {
+  id?: string | null;
+  mutation: any;
+}
+
+const ServicesContainer: React.FC<ServicesContainerProps> = ({
+  id,
+  mutation,
+}) => {
   const form = useForm<{ services: T_ServiceSchema[] }>({
     defaultValues: {
       services: [],
     },
   });
-
-  const [trainedOperatorId] = useQueryState(
-    URL_STATES.trainedOperatorId,
-    parseAsString
-  );
 
   const { fields, append, remove, update } = useFieldArray({
     control: form.control,
@@ -42,11 +38,6 @@ const ServicesContainer = () => {
     setIsFormVisible(false);
   };
 
-  // const handleEditService = (index: number) => {
-  //   setEditingIndex(index);
-  //   setIsFormVisible(true);
-  // };
-
   const handleDeleteService = (index: number) => {
     remove(index);
   };
@@ -56,28 +47,10 @@ const ServicesContainer = () => {
     setIsFormVisible(false);
   };
 
-  const router = useRouter();
-
-  const mutation = useMutation({
-    mutationFn: createTrainedOperatorServices,
-    onSuccess: ({ message }) => {
-      toast.success(message);
-      router.push(urls.DASHBOARD);
-    },
-    onError: (error: Error) => {
-      if (error.message === "Unauthorized") {
-        toast.error(error.message);
-        router.push(urls.PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS);
-      } else {
-        toast.error("Something went wrong");
-      }
-    },
-  });
-
   const handleSaveAllServices = async () => {
     const servicesWithoutIds = fields.map(({ id, ...service }) => service);
     const values = {
-      trainedOperatorId,
+      id,
       services: servicesWithoutIds,
     };
     mutation.mutate(values);

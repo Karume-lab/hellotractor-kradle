@@ -63,6 +63,13 @@ model Buyer {
   contacts Contact[]
 }
 
+model Dealer {
+  id       String    @id @default(cuid())
+  name     String
+  contacts Contact[]
+  services Service[]
+}
+
 model Seller {
   id        String  @id @default(cuid())
   isDealer  Boolean @default(false)
@@ -109,10 +116,13 @@ model Service {
   description  String
   certificates FileUpload[]
 
-  price Float
+  price Float?
 
   trainedOperator   TrainedOperator? @relation(fields: [trainedOperatorId], references: [id])
   trainedOperatorId String?
+
+  dealer   Dealer? @relation(fields: [dealerId], references: [id])
+  dealerId String?
 
   seller   Seller? @relation(fields: [sellerId], references: [id])
   sellerId String?
@@ -258,4 +268,7 @@ model Contact {
 
   trainedOperator   TrainedOperator? @relation(fields: [trainedOperatorId], references: [id])
   trainedOperatorId String?
+
+  dealer   Dealer? @relation(fields: [dealerId], references: [id])
+  dealerId String?
 }

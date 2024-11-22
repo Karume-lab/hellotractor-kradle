@@ -42,6 +42,8 @@ import TaskActionsDropdown from "@/components/tasks/TaskActionsDropdown";
 import Loader from "./ui/Loader";
 // admin
 import TasksTable from "./admin/tasks/tasks-table/TasksTable";
+import DealerServicesContainer from "./account-types/DealerServicesContainer";
+import TrainedOperatorServicesContainer from "./account-types/TrainedOperatorServicesContainer";
 
 export {
   // auth
@@ -86,4 +88,6 @@ export {
   Loader,
   // admin
   TasksTable,
+  DealerServicesContainer,
+  TrainedOperatorServicesContainer,
 };

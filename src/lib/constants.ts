@@ -19,9 +19,10 @@ export const ACCOUNT_TYPES_MAPPING: Record<
   seller: { value: "seller", label: "Seller" },
 };
 
-export const URL_STATES = {
+export const URL_QUERY_STATES = {
   accountType: "account-type",
   trainedOperatorId: "trained-operator-id",
+  dealerId: "dealer-id",
 };
 
 export const MAX_FILE_SIZE = 5;

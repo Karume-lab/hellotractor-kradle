@@ -1,8 +1,8 @@
-import { ServicesContainer } from "@/components";
+import { TrainedOperatorServicesContainer } from "@/components";
 import React from "react";
 
 const CreateServicesPage = () => {
-  return <ServicesContainer />;
+  return <TrainedOperatorServicesContainer />;
 };
 
 export default CreateServicesPage;

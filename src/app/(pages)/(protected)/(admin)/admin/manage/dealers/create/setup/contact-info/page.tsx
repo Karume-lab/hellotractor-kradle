@@ -4,15 +4,12 @@ import { parseAsString, useQueryState } from "nuqs";
 import React from "react";
 
 const CreateContactInfoPage = () => {
-  const [trainedOperatorId] = useQueryState(
-    URL_QUERY_STATES.trainedOperatorId,
-    parseAsString
-  );
+  const [dealerId] = useQueryState(URL_QUERY_STATES.dealerId, parseAsString);
 
   return (
     <div>
       <span>contact info page</span>
-      {trainedOperatorId}
+      {dealerId}
     </div>
   );
 };

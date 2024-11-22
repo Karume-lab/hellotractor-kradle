@@ -19,6 +19,12 @@ export const signUpSchema = z
   });
 export type T_SignUpSchema = z.infer<typeof signUpSchema>;
 
+export const contactSchema = z.object({
+  email: z.string().optional(),
+  phoneNumber: z.string().optional(),
+});
+export type T_ContactSchema = z.infer<typeof contactSchema>;
+
 export const createTaskSchema = z.object({
   title: z.string(),
 });
@@ -64,6 +70,12 @@ export const sellerSchema = z.object({
   // services: z.array(z.string()),
 });
 export type T_SellerSchema = z.infer<typeof sellerSchema>;
+
+export const dealerSchema = z.object({
+  name: z.string(),
+  contacts: z.array(contactSchema).default([]),
+});
+export type T_DealerSchema = z.infer<typeof dealerSchema>;
 
 export const buyerSchema = z.object({});
 export type T_BuyerSchema = z.infer<typeof buyerSchema>;
@@ -125,9 +137,3 @@ export const trainedOperatorSchema = z.object({
 });
 
 export type T_TrainedOperatorSchema = z.infer<typeof trainedOperatorSchema>;
-
-export const contactSchema = z.object({
-  email: z.string().optional(),
-  phoneNumber: z.string().optional(),
-});
-export type T_ContactSchema = z.infer<typeof contactSchema>;

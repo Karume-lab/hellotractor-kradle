@@ -1,3 +1,5 @@
+import { URL_QUERY_STATES } from "./constants";
+
 export const urls = {
   // landing page
   LANDING_PAGE: "/",
@@ -48,9 +50,15 @@ export const urls = {
   PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_SETUP_CONTACT_INFO: (
     trainedOperatorId: string
   ) =>
-    `/admin/manage/trained-operators/create/setup/contact-info?trained-operator-id=${trainedOperatorId}`,
-  PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_SETUP_SERVICES:
-    "/admin/manage/trained-operators/create/setup/services",
+    `/admin/manage/trained-operators/create/setup/contact-info?${URL_QUERY_STATES.trainedOperatorId}=${trainedOperatorId}`,
+  PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_SETUP_SERVICES: (
+    trainedOperators: string
+  ) =>
+    `/admin/manage/trained-operators/create/setup/services?${URL_QUERY_STATES.trainedOperatorId}=${trainedOperators}`,
+  PUBLIC_ADMIN_MANAGE_DEALERS: "/admin/manage/dealers",
+  PUBLIC_ADMIN_MANAGE_DEALERS_CREATE: "/admin/manage/dealers/create",
+  PUBLIC_ADMIN_MANAGE_DEALERS_SETUP_SERVICES: (dealerId: string) =>
+    `/admin/manage/dealers/create/setup/services?${URL_QUERY_STATES.dealerId}=${dealerId}`,
   PUBLIC_ADMIN_MANAGE_TASKS: "/admin/manage/tasks",
   API_ADMIN: "/api/data/admin",
 };

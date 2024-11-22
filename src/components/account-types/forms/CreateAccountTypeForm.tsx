@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { parseAsString, useQueryState } from "nuqs";
-import { ACCOUNT_TYPES_MAPPING, URL_STATES } from "@/lib/constants";
+import { ACCOUNT_TYPES_MAPPING, URL_QUERY_STATES } from "@/lib/constants";
 import {
   CreateEditBuyerForm,
   CreateEditSellerForm,
@@ -10,7 +10,7 @@ import { urls } from "@/lib/urls";
 import { useRouter } from "next/navigation";
 
 const CreateAccountTypeForm = () => {
-  const [accountType] = useQueryState(URL_STATES.accountType, parseAsString);
+  const [accountType] = useQueryState(URL_QUERY_STATES.accountType, parseAsString);
   const router = useRouter();
 
   const validAccountType =
