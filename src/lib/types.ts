@@ -7,16 +7,27 @@ export interface TasksPage {
   nextCursor: string | null;
 }
 
-export const tractorAttachmentEquipmentDataInclude = {
-  equipment: true,
+export const tractorSellerAttachmentEquipmentDataInclude = {
+  equipment: {
+    include: {
+      seller: {
+        include: {
+          profile: true,
+          coverPicture: true,
+          logo: true,
+        },
+      },
+    },
+  },
 } satisfies Prisma.TractorInclude;
 
-export type T_tractorAttachmentEquipmentDataInclude = Prisma.TractorGetPayload<{
-  include: typeof tractorAttachmentEquipmentDataInclude;
-}>;
+export type T_TractorSellerAttachmentEquipmentDataInclude =
+  Prisma.TractorGetPayload<{
+    include: typeof tractorSellerAttachmentEquipmentDataInclude;
+  }>;
 
 export interface TractorsPage {
-  tractors: T_tractorAttachmentEquipmentDataInclude[];
+  tractors: T_TractorSellerAttachmentEquipmentDataInclude[];
   nextCursor: string | null;
 }
 

@@ -61,13 +61,7 @@ model Buyer {
   profileId String  @unique
 
   contacts Contact[]
-}
-
-model Dealer {
-  id       String    @id @default(cuid())
-  name     String
-  contacts Contact[]
-  services Service[]
+  messages Message[] @relation("BuyerMessages")
 }
 
 model Seller {
@@ -76,10 +70,9 @@ model Seller {
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @unique
 
-  contacts Contact[]
-
-  services Service[]
-
+  contacts   Contact[]
+  services   Service[]
+  messages   Message[]   @relation("SellerMessages")
   equipments Equipment[]
 
   licenses     FileUpload[] @relation("SellerLicense")
@@ -90,6 +83,28 @@ model Seller {
   businessName         String?
   businessSlogal       String?
   businessBio          String?
+}
+
+model Message {
+  id        String    @id @default(uuid())
+  content   String
+  createdAt DateTime  @default(now())
+  replyToId String?
+  replyTo   Message?  @relation("Reply", fields: [replyToId], references: [id])
+  replies   Message[] @relation("Reply")
+
+  buyerId String?
+  buyer   Buyer?  @relation("BuyerMessages", fields: [buyerId], references: [id], onDelete: Cascade)
+
+  sellerId String?
+  seller   Seller? @relation("SellerMessages", fields: [sellerId], references: [id], onDelete: Cascade)
+}
+
+model Dealer {
+  id       String    @id @default(cuid())
+  name     String
+  contacts Contact[]
+  services Service[]
 }
 
 model TrainedOperator {
@@ -236,10 +251,6 @@ model WishList {
 }
 
 model Location {
-  id String @id @default(cuid())
-}
-
-model Message {
   id String @id @default(cuid())
 }
 

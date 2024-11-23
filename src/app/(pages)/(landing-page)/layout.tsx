@@ -13,18 +13,18 @@ export default async function LandingLayout({
   const session = await validateRequest();
 
   return session?.user ? (
-    <SidebarProvider>
-      <SharedLayout>
-        <SessionProvider session={session.session} user={session.user}>
-          <AuthenticatedHeader />
+    <SharedLayout>
+      <SessionProvider session={session.session} user={session.user}>
+        <SidebarProvider>
           <SidebarTrigger />
           <SideBar />
           <main>
+            <AuthenticatedHeader />
             <div>{children}</div>
           </main>
-        </SessionProvider>
-      </SharedLayout>
-    </SidebarProvider>
+        </SidebarProvider>
+      </SessionProvider>
+    </SharedLayout>
   ) : (
     <SharedLayout>
       <Header />

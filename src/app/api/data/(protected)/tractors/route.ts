@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import {
-  tractorAttachmentEquipmentDataInclude,
+  tractorSellerAttachmentEquipmentDataInclude,
   TractorsPage,
 } from "@/lib/types";
 import { NextRequest } from "next/server";
@@ -13,16 +13,49 @@ export const GET = async (req: NextRequest) => {
 
     const tractors = await prisma.tractor.findMany({
       where: {
-        equipment: {
-          name: {
-            contains: searchQuery,
-            mode: "insensitive",
+        OR: [
+          {
+            equipment: {
+              name: {
+                contains: searchQuery,
+                mode: "insensitive",
+              },
+            },
           },
-        },
+          {
+            equipment: {
+              seller: {
+                OR: [
+                  {
+                    businessName: {
+                      contains: searchQuery,
+                      mode: "insensitive",
+                    },
+                  },
+                  {
+                    profile: {
+                      firstName: {
+                        contains: searchQuery,
+                        mode: "insensitive",
+                      },
+                      lastName: {
+                        contains: searchQuery,
+                        mode: "insensitive",
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
       },
-      include: tractorAttachmentEquipmentDataInclude,
+      include: tractorSellerAttachmentEquipmentDataInclude,
       take: PAGE_SIZE + 1,
       ...(cursor && { cursor: { id: cursor }, skip: 1 }),
+      orderBy: {
+        id: "desc",
+      },
     });
 
     const nextCursor =

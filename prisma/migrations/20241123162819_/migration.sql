@@ -80,6 +80,26 @@ CREATE TABLE "Seller" (
 );
 
 -- CreateTable
+CREATE TABLE "Message" (
+    "id" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "replyToId" TEXT,
+    "buyerId" TEXT,
+    "sellerId" TEXT,
+
+    CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Dealer" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Dealer_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "TrainedOperator" (
     "id" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
@@ -88,7 +108,6 @@ CREATE TABLE "TrainedOperator" (
     "displayName" TEXT,
     "bio" TEXT,
     "isVerified" BOOLEAN DEFAULT true,
-    "profileId" TEXT NOT NULL,
 
     CONSTRAINT "TrainedOperator_pkey" PRIMARY KEY ("id")
 );
@@ -98,8 +117,9 @@ CREATE TABLE "Service" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "price" DOUBLE PRECISION NOT NULL,
+    "price" DOUBLE PRECISION,
     "trainedOperatorId" TEXT,
+    "dealerId" TEXT,
     "sellerId" TEXT,
 
     CONSTRAINT "Service_pkey" PRIMARY KEY ("id")
@@ -196,13 +216,6 @@ CREATE TABLE "Location" (
 );
 
 -- CreateTable
-CREATE TABLE "Message" (
-    "id" TEXT NOT NULL,
-
-    CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Notification" (
     "id" TEXT NOT NULL,
 
@@ -226,6 +239,7 @@ CREATE TABLE "Contact" (
     "sellerId" TEXT,
     "buyerId" TEXT,
     "trainedOperatorId" TEXT,
+    "dealerId" TEXT,
 
     CONSTRAINT "Contact_pkey" PRIMARY KEY ("id")
 );
@@ -244,9 +258,6 @@ CREATE UNIQUE INDEX "Buyer_profileId_key" ON "Buyer"("profileId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Seller_profileId_key" ON "Seller"("profileId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "TrainedOperator_profileId_key" ON "TrainedOperator"("profileId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Attachment_equipmentId_key" ON "Attachment"("equipmentId");
@@ -282,10 +293,19 @@ ALTER TABLE "Buyer" ADD CONSTRAINT "Buyer_profileId_fkey" FOREIGN KEY ("profileI
 ALTER TABLE "Seller" ADD CONSTRAINT "Seller_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TrainedOperator" ADD CONSTRAINT "TrainedOperator_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_replyToId_fkey" FOREIGN KEY ("replyToId") REFERENCES "Message"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Message" ADD CONSTRAINT "Message_buyerId_fkey" FOREIGN KEY ("buyerId") REFERENCES "Buyer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Message" ADD CONSTRAINT "Message_sellerId_fkey" FOREIGN KEY ("sellerId") REFERENCES "Seller"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Service" ADD CONSTRAINT "Service_trainedOperatorId_fkey" FOREIGN KEY ("trainedOperatorId") REFERENCES "TrainedOperator"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Service" ADD CONSTRAINT "Service_dealerId_fkey" FOREIGN KEY ("dealerId") REFERENCES "Dealer"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Service" ADD CONSTRAINT "Service_sellerId_fkey" FOREIGN KEY ("sellerId") REFERENCES "Seller"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -334,3 +354,6 @@ ALTER TABLE "Contact" ADD CONSTRAINT "Contact_buyerId_fkey" FOREIGN KEY ("buyerI
 
 -- AddForeignKey
 ALTER TABLE "Contact" ADD CONSTRAINT "Contact_trainedOperatorId_fkey" FOREIGN KEY ("trainedOperatorId") REFERENCES "TrainedOperator"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Contact" ADD CONSTRAINT "Contact_dealerId_fkey" FOREIGN KEY ("dealerId") REFERENCES "Dealer"("id") ON DELETE SET NULL ON UPDATE CASCADE;

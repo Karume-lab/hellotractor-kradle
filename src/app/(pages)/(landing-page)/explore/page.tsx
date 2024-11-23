@@ -1,12 +1,9 @@
 import React from "react";
 import { TractorsContainer } from "@/components";
-import { validateRequest } from "@/lib/lucia";
 
-const ExplorePage = async () => {
-  const { user } = await validateRequest();
+const ExplorePage = () => {
   return (
     <>
-      {user?.email ?? "None"}
       <TractorsContainer />
     </>
   );

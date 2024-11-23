@@ -2,7 +2,7 @@
 import React from "react";
 import kyInstance from "@/lib/ky";
 import {
-  T_tractorAttachmentEquipmentDataInclude,
+  T_TractorSellerAttachmentEquipmentDataInclude,
   TractorsPage,
 } from "@/lib/types";
 import { urls } from "@/lib/urls";
@@ -12,6 +12,8 @@ import InfiniteScrollContainer from "../core/InfiniteScrollContainer";
 import Loader from "../ui/Loader";
 // import TasksContainerLoadingSkeleton from "./TasksContainerLoadingSkeleton";
 import { QUERY_KEYS } from "@/lib/constants";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 // import TaskActionsDropdown from "./TaskActionsDropdown";
 
 const TasksContainer = () => {
@@ -66,15 +68,30 @@ const TasksContainer = () => {
 };
 
 interface TractorProps {
-  tractor: T_tractorAttachmentEquipmentDataInclude;
+  tractor: T_TractorSellerAttachmentEquipmentDataInclude;
 }
-const TractorCard: React.FC<TractorProps> = ({ tractor }) => (
-  <div className="group/task">
-    <div className="opacity-0 transition-opacity duration-200 group-hover/task:opacity-100">
-      {/* <TaskActionsDropdown taskId={task.id} /> */}
+
+const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
+  const router = useRouter();
+
+  const handleContactSellerOnClick = () => {
+    router.push("/inbox");
+  };
+
+  return (
+    <div className="group/task">
+      <p>{tractor.equipment.seller?.profile.firstName}</p>
+      <p>{tractor.equipment.seller?.profile.lastName}</p>
+      <p>{tractor.equipment.seller?.businessName}</p>
+      <p>{tractor.equipment.name}</p>
+      <p>{tractor.equipment.description}</p>
+      <p>{tractor.equipment.price}</p>
+      <p>{tractor.equipment.condition}</p>
+      <p>{tractor.fuelCapacity}</p>
+      <p>{tractor.mileage}</p>
+      <Button onClick={handleContactSellerOnClick}>Contact Seller</Button>
     </div>
-    {tractor.equipment.condition}
-  </div>
-);
+  );
+};
 
 export default TasksContainer;

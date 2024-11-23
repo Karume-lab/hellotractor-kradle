@@ -46,6 +46,8 @@ import Loader from "./ui/Loader";
 import TasksTable from "./admin/tasks/tasks-table/TasksTable";
 import DealerServicesContainer from "./account-types/DealerServicesContainer";
 import TrainedOperatorServicesContainer from "./account-types/TrainedOperatorServicesContainer";
+// chat
+import ChatsContainer from "./inbox/ChatsContainer";
 
 export {
   // auth
@@ -94,4 +96,6 @@ export {
   TasksTable,
   DealerServicesContainer,
   TrainedOperatorServicesContainer,
+  // chat
+  ChatsContainer,
 };

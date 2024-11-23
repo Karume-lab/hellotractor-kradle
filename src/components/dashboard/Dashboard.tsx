@@ -6,10 +6,10 @@ import { useSession } from "@/providers/SessionProvider";
 import { urls } from "@/lib/urls";
 import BuyerDashboard from "./BuyerDashboard";
 import AdminDashboard from "./AdminDashboard";
+import { UserRole } from "@prisma/client";
 
 const Dashboard = () => {
-  const { accountType, isSwitchingAccountType, isAdmin, isBuyer, isSeller } =
-    useSession();
+  const { accountType, isSwitchingAccountType, user } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -20,9 +20,9 @@ const Dashboard = () => {
 
   return (
     <>
-      {isBuyer && <BuyerDashboard />}
-      {isSeller && <SellerDashboard />}
-      {isAdmin && <AdminDashboard />}
+      {accountType?.value === "buyer" && <BuyerDashboard />}
+      {accountType?.value === "seller" && <SellerDashboard />}
+      {user.role === UserRole.ADMIN && <AdminDashboard />}
     </>
   );
 };
