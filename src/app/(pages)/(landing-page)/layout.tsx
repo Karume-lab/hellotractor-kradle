@@ -14,16 +14,16 @@ export default async function LandingLayout({
 
   return session?.user ? (
     <SidebarProvider>
-      <SessionProvider session={session.session} user={session.user}>
-        <SharedLayout>
+      <SharedLayout>
+        <SessionProvider session={session.session} user={session.user}>
           <AuthenticatedHeader />
           <SidebarTrigger />
           <SideBar />
           <main>
             <div>{children}</div>
           </main>
-        </SharedLayout>
-      </SessionProvider>
+        </SessionProvider>
+      </SharedLayout>
     </SidebarProvider>
   ) : (
     <SharedLayout>
