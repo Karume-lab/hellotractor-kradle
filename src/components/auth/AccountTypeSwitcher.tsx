@@ -17,9 +17,9 @@ const AccountTypeSwitcher = () => {
 
   const handleOnClick = () => {
     toast.success(`Switching account, ${KINDLY_WAIT}`);
-    setIsSwitchingAccountType(true);
     setAccountType(null);
     router.push(urls.ACCOUNT_TYPES);
+    setIsSwitchingAccountType(true);
   };
 
   return (

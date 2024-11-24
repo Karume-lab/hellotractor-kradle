@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { UserRole } from "@prisma/client";
 import { SessionProvider } from "@/providers/SessionProvider";
 import { AccountTypeSwitcher } from "@/components";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import SideBar from "@/components/core/SideBar";
 
 export default async function ProtectedLayout({
   children,
@@ -21,23 +23,27 @@ export default async function ProtectedLayout({
   }
 
   return (
-    <SessionProvider session={session.session} user={session.user}>
-      <SharedLayout>
-        <div className="min-h-screen bg-background">
-          <nav className="border-b">
-            <div className="container mx-auto py-4 flex justify-end gap-x-4">
-              <AccountTypeSwitcher />
-              {session.user.role === UserRole.ADMIN && (
-                <Button asChild>
-                  <Link href={urls.PUBLIC_ADMIN}>Admin Panel</Link>
-                </Button>
-              )}
-              <SignOut children="Sign out" />
-            </div>
-          </nav>
-          <main className="container mx-auto py-4">{children}</main>
-        </div>
-      </SharedLayout>
-    </SessionProvider>
+    <SharedLayout>
+      <SessionProvider session={session.session} user={session.user}>
+        <SidebarProvider>
+          <SidebarTrigger />
+          <SideBar />
+          <div className="min-h-screen bg-background">
+            <nav className="border-b">
+              <div className="container mx-auto py-4 flex justify-end gap-x-4">
+                <AccountTypeSwitcher />
+                {session.user.role === UserRole.ADMIN && (
+                  <Button asChild>
+                    <Link href={urls.PUBLIC_ADMIN}>Admin Panel</Link>
+                  </Button>
+                )}
+                <SignOut children="Sign out" />
+              </div>
+            </nav>
+            <main className="container mx-auto py-4">{children}</main>
+          </div>
+        </SidebarProvider>
+      </SessionProvider>
+    </SharedLayout>
   );
 }
