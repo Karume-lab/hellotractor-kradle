@@ -76,8 +76,6 @@ export const sendMessage = async (values: T_MessageSchema) => {
     if (values.buyerId) messageData.buyerId = values.buyerId;
     if (values.sellerId) messageData.sellerId = values.sellerId;
 
-    console.log("Creating message with data:", messageData);
-
     const message = await prisma.message.create({
       data: messageData,
     });
