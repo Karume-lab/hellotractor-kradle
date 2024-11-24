@@ -3,6 +3,7 @@ import { URL_QUERY_STATES } from "./constants";
 export const urls = {
   // landing page
   LANDING_PAGE: "/",
+  HOME: "/",
   //auth
   GOOGLE_REDIRECT_URI: "/api/auth/google/callback",
   GOOGLE_USER_INFO: "https://www.googleapis.com/oauth2/v1/userinfo",

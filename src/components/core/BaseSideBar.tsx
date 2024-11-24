@@ -18,18 +18,22 @@ interface BaseSideBarProps {
 
 const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
   return (
-    <Sidebar>
+    <Sidebar className="md:w-fit"> {/* Adjust width on large screens */}
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map(({ Icon, redirectTo, label }) => (
                 <SidebarMenuItem key={label}>
                   <SidebarMenuButton asChild>
-                    <Link href={redirectTo}>
-                      <Icon />
-                      <span>{label}</span>
+                    <Link
+                      href={redirectTo}
+                      className="flex flex-col items-center gap-1 h-fit lg:gap-0"
+                    >
+                      <Icon className="w-8 h-8 lg:w-12 lg:h-12" size={20} /> {/* Large icons on larger screens */}
+                      <span className="text-xs lg:text-sm text-center mt-1">
+                        {label}
+                      </span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -39,6 +43,7 @@ const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
+
   );
 };
 
