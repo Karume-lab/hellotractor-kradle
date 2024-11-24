@@ -35,8 +35,7 @@ export const urls = {
   // inbox
   INBOX: "/inbox",
   INBOX_DETAIL: (inboxId: string) => `/inbox/${inboxId}`,
-  API_INBOX: (inboxId: string) =>
-    `/api/data/inbox/${inboxId}`,
+  API_INBOX: (inboxId: string) => `/api/data/inbox/${inboxId}`,
   // tasks
   PUBLIC_TASKS: "/tasks",
   PUBLIC_TASKS_VIEW_EDIT: (taskId: string) => `/tasks/${taskId}`,
@@ -66,6 +65,9 @@ export const urls = {
     `/admin/manage/dealers/create/setup/services?${URL_QUERY_STATES.dealerId}=${dealerId}`,
   PUBLIC_ADMIN_MANAGE_TASKS: "/admin/manage/tasks",
   API_ADMIN: "/api/data/admin",
+  // wishlist
+  WISHLIST: "/wishlist",
+  API_WISHLIST: "/api/data/wishlist",
 };
 
 export const publicPaths = new Set<string>([

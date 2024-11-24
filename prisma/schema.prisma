@@ -37,6 +37,7 @@ model Profile {
   bio               String?
   profilePicture    FileUpload?
   buyer             Buyer?
+  buyerId           String?
   seller            Seller?
   sellerId          String?
   trainedOperatorId String?
@@ -53,38 +54,6 @@ model PasswordResetToken {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   expiresAt DateTime
-}
-
-model Buyer {
-  id        String  @id @default(cuid())
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId String  @unique
-
-  contacts Contact[]
-  messages Message[] @relation("BuyerMessages")
-  inboxes  Inbox[]
-}
-
-model Seller {
-  id        String  @id @default(cuid())
-  isDealer  Boolean @default(false)
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId String  @unique
-
-  contacts   Contact[]
-  services   Service[]
-  messages   Message[]   @relation("SellerMessages")
-  equipments Equipment[]
-
-  licenses     FileUpload[] @relation("SellerLicense")
-  coverPicture FileUpload?  @relation("SellerCoverPicture")
-  logo         FileUpload?  @relation("SellerLogo")
-
-  businessOpeningHours String?
-  businessName         String?
-  businessSlogal       String?
-  businessBio          String?
-  inboxes              Inbox[]
 }
 
 model Inbox {
@@ -176,6 +145,50 @@ model Tractor {
   equipment    Equipment @relation("EquipmentToTractor", fields: [equipmentId], references: [id], onDelete: Cascade)
 }
 
+model Buyer {
+  id        String  @id @default(cuid())
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String  @unique
+
+  contacts Contact[]
+  messages Message[] @relation("BuyerMessages")
+  inboxes  Inbox[]
+
+  wishilist  Wishlist?
+  wishlistId String?
+}
+
+model Wishlist {
+  id String @id @default(cuid())
+
+  buyer   Buyer  @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  buyerId String @unique
+
+  items Equipment[]
+}
+
+model Seller {
+  id        String  @id @default(cuid())
+  isDealer  Boolean @default(false)
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String  @unique
+
+  contacts   Contact[]
+  services   Service[]
+  messages   Message[]   @relation("SellerMessages")
+  equipments Equipment[]
+
+  licenses     FileUpload[] @relation("SellerLicense")
+  coverPicture FileUpload?  @relation("SellerCoverPicture")
+  logo         FileUpload?  @relation("SellerLogo")
+
+  businessOpeningHours String?
+  businessName         String?
+  businessSlogal       String?
+  businessBio          String?
+  inboxes              Inbox[]
+}
+
 model Equipment {
   id            String              @id @default(cuid())
   name          String
@@ -185,6 +198,9 @@ model Equipment {
   condition     EquipmentCondition?
   averageRating Float               @default(0)
   isSold        Boolean             @default(false)
+
+  wishlistId String?
+  wishlist   Wishlist? @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
 
   tractor Tractor? @relation("EquipmentToTractor")
 
@@ -261,10 +277,6 @@ model Review {
 }
 
 model Cart {
-  id String @id @default(cuid())
-}
-
-model WishList {
   id String @id @default(cuid())
 }
 

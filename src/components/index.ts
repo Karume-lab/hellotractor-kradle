@@ -48,6 +48,8 @@ import DealerServicesContainer from "./account-types/DealerServicesContainer";
 import TrainedOperatorServicesContainer from "./account-types/TrainedOperatorServicesContainer";
 // chat
 import ChatsContainer from "./inbox/ChatsContainer";
+// wishlist
+import WishlistContainer from "./wishlist/WishlistContainer";
 
 export {
   // auth
@@ -98,4 +100,6 @@ export {
   TrainedOperatorServicesContainer,
   // chat
   ChatsContainer,
+  // wishlist
+  WishlistContainer,
 };

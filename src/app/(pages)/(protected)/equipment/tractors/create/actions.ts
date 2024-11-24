@@ -82,3 +82,64 @@ export const createEditTractor = async (
     };
   }
 };
+
+export async function addToWishlist(equipmentId: string) {
+  try {
+    const session = await validateRequest();
+    if (!session?.user?.id) {
+      throw new Error("Unauthorized");
+    }
+
+    const buyer = await prisma.buyer.findUnique({
+      where: {
+        id: session.user.profile?.buyer?.id,
+      },
+    });
+
+    if (!buyer) {
+      throw new Error("Buyer profile not found");
+    }
+
+    const equipment = await prisma.equipment.findUnique({
+      where: {
+        id: equipmentId,
+      },
+    });
+
+    if (!equipment) {
+      throw new Error("Equipment not found");
+    }
+
+    let wishlist = await prisma.wishlist.findUnique({
+      where: {
+        buyerId: buyer.id,
+      },
+    });
+
+    if (!wishlist) {
+      wishlist = await prisma.wishlist.create({
+        data: {
+          buyerId: buyer.id,
+        },
+      });
+    }
+
+    await prisma.equipment.update({
+      where: {
+        id: equipmentId,
+      },
+      data: {
+        wishlistId: wishlist.id,
+      },
+    });
+
+    return { message: "Successfully added to wishlist", success: true };
+  } catch (error) {
+    console.error("Error adding to wishlist:", error);
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Failed to add to wishlist",
+    };
+  }
+}
