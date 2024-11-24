@@ -1,6 +1,9 @@
-import { Prisma, Task } from "@prisma/client";
+import { Inbox, Message, Prisma, Task } from "@prisma/client";
 import { ACCOUNT_TYPES_MAPPING } from "./constants";
 import { LucideProps } from "lucide-react";
+import { Server as NetServer, Socket } from "net";
+import { NextApiResponse } from "next";
+import { Server as SocketIOServer } from "socket.io";
 
 export interface TasksPage {
   tasks: Task[];
@@ -31,6 +34,47 @@ export interface TractorsPage {
   nextCursor: string | null;
 }
 
+export const inboxBuyerSellerMessagesDataInclude = {
+  buyer: {
+    include: {
+      profile: true,
+    },
+  },
+  seller: {
+    include: {
+      profile: true,
+      logo: true,
+    },
+  },
+  messages: {
+    include: {
+      buyer: {
+        include: {
+          profile: true,
+        },
+      },
+      seller: {
+        include: {
+          profile: true,
+        },
+      },
+      replyTo: true,
+      replies: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  },
+} satisfies Prisma.InboxInclude;
+
+export type T_InboxBuyerSellerMessagesDataInclude = Prisma.InboxGetPayload<{
+  include: typeof inboxBuyerSellerMessagesDataInclude;
+}>;
+export interface InboxDetailPage {
+  inbox: T_InboxBuyerSellerMessagesDataInclude;
+  nextCursor: string | null;
+}
+
 export type T_Account_Type_Mapping_Value = "buyer" | "seller" | null;
 
 export interface T_Account_Type_Mapping {
@@ -44,4 +88,12 @@ export type T_SideBarItem = {
   label: string;
   Icon: React.FC<LucideProps>;
   redirectTo: string;
+};
+
+export type NextApiResponseServerIO = NextApiResponse & {
+  socket: Socket & {
+    server: NetServer & {
+      io: SocketIOServer;
+    };
+  };
 };

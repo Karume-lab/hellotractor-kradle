@@ -55,7 +55,6 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
   const [accountTypes, setAccountTypes] = useState<T_Account_Type_Mapping[]>(
     () => {
       const updatedUserProfile = user.profile;
-      const isDealer = Boolean(updatedUserProfile?.seller?.isDealer);
 
       return [
         ...(updatedUserProfile?.buyer ? [ACCOUNT_TYPES_MAPPING["buyer"]] : []),
@@ -68,7 +67,6 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({
 
   const [isSwitchingAccountType, setIsSwitchingAccountType] = useState(false);
 
-  const isDealer = Boolean(user.profile?.seller?.isDealer);
   const isBuyer = Boolean(user.profile?.buyer);
   const isSeller = Boolean(user.profile?.seller);
   const isAdmin = user.role === UserRole.ADMIN;

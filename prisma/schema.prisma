@@ -62,6 +62,7 @@ model Buyer {
 
   contacts Contact[]
   messages Message[] @relation("BuyerMessages")
+  inboxes  Inbox[]
 }
 
 model Seller {
@@ -83,6 +84,20 @@ model Seller {
   businessName         String?
   businessSlogal       String?
   businessBio          String?
+  inboxes              Inbox[]
+}
+
+model Inbox {
+  id       String @id @default(cuid())
+  sellerId String
+  buyerId  String
+
+  seller Seller @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  buyer  Buyer  @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+
+  messages Message[] @relation("InboxMessages")
+
+  @@unique([sellerId, buyerId])
 }
 
 model Message {
@@ -98,6 +113,9 @@ model Message {
 
   sellerId String?
   seller   Seller? @relation("SellerMessages", fields: [sellerId], references: [id], onDelete: Cascade)
+
+  inboxId String
+  inbox   Inbox  @relation("InboxMessages", fields: [inboxId], references: [id], onDelete: Cascade)
 }
 
 model Dealer {

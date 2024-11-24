@@ -1,9 +1,8 @@
-import React from "react";
-import ChatsContainer from "@/components/inbox/ChatsContainer";
-
 const InboxPage = () => {
   return (
-      <ChatsContainer />
+    <div>
+      <h1>Chat with Seller</h1>
+    </div>
   );
 };
 

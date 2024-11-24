@@ -1,12 +1,6 @@
 import React from "react";
 import { TractorsContainer } from "@/components";
 
-const ExplorePage = () => {
-  return (
-    <>
-      <TractorsContainer />
-    </>
-  );
-};
+const ExplorePage = () => <TractorsContainer />;
 
 export default ExplorePage;

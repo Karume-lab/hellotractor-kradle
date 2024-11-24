@@ -139,11 +139,11 @@ export const trainedOperatorSchema = z.object({
 export type T_TrainedOperatorSchema = z.infer<typeof trainedOperatorSchema>;
 
 export const messageSchema = z.object({
-  id: z.string().uuid(),
   content: z.string().min(1, "Message content cannot be empty."),
-
-  replyToId: z.string().uuid().nullable(),
-  buyerId: z.string().uuid().nullable(),
-  sellerId: z.string().uuid().nullable(),
+  inboxId: z.string().optional(),
+  replyToId: z.string().optional(),
+  buyerId: z.string().optional(),
+  sellerId: z.string().optional(),
 });
+
 export type T_MessageSchema = z.infer<typeof messageSchema>;

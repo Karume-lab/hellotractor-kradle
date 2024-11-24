@@ -32,6 +32,11 @@ export const urls = {
   CREATE_TRACTOR: "/equipment/tractors/create",
   CREATE_ATTACHMENT: "/equipment/attachments/create",
   API_TRACTORS: "/api/data/tractors",
+  // inbox
+  INBOX: "/inbox",
+  INBOX_DETAIL: (inboxId: string) => `/inbox/${inboxId}`,
+  API_INBOX: (inboxId: string) =>
+    `/api/data/inbox/${inboxId}`,
   // tasks
   PUBLIC_TASKS: "/tasks",
   PUBLIC_TASKS_VIEW_EDIT: (taskId: string) => `/tasks/${taskId}`,
