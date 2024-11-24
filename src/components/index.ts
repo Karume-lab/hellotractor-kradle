@@ -31,6 +31,7 @@ import AuthenticatedHeader from "./core/AuthenticatedHeader";
 import Dashboard from "@/components/dashboard/Dashboard";
 // tractors
 import CreateEditTractorForm from "./dashboard/equipment/tractors/CreateEditTractorForm";
+import TractorsTable from "./dashboard/equipment/tractors/TractorsTable";
 // attachments
 import CreateEditAttachmentForm from "./dashboard/equipment/attachments/CreateEditAttatchmentForm";
 // explore
@@ -83,6 +84,7 @@ export {
   Dashboard,
   // tractors
   CreateEditTractorForm,
+  TractorsTable,
   // attachment
   CreateEditAttachmentForm,
   // explore

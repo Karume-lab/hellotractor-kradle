@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import {
-  tractorSellerAttachmentEquipmentDataInclude,
+  tractorSellerEquipmentDataInclude,
   TractorsPage,
 } from "@/lib/types";
 import { NextRequest } from "next/server";
@@ -50,7 +50,7 @@ export const GET = async (req: NextRequest) => {
           },
         ],
       },
-      include: tractorSellerAttachmentEquipmentDataInclude,
+      include: tractorSellerEquipmentDataInclude,
       take: PAGE_SIZE + 1,
       ...(cursor && { cursor: { id: cursor }, skip: 1 }),
       orderBy: {

@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useContext, useState } from "react";
 import { SortingState, ColumnFiltersState } from "@tanstack/react-table";
 

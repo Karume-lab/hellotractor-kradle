@@ -1,4 +1,4 @@
-import { LinkAsButton } from "@/components";
+import { LinkAsButton, TractorsTable } from "@/components";
 import { urls } from "@/lib/urls";
 import React from "react";
 
@@ -10,6 +10,7 @@ const ManageTractorsPage = () => {
         redirectTo={urls.PUBLIC_ADMIN_MANAGE_TRACTORS_CREATE}
         text="Add Tractor"
       />
+      <TractorsTable />
     </div>
   );
 };

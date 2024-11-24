@@ -1,4 +1,4 @@
-import { UserRole } from "@prisma/client";
+import { EquipmentCondition, UserRole } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { User } from "lucia";
 import { cache } from "react";
@@ -35,4 +35,17 @@ export const formatPrice = (price: number) => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(price);
+};
+
+export const getConditionDisplay = (condition: EquipmentCondition | null) => {
+  switch (condition) {
+    case "BRAND_NEW":
+      return "Brand New";
+    case "SELLER_REFURBISHED":
+      return "Seller Refurbished";
+    case "MANUFACTURER_REFURBISHED":
+      return "Manufacturer Refurbished";
+    default:
+      return "N/A";
+  }
 };
