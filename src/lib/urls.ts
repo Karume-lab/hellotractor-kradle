@@ -49,6 +49,10 @@ export const urls = {
   PUBLIC_ADMIN: "/admin",
   PUBLIC_ADMIN_MANAGE: "/admin/manage",
   PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS: "/admin/manage/trained-operators",
+  PUBLIC_ADMIN_MANAGE_TRACTORS: "/admin/manage/tractors",
+  PUBLIC_ADMIN_MANAGE_TRACTORS_CREATE: "/admin/manage/tractors/create",
+  PUBLIC_ADMIN_MANAGE_ATTACHMENTS: "/admin/manage/attachments",
+  PUBLIC_ADMIN_MANAGE_ATTACHMENTS_CREATE: "/admin/manage/attachments/create",
   PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_CREATE:
     "/admin/manage/trained-operators/create",
   PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_SETUP_CONTACT_INFO: (

@@ -21,6 +21,16 @@ const Dashboard = () => {
         redirectTo={urls.PUBLIC_ADMIN_MANAGE_DEALERS}
         text="Dealers"
       />
+
+      <LinkAsButton
+        redirectTo={urls.PUBLIC_ADMIN_MANAGE_TRACTORS}
+        text="Tractors"
+      />
+
+      <LinkAsButton
+        redirectTo={urls.PUBLIC_ADMIN_MANAGE_ATTACHMENTS}
+        text="Attachments"
+      />
     </>
   );
 };

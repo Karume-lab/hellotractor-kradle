@@ -23,8 +23,15 @@ import {
   tractorXEquipmentSchema,
 } from "@/lib/combined-schemas";
 import { equipmentDefaultValues } from "@/lib/form-defaults";
+import React from "react";
 
-const CreateEditTractorForm = () => {
+interface CreateEditTractorFormProps {
+  isFromAdmin?: boolean;
+}
+
+const CreateEditTractorForm: React.FC<CreateEditTractorFormProps> = ({
+  isFromAdmin,
+}) => {
   const router = useRouter();
   const form = useForm<T_TractorXEquipmentSchema>({
     resolver: zodResolver(tractorXEquipmentSchema),
@@ -40,7 +47,9 @@ const CreateEditTractorForm = () => {
     onSuccess: ({ message }) => {
       toast.success(message);
       form.reset();
-      router.push(urls.TRACTORS);
+      router.push(
+        isFromAdmin ? urls.PUBLIC_ADMIN_MANAGE_TRACTORS : urls.TRACTORS
+      );
     },
     onError: (error: Error) => {
       if (error.message === "Unauthorized") {

@@ -24,7 +24,13 @@ import {
   T_AttachmentXEquipmentSchema,
 } from "@/lib/combined-schemas";
 
-const CreateEditAttachmentForm = () => {
+interface CreateEditAttachmentFormProps {
+  isFromAdmin?: boolean;
+}
+
+const CreateEditAttachmentForm: React.FC<CreateEditAttachmentFormProps> = ({
+  isFromAdmin,
+}) => {
   const router = useRouter();
   const form = useForm<T_AttachmentXEquipmentSchema>({
     resolver: zodResolver(attachmentXEquipmentSchema),
@@ -39,7 +45,9 @@ const CreateEditAttachmentForm = () => {
     onSuccess: ({ message }) => {
       toast.success(message);
       form.reset();
-      router.push(urls.ATTACHMENTS);
+      router.push(
+        isFromAdmin ? urls.PUBLIC_ADMIN_MANAGE_ATTACHMENTS : urls.ATTACHMENTS
+      );
     },
     onError: (error: Error) => {
       if (error.message === "Unauthorized") {
@@ -66,10 +74,7 @@ const CreateEditAttachmentForm = () => {
             <FormItem>
               <FormLabel>Color</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter color ..."
-                  {...field}
-                />
+                <Input placeholder="Enter color ..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
