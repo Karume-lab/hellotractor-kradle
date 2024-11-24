@@ -4,15 +4,17 @@ import { useRouter } from "next/navigation";
 import { useSession } from "@/providers/SessionProvider";
 import { createOrGetInbox } from "@/app/(pages)/(protected)/inbox/actions";
 import { toast } from "sonner";
-import { T_TractorSellerAttachmentEquipmentDataInclude } from "@/lib/types";
+import { T_TractorSellerEquipmentDataInclude } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";
 import { urls } from "@/lib/urls";
-import { MessageCircle } from "lucide-react";
+import { Heart, HeartOff, MessageCircle } from "lucide-react";
 import { addToWishlist } from "@/app/(pages)/(protected)/equipment/tractors/create/actions";
 import { formatPrice } from "@/lib/utils";
+import Image from "next/image";
+import tractor1 from "/img/Core/tractors/tractor1.png";
 
 interface TractorProps {
-  tractor: T_TractorSellerAttachmentEquipmentDataInclude;
+  tractor: T_TractorSellerEquipmentDataInclude;
 }
 
 const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
@@ -65,27 +67,52 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
   };
 
   return (
-    <>
-      <p className="text-2xl font-bold text-primary">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-2 flex flex-col relative w-80 ">
+      <Image
+        src={"/img/Core/tractors/tractor1.png"}
+        alt="tractor"
+        width={200}
+        height={200}
+        className="bg-slate-400 border w-full"
+      />
+      <span className="absolute top-4 right-4 bg-pink-600 text-xs  rounded-2xl p-2 text-primary ">
+        {tractor.equipment.condition}
+      </span>
+      <div className="flex justify-between">
+        <span className="text-2xl font-bold text-primary">
+          {tractor.equipment.name}
+        </span>
+        <Heart />
+        <HeartOff />
+      </div>
+      <span className="text-xs uppercase text-muted-foreground">
+        Nairobi, Kenya
+      </span>
+
+      <div className="flex flex-col my-4">
+        <span>{tractor.fuelCapacity}</span>
+        <span>{tractor.mileage}</span>
+      </div>
+
+      <p className="text-2xl text-green-500 font-bold text-primary">
         {formatPrice(tractor.equipment.price)}
       </p>
-      <span>{tractor.fuelCapacity}</span>
-      <span>{tractor.mileage}</span>
-      {tractor.equipment.description}
-      {tractor.equipment.condition}
       {seller?.businessName ||
         `${seller?.profile.firstName} ${seller?.profile.lastName}`}
       <p>
-        {seller?.businessName && `${seller.businessName} - `}
-        {seller?.profile.firstName} {seller?.profile.lastName}
+        {/* {seller?.businessName && `${seller.businessName} - `}
+        {seller?.profile.firstName} {seller?.profile.lastName} */}
       </p>
 
       {!(seller?.id !== tractor.equipment.sellerId) && (
-        <>
-          <Button className="w-full" onClick={handleContactSellerOnClick}>
+        <div className="flex justify-between gap-2 ">
+          <Button className="grow" variant={"outline"}>
+            Details
+          </Button>
+          <Button className="" onClick={handleContactSellerOnClick}>
             {
               <>
-                <MessageCircle className="mr-2 h-4 w-4" />
+                <MessageCircle className="" />
                 Contact Seller
               </>
             }
@@ -101,9 +128,9 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
               </>
             }
           </Button>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,7 +1,6 @@
 "use client";
 import { useSession } from "@/providers/SessionProvider";
-import { AdminSideBar, SellerSideBar } from "../sidebar";
-import BuyerSideBar from "../sidebar/BuyerSideBar";
+import { AdminSideBar, SellerSideBar, BuyerSideBar } from "../sidebar";
 
 const SideBar = () => {
   const { user, isAdmin, isSeller, isBuyer } = useSession();
