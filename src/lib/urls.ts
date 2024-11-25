@@ -74,8 +74,10 @@ export const urls = {
   // wishlist
   WISHLIST: "/wishlist",
   API_WISHLIST: "/api/data/wishlist",
-  // trained operators:
+  // trained operators
   API_TRAINED_OPERATORS: "/api/data/trained-operators",
+  // dealers
+  API_DEALERS: "/api/data/dealers",
 };
 
 export const publicPaths = new Set<string>([

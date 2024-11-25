@@ -14,6 +14,7 @@ export const QUERY_KEYS = {
   wishlist: "wishlist",
   attachments: "attachments",
   trainedOperators: "trainedOperators",
+  dealers: "dealers",
 };
 
 export const ACCOUNT_TYPES_MAPPING: Record<

@@ -135,3 +135,17 @@ export interface TrainedOperatorsPage {
   trainedOperators: T_TrainedOperatorDataInclude[];
   nextCursor: string | null;
 }
+
+export const dealerDataInclude = {
+  contacts: true,
+  services: true,
+} satisfies Prisma.DealerInclude;
+
+export type T_DealerDataInclude = Prisma.DealerGetPayload<{
+  include: typeof dealerDataInclude;
+}>;
+
+export interface DealersPage {
+  dealers: T_DealerDataInclude[];
+  nextCursor: string | null;
+}

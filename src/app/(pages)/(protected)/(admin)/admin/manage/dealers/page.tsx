@@ -1,4 +1,4 @@
-import { LinkAsButton } from "@/components";
+import { DealersTable, LinkAsButton } from "@/components";
 import { urls } from "@/lib/urls";
 import React from "react";
 
@@ -10,6 +10,7 @@ const ManageDealersPage = () => {
         redirectTo={urls.PUBLIC_ADMIN_MANAGE_DEALERS_CREATE}
         text="Add dealer"
       />
+      <DealersTable />
     </div>
   );
 };
