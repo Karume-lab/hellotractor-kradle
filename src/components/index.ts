@@ -34,6 +34,7 @@ import CreateEditTractorForm from "./dashboard/equipment/tractors/CreateEditTrac
 import TractorsTable from "./dashboard/equipment/tractors/TractorsTable";
 // attachments
 import CreateEditAttachmentForm from "./dashboard/equipment/attachments/CreateEditAttatchmentForm";
+import AttachmentsTable from "./dashboard/equipment/attachments/AttachmentsTable";
 // explore
 import TractorsContainer from "./explore/TractorsContainer";
 // tasks
@@ -87,6 +88,7 @@ export {
   TractorsTable,
   // attachment
   CreateEditAttachmentForm,
+  AttachmentsTable,
   // explore
   TractorsContainer,
   // tasks

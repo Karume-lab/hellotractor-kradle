@@ -12,6 +12,7 @@ export const QUERY_KEYS = {
   tractors: "tractors",
   inbox: "inbox",
   wishlist: "wishlist",
+  attachments: "attachments",
 };
 
 export const ACCOUNT_TYPES_MAPPING: Record<

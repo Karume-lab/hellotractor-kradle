@@ -24,13 +24,36 @@ export const tractorSellerEquipmentDataInclude = {
   },
 } satisfies Prisma.TractorInclude;
 
-export type T_TractorSellerEquipmentDataInclude =
-  Prisma.TractorGetPayload<{
-    include: typeof tractorSellerEquipmentDataInclude;
-  }>;
+export type T_TractorSellerEquipmentDataInclude = Prisma.TractorGetPayload<{
+  include: typeof tractorSellerEquipmentDataInclude;
+}>;
 
 export interface TractorsPage {
   tractors: T_TractorSellerEquipmentDataInclude[];
+  nextCursor: string | null;
+}
+
+export const attachmentSellerEquipmentDataInclude = {
+  equipment: {
+    include: {
+      seller: {
+        include: {
+          profile: true,
+          coverPicture: true,
+          logo: true,
+        },
+      },
+    },
+  },
+} satisfies Prisma.AttachmentInclude;
+
+export type T_AttachmentSellerEquipmentDataInclude =
+  Prisma.AttachmentGetPayload<{
+    include: typeof attachmentSellerEquipmentDataInclude;
+  }>;
+
+export interface AttachmentsPage {
+  attachments: T_AttachmentSellerEquipmentDataInclude[];
   nextCursor: string | null;
 }
 
