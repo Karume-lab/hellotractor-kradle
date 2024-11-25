@@ -74,6 +74,8 @@ export const urls = {
   // wishlist
   WISHLIST: "/wishlist",
   API_WISHLIST: "/api/data/wishlist",
+  // trained operators:
+  API_TRAINED_OPERATORS: "/api/data/trained-operators",
 };
 
 export const publicPaths = new Set<string>([

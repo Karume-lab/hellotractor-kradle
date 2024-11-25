@@ -52,6 +52,8 @@ import TrainedOperatorServicesContainer from "./account-types/TrainedOperatorSer
 import ChatsContainer from "./inbox/ChatsContainer";
 // wishlist
 import WishlistContainer from "./wishlist/WishlistContainer";
+// trained operator
+import TrainedOperatorsTable from "./dashboard/equipment/trained-operators/TrainedOperatorsTable";
 
 export {
   // auth
@@ -106,4 +108,6 @@ export {
   ChatsContainer,
   // wishlist
   WishlistContainer,
+  // trained operators
+  TrainedOperatorsTable,
 };

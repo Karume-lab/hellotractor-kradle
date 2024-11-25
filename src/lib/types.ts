@@ -120,3 +120,18 @@ export type NextApiResponseServerIO = NextApiResponse & {
     };
   };
 };
+
+export const trainedOperatorDataInclude = {
+  profilePicture: true,
+  services: true,
+  contacts: true,
+} satisfies Prisma.TrainedOperatorInclude;
+
+export type T_TrainedOperatorDataInclude = Prisma.TrainedOperatorGetPayload<{
+  include: typeof trainedOperatorDataInclude;
+}>;
+
+export interface TrainedOperatorsPage {
+  trainedOperators: T_TrainedOperatorDataInclude[];
+  nextCursor: string | null;
+}

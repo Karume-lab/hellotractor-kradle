@@ -13,6 +13,7 @@ export const QUERY_KEYS = {
   inbox: "inbox",
   wishlist: "wishlist",
   attachments: "attachments",
+  trainedOperators: "trainedOperators",
 };
 
 export const ACCOUNT_TYPES_MAPPING: Record<
