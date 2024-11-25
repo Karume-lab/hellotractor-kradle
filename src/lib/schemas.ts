@@ -20,8 +20,11 @@ export const signUpSchema = z
 export type T_SignUpSchema = z.infer<typeof signUpSchema>;
 
 export const contactSchema = z.object({
-  email: z.string().optional(),
-  phoneNumber: z.string().optional(),
+  phoneNumber: z
+    .string()
+    .nonempty("Phone number is required")
+    .regex(/^\+?[0-9]\d{1,14}$/, "Invalid phone number"),
+  email: z.string().email("Invalid email address").optional(),
 });
 export type T_ContactSchema = z.infer<typeof contactSchema>;
 
@@ -134,6 +137,7 @@ export const trainedOperatorSchema = z.object({
   displayName: z.string().optional(),
   bio: z.string().optional(),
   services: z.array(serviceSchema).optional(),
+  contacts: z.array(contactSchema).optional(),
 });
 
 export type T_TrainedOperatorSchema = z.infer<typeof trainedOperatorSchema>;

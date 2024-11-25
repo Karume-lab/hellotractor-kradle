@@ -94,7 +94,6 @@ export const createEditBuyerAccount = async (
     };
   }
 };
-
 export const createEditTrainedOperator = async (
   values: T_TrainedOperatorSchema,
   id?: string,
@@ -107,12 +106,20 @@ export const createEditTrainedOperator = async (
 
   const transformedData = {
     ...values,
-    services: values.services
+    services: values.services?.length
       ? {
           create: values.services.map((service) => ({
             title: service.title,
             description: service.description || "",
             price: service.price,
+          })),
+        }
+      : undefined,
+    contacts: values.contacts?.length
+      ? {
+          create: values.contacts.map((contact) => ({
+            phoneNumber: contact.phoneNumber || null,
+            email: contact.email || null,
           })),
         }
       : undefined,
@@ -132,9 +139,7 @@ export const createEditTrainedOperator = async (
     };
   } else {
     const newTrainedOperator = await prisma.trainedOperator.create({
-      data: {
-        ...transformedData,
-      },
+      data: transformedData,
     });
 
     return {
