@@ -1,4 +1,3 @@
-
 # Project Overview
 
 ## Tech Stack
@@ -78,6 +77,7 @@ PostgreSQL with Prisma ORM is used for managing entities like users, products, a
 ## Deployment
 
 * **Frontend (Vercel)** : Deployed on Vercel for serverless Next.js hosting.
+  * [Link](https://hellotractor-kradle.vercel.app/)
 * **Database (Render)** : PostgreSQL is hosted on Render.
 
 ### Deployment Steps
@@ -107,7 +107,3 @@ PostgreSQL with Prisma ORM is used for managing entities like users, products, a
 
 * **Figma Links** : Access the design system and UI components on Figma [here](https://www.figma.com/design/bfhmmtyYLtn3MAezOyzF5i/HelloTractor--Kradle?node-id=2417-381&t=lzhXCSqaldcao5vf-1).
 * **Canva Slides** : View the presentation slides for this project on Canva [here](https://www.canva.com/design/DAGXkfzepdE/fD__aRPZwmORCYoCjkz8QQ/edit?utm_content=DAGXkfzepdE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton).
-
----
-
-This should provide a comprehensive overview while keeping it simple and adding the necessary links for design and presentation assets.
