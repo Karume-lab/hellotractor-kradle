@@ -12,6 +12,7 @@ import { addToWishlist } from "@/app/(pages)/(protected)/equipment/tractors/crea
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import tractor1 from "/img/Core/tractors/tractor1.png";
+import { useState } from "react";
 
 interface TractorProps {
   tractor: T_TractorSellerEquipmentDataInclude;
@@ -20,6 +21,7 @@ interface TractorProps {
 const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
   const router = useRouter();
   const { user, session } = useSession();
+  const [wishlist, setWishlist] = useState(false);
 
   if (!session) {
     toast.error("You need to log in to contact the seller");
@@ -64,6 +66,7 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
 
   const handleAddToWishlistClick = (equipmentId: string) => {
     addToWishlistmutation.mutate(equipmentId);
+    setWishlist(!wishlist);
   };
 
   return (
@@ -73,17 +76,18 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
         alt="tractor"
         width={200}
         height={200}
-        className="bg-slate-400 border w-full"
+        className="border w-full"
       />
       <span className="absolute top-4 right-4 bg-pink-600 text-xs  rounded-2xl p-2 text-primary ">
         {tractor.equipment.condition}
       </span>
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-2">
         <span className="text-2xl font-bold text-primary">
           {tractor.equipment.name}
         </span>
-        <Heart />
-        <HeartOff />
+        <div onClick={() => handleAddToWishlistClick(tractor.equipment.id)}>
+          {wishlist ? <HeartOff /> : <Heart />}
+        </div>
       </div>
       <span className="text-xs uppercase text-muted-foreground">
         Nairobi, Kenya
@@ -114,17 +118,6 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
               <>
                 <MessageCircle className="" />
                 Contact Seller
-              </>
-            }
-          </Button>
-          <Button
-            className="w-full"
-            onClick={() => handleAddToWishlistClick(tractor.equipment.id)}
-          >
-            {
-              <>
-                <MessageCircle className="mr-2 h-4 w-4" />
-                Add to wishlist
               </>
             }
           </Button>
