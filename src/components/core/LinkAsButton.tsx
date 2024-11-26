@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Loader from "../ui/Loader";
 
-interface LinkAsButtonkProps
+interface LinkAsButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     ButtonProps {
   redirectTo: string;
@@ -16,7 +16,7 @@ interface LinkAsButtonkProps
   icon?: React.ReactNode;
 }
 
-const LinkAsButtonk = React.forwardRef<HTMLButtonElement, LinkAsButtonkProps>(
+const LinkAsButton = React.forwardRef<HTMLButtonElement, LinkAsButtonProps>(
   (
     {
       redirectTo,
@@ -47,8 +47,8 @@ const LinkAsButtonk = React.forwardRef<HTMLButtonElement, LinkAsButtonkProps>(
             </>
           ) : (
             <>
-              {icon && <span className="mr-2">{icon}</span>}
               <span>{text || children}</span>
+              {icon && <span className="mr-2">{icon}</span>}
             </>
           )}
         </Link>
@@ -57,6 +57,6 @@ const LinkAsButtonk = React.forwardRef<HTMLButtonElement, LinkAsButtonkProps>(
   }
 );
 
-LinkAsButtonk.displayName = "LinkAsButtonk";
+LinkAsButton.displayName = "LinkAsButton";
 
-export default LinkAsButtonk;
+export default LinkAsButton;

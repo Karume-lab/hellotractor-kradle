@@ -10,6 +10,7 @@ import { QUERY_KEYS } from "@/lib/constants";
 import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "../ui/button";
+import {motion} from 'framer-motion';
 
 const FeaturedAttachmentsContainer = () => {
   const {
@@ -33,7 +34,12 @@ const FeaturedAttachmentsContainer = () => {
   });
 
   if (status === "pending") {
-    return <p>Loading ...</p>;
+    return <div className="flex justify-center items-center space-x-2">
+    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+  </div>
+  
   }
 
   if (status === "error") {
@@ -47,52 +53,72 @@ const FeaturedAttachmentsContainer = () => {
   }
 
   return (
-    <div className="px-8">
-      <h2 className="text-3xl font-semibold my-4">Featured Attachments</h2>
-      <InfiniteScrollContainer
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
-        onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
+    <div className="px-4 sm:px-6 lg:px-8 mb-8">
+  <h2 className="text-3xl font-semibold my-6 text-center">Featured Attachments</h2>
+  <InfiniteScrollContainer
+    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+    onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
+  >
+    {attachments.map((attachment, index) => (
+      <motion.div
+        key={attachment.id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: index * 0.1 }}
+        className="rounded-lg border bg-card text-card-foreground shadow-md p-4 flex flex-col relative w-full"
       >
-        {attachments.map((attachment) => (
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-2 flex flex-col relative w-full">
-            <Image
-              src={"/img/Core/tractors/tractor1.png"}
-              alt="attachment"
-              width={200}
-              height={200}
-              className="border w-full"
-            />
-            <span className="absolute top-4 right-4 bg-pink-600 text-xs rounded-2xl p-2 text-primary">
-              {attachment.equipment.condition}
-            </span>
-            <div className="flex justify-between mt-2">
-              <span className="text-2xl font-bold text-primary">
-                {attachment.equipment.name}
-              </span>
-            </div>
-            <span className="text-xs uppercase text-muted-foreground">
-              Nairobi, Kenya
-            </span>
+        {/* Attachment Image */}
+        <div className="w-full h-48 overflow-hidden rounded-lg">
+          <Image
+            src={"/img/Core/tractors/tractor1.png"}
+            alt="attachment"
+            width={200}
+            height={200}
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-            <div className="flex flex-col my-4">
-              <span>{attachment.color}</span>
-            </div>
+        {/* Condition Badge */}
+        <span className="absolute top-4 right-4 bg-pink-600 text-white text-xs rounded-full px-3 py-1 shadow-md">
+          {attachment.equipment.condition}
+        </span>
 
-            <p className="text-2xl text-green-500 font-bold text-primary">
-              {formatPrice(attachment.equipment.price)}
-            </p>
+        {/* Attachment Name and Location */}
+        <div className="mt-4">
+          <h3 className="text-lg font-bold text-primary">{attachment.equipment.name}</h3>
+          <span className="block text-xs text-gray-500 uppercase">Nairobi, Kenya</span>
+        </div>
 
-            <div className="flex justify-between gap-2">
-              <Button className="grow" variant={"outline"}>
-                Details
-              </Button>
-            </div>
-          </div>
-        ))}
+        {/* Additional Info */}
+        <div className="flex flex-col my-4 text-sm text-gray-600">
+          <span>Color: {attachment.color}</span>
+        </div>
 
-        {isFetchingNextPage && <Loader className="my-4" />}
-      </InfiniteScrollContainer>
-    </div>
+        {/* Price */}
+        <p className="text-2xl text-green-500 font-bold mb-4">{formatPrice(attachment.equipment.price)}</p>
+
+        {/* Details Button */}
+        <div className="flex">
+          <Button className="w-full" variant={"outline"}>
+            Details
+          </Button>
+        </div>
+      </motion.div>
+    ))}
+
+    {/* Loader for Infinite Scroll */}
+    {isFetchingNextPage && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Loader className="my-4" />
+      </motion.div>
+    )}
+  </InfiniteScrollContainer>
+</div>
+
 
   );
 };
