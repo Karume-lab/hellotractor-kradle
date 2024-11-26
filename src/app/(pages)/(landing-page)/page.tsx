@@ -14,6 +14,7 @@ const LandingPage = async () => {
 
   return (
     <>
+
       {!session.user && <HeroSection />}
 
       <FeaturedTractorsContainer />

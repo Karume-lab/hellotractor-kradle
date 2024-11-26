@@ -9,6 +9,8 @@ import { urls } from "@/lib/urls";
 const SignInWithGoogle = () => {
   return (
     <Button
+      variant={"outline"}
+      className="w-full"
       onClick={async () => {
         const res = await getGoogleOAuthConsentUrl();
         if (res.url) {
