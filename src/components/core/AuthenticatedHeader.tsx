@@ -1,23 +1,9 @@
 "use client";
 import React from "react";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
-import { Monitor } from "lucide-react";
-import SignUpToday from "../auth/SignUpToday";
-import ThemeChanger from "./ThemeChanger";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { urls } from "@/lib/urls";
 import AccountTypeSwitcher from "../auth/AccountTypeSwitcher";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { UserRole } from "@prisma/client";
 import SignOut from "../auth/SignOutButton";
@@ -27,7 +13,7 @@ const AuthenticatedHeader = () => {
   const { user } = useSession();
 
   return (
-    <header>
+    <header className="flex items-center justify-between px-2">
       <Image
         src="/img/Core/Logos/HT_LOGO_RGB_Orange.png"
         alt="logo"
@@ -35,21 +21,15 @@ const AuthenticatedHeader = () => {
         height={150}
       />
 
-      <nav >
-        <div>
-          <AccountTypeSwitcher />
-          {user.role === UserRole.ADMIN && (
-            <Button asChild>
-              <Link href={urls.PUBLIC_ADMIN}>Admin Panel</Link>
-            </Button>
-          )}
-          <SignOut children="Sign out" />
-        </div>
+      <nav className="flex items-center gap-x-4">
+        <AccountTypeSwitcher />
+        {user.role === UserRole.ADMIN && (
+          <Button asChild>
+            <Link href={urls.PUBLIC_ADMIN}>Admin Panel</Link>
+          </Button>
+        )}
+        <SignOut children="Sign out" />
       </nav>
-
-      <div className="flex flex-row gap-4 items-center">
-        {/* <ThemeChanger /> */}
-      </div>
     </header>
   );
 };
