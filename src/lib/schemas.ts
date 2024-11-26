@@ -69,9 +69,16 @@ export const sellerSchema = z.object({
 });
 export type T_SellerSchema = z.infer<typeof sellerSchema>;
 
+const locationSchema = z.object({
+  address: z.string().optional(),
+  countryId: z.string().optional(),
+  countyId: z.string().optional(),
+});
+
 export const dealerSchema = z.object({
   name: z.string(),
   contacts: z.array(contactSchema).default([]),
+  locations: z.array(locationSchema).default([]),
 });
 export type T_DealerSchema = z.infer<typeof dealerSchema>;
 

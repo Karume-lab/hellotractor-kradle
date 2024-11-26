@@ -86,30 +86,6 @@ model Message {
   inbox   Inbox  @relation("InboxMessages", fields: [inboxId], references: [id], onDelete: Cascade)
 }
 
-model Dealer {
-  id       String    @id @default(cuid())
-  name     String
-  contacts Contact[]
-  services Service[]
-}
-
-model TrainedOperator {
-  id String @id @default(cuid())
-
-  firstName   String
-  lastName    String
-  middleName  String?
-  displayName String?
-  bio         String?
-
-  isVerified Boolean? @default(true)
-
-  profilePicture FileUpload?
-  services       Service[]
-
-  contacts Contact[]
-}
-
 model Service {
   id String @id @default(cuid())
 
@@ -279,8 +255,57 @@ model Cart {
   id String @id @default(cuid())
 }
 
-model Location {
+model TrainedOperator {
   id String @id @default(cuid())
+
+  firstName   String
+  lastName    String
+  middleName  String?
+  displayName String?
+  bio         String?
+
+  isVerified Boolean? @default(true)
+
+  profilePicture FileUpload?
+  services       Service[]
+
+  contacts Contact[]
+}
+
+model Dealer {
+  id        String     @id @default(cuid())
+  name      String
+  contacts  Contact[]
+  services  Service[]
+  locations Location[]
+}
+
+model Location {
+  id        String  @id @default(cuid())
+  address   String?
+  countryId String?
+  countyId  String?
+  dealerId  String
+
+  dealer  Dealer   @relation(fields: [dealerId], references: [id])
+  country Country? @relation(fields: [countryId], references: [id])
+  county  County?  @relation(fields: [countyId], references: [id])
+}
+
+model Country {
+  id        String     @id @default(cuid())
+  name      String
+  locations Location[]
+  counties  County[]
+}
+
+model County {
+  id        String  @id @default(cuid())
+  name      String
+  countryId String
+  country   Country @relation(fields: [countryId], references: [id]) // Define relationship
+
+  locations Location[]
 }
 
 model Notification {

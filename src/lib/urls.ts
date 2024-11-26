@@ -76,6 +76,8 @@ export const urls = {
   API_TRAINED_OPERATORS: "/api/data/trained-operators",
   // dealers
   API_DEALERS: "/api/data/dealers",
+  // countries
+  API_COUNTRIES: "/api/data/countries",
 };
 
 export const publicPaths = new Set<string>([

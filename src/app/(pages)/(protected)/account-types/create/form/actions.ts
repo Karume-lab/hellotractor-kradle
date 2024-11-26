@@ -148,11 +148,15 @@ export const createEditTrainedOperator = async (
     };
   }
 };
-
 interface CreateEditDealerArgs {
   id?: string;
   name: string;
   contacts: T_ContactSchema[];
+  locations: {
+    address?: string;
+    countryId?: string;
+    countyId?: string;
+  }[];
 }
 
 export const createEditDealer = async (
@@ -164,6 +168,25 @@ export const createEditDealer = async (
     const { user } = await validateRequest();
     if (!user || user.role !== UserRole.ADMIN) {
       throw new Error("Unauthorized");
+    }
+
+    const countryExists = await prisma.country.findUnique({
+      where: {
+        id: args.locations[0]?.countryId,
+      },
+    });
+    if (!countryExists) {
+      throw new Error("Invalid country selected");
+    }
+
+    const countyExists = await prisma.county.findUnique({
+      where: {
+        id: args.locations[0]?.countyId,
+        countryId: countryExists.id,
+      },
+    });
+    if (!countyExists) {
+      throw new Error("Invalid county selected for the given country");
     }
 
     if (isEditing && id) {
@@ -178,11 +201,26 @@ export const createEditDealer = async (
               phoneNumber: contact.phoneNumber,
             })),
           },
+          locations: {
+            deleteMany: {},
+            create: args.locations.map((location) => ({
+              address: location.address,
+              countryId: location.countryId,
+              countyId: location.countyId,
+            })),
+          },
         },
         include: {
           contacts: true,
+          locations: {
+            include: {
+              country: true,
+              county: true,
+            },
+          },
         },
       });
+
       return {
         message: "Dealer updated successfully",
         dealer: updatedDealer,
@@ -201,11 +239,29 @@ export const createEditDealer = async (
                 },
               }
             : {}),
+          ...(args.locations.length > 0
+            ? {
+                locations: {
+                  create: args.locations.map((location) => ({
+                    address: location.address,
+                    countryId: location.countryId,
+                    countyId: location.countyId,
+                  })),
+                },
+              }
+            : {}),
         },
         include: {
           contacts: true,
+          locations: {
+            include: {
+              country: true,
+              county: true,
+            },
+          },
         },
       });
+
       return {
         message: "Dealer created successfully",
         dealer: newDealer,
@@ -216,6 +272,8 @@ export const createEditDealer = async (
     throw new Error(
       error instanceof Error ? error.message : "Failed to process dealer"
     );
+  } finally {
+    await prisma.$disconnect();
   }
 };
 

@@ -30,7 +30,7 @@ const CreateEditTrainedOperatorForm = () => {
     defaultValues: {
       ...profileDefaultValues,
       services: [],
-      contacts: [{ phoneNumber: "", email: "" }],
+      contacts: [],
     },
   });
 
@@ -56,7 +56,7 @@ const CreateEditTrainedOperatorForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4 py-4 px-16">
         {/* Basic Information */}
         <FormField
           control={form.control}
