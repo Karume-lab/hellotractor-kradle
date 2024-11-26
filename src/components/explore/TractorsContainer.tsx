@@ -48,6 +48,7 @@ const TractorsContainer = () => {
 
   return (
     <InfiniteScrollContainer
+      className="flex"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {tractors.map((tractor) => (

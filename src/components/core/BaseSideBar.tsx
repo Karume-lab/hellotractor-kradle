@@ -19,7 +19,6 @@ interface BaseSideBarProps {
 const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
   return (
     <Sidebar>
-      {/* Adjust width on large screens */}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>

@@ -16,12 +16,19 @@ export default async function LandingLayout({
     <SharedLayout>
       <SessionProvider session={session.session} user={session.user}>
         <SidebarProvider>
-          <SideBar />
-          <main className="w-full">
-            <SidebarTrigger />
-            <AuthenticatedHeader />
-            <div>{children}</div>
-          </main>
+          <div className="flex h-full min-h-screen">
+            {/* Sidebar */}
+            <div className="flex-shrink-0">
+              <SideBar />
+            </div>
+
+            {/* Main Content */}
+            <main className="flex-grow flex flex-col">
+              <SidebarTrigger />
+              <AuthenticatedHeader />
+              <div className="flex-grow">{children}</div>
+            </main>
+          </div>
         </SidebarProvider>
       </SessionProvider>
     </SharedLayout>
