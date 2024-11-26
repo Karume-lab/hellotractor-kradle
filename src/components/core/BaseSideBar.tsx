@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { T_SideBarItem } from "@/lib/types";
+import Image from "next/image";
 
 interface BaseSideBarProps {
   items: T_SideBarItem[];
@@ -23,6 +24,14 @@ const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarMenuItem>
+                <Image
+                  src="/img/Core/Logos/HT_LOGO_RGB_Orange.png"
+                  alt="logo"
+                  width={150}
+                  height={150}
+                />
+              </SidebarMenuItem>
               {items.map(({ Icon, redirectTo, label }) => (
                 <SidebarMenuItem key={label}>
                   <SidebarMenuButton asChild>

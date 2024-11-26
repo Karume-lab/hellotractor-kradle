@@ -4,7 +4,7 @@ import { urls } from "@/lib/urls";
 import { SharedLayout } from "@/layouts";
 import { SessionProvider } from "@/providers/SessionProvider";
 import { AuthenticatedHeader } from "@/components";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import SideBar from "@/components/core/SideBar";
 
 export default async function ProtectedLayout({
@@ -22,7 +22,6 @@ export default async function ProtectedLayout({
     <SharedLayout>
       <SessionProvider session={session.session} user={session.user}>
         <SidebarProvider>
-          <SidebarTrigger />
           {/* Sidebar */}
           <div className="flex-shrink-0">
             <SideBar />

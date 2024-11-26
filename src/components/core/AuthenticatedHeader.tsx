@@ -8,18 +8,16 @@ import Link from "next/link";
 import { UserRole } from "@prisma/client";
 import SignOut from "../auth/SignOutButton";
 import { useSession } from "@/providers/SessionProvider";
+import { SidebarTrigger } from "../ui/sidebar";
 
 const AuthenticatedHeader = () => {
   const { user } = useSession();
 
   return (
-    <header className="flex items-center justify-between px-2">
-      <Image
-        src="/img/Core/Logos/HT_LOGO_RGB_Orange.png"
-        alt="logo"
-        width={150}
-        height={150}
-      />
+    <header className="flex items-center justify-between px-2 bg-gray-200 py-4">
+      <div className="flex items-center">
+        <SidebarTrigger />
+      </div>
 
       <nav className="flex items-center gap-x-4">
         <AccountTypeSwitcher />
