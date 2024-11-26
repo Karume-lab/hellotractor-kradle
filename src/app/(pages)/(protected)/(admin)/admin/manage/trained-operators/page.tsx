@@ -1,4 +1,4 @@
-import { LinkAsButton } from "@/components";
+import { LinkAsButton, TrainedOperatorsTable } from "@/components";
 import { urls } from "@/lib/urls";
 import React from "react";
 
@@ -10,6 +10,7 @@ const ManageTrainedOperatorsPage = () => {
         redirectTo={urls.PUBLIC_ADMIN_MANAGE_TRAINED_OPERATORS_CREATE}
         text="Add trained operator"
       />
+      <TrainedOperatorsTable />
     </div>
   );
 };

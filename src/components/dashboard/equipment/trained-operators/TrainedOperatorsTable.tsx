@@ -7,73 +7,41 @@ import { PAGE_SIZE, QUERY_KEYS } from "@/lib/constants";
 import { DataTable } from "@/components/core/DataTable";
 import { DataTableProvider } from "@/providers/DataTableProvider";
 import { ColumnDef } from "@tanstack/react-table";
-import { getConditionDisplay } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { T_TractorSellerEquipmentDataInclude, TractorsPage } from "@/lib/types";
-import { Tractor } from "@prisma/client";
+import {
+  T_TrainedOperatorDataInclude,
+  TrainedOperatorsPage,
+} from "@/lib/types";
+import { TrainedOperator } from "@prisma/client";
 
-const columns: ColumnDef<Tractor & T_TractorSellerEquipmentDataInclude>[] = [
+const columns: ColumnDef<TrainedOperator & T_TrainedOperatorDataInclude>[] = [
   {
-    accessorKey: "equipment.name",
-    header: "Name",
-  },
-  {
-    accessorKey: "equipment.price",
-    header: "Price",
-  },
-  {
-    accessorKey: "mileage",
-    header: "Mileage",
-  },
-  {
-    accessorKey: "fuelCapacity",
-    header: "Fuel Capacity",
-  },
-  {
-    accessorKey: "condition",
-    header: "Condition",
+    accessorKey: "displayName",
+    header: "Display Name",
     cell: ({ row }) =>
-      row.original?.equipment.condition ? (
-        <Badge variant="secondary">
-          {getConditionDisplay(row.original.equipment.condition)}
-        </Badge>
-      ) : (
-        "N/A"
-      ),
+      row.original.displayName ||
+      `${row.original.firstName} ${row.original.lastName}`,
   },
   {
-    accessorKey: "seller",
-    header: "Seller",
-    cell: ({ row }) => {
-      if (!row.original?.equipment.seller) return "N/A";
-      return (
-        row.original.equipment.seller.businessName ||
-        `${row.original.equipment.seller.profile.firstName} ${row.original.equipment.seller.profile.lastName}`
-      );
-    },
+    accessorKey: "firstName",
+    header: "First Name",
   },
   {
-    accessorKey: "averageRating",
-    header: "Rating",
-    cell: ({ row }) =>
-      row.original?.equipment.averageRating
-        ? `${row.original.equipment.averageRating.toFixed(1)} ★`
-        : "No ratings",
+    accessorKey: "lastName",
+    header: "Last Name",
   },
   {
-    accessorKey: "status",
+    accessorKey: "isVerified",
     header: "Status",
     cell: ({ row }) => (
-      <Badge
-        variant={row.original?.equipment.isSold ? "destructive" : "default"}
-      >
-        {row.original?.equipment.isSold ? "Sold" : "Available"}
+      <Badge variant={row.original.isVerified ? "default" : "secondary"}>
+        {row.original.isVerified ? "Verified" : "Unverified"}
       </Badge>
     ),
   },
 ];
 
-const TractorsTable = () => {
+const TrainedOperatorsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
@@ -84,20 +52,21 @@ const TractorsTable = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.tractors],
+    queryKey: [QUERY_KEYS.trainedOperators],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(
-          urls.API_TRACTORS,
+          urls.API_TRAINED_OPERATORS,
           pageParam ? { searchParams: { cursor: pageParam } } : {}
         )
-        .json<TractorsPage>(),
+        .json<TrainedOperatorsPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
-  const tractors = data?.pages.flatMap((page) => page.tractors) || [];
-  const totalItems = tractors.length + (hasNextPage ? PAGE_SIZE : 0);
+  const trainedOperators =
+    data?.pages.flatMap((page) => page.trainedOperators) || [];
+  const totalItems = trainedOperators.length + (hasNextPage ? PAGE_SIZE : 0);
   const totalPages = Math.ceil(totalItems / PAGE_SIZE);
 
   const handlePageChange = async (newPage: number) => {
@@ -114,23 +83,28 @@ const TractorsTable = () => {
   const getCurrentPageData = () => {
     const start = (currentPage - 1) * PAGE_SIZE;
     const end = start + PAGE_SIZE;
-    return tractors.slice(start, end);
+    return trainedOperators.slice(start, end);
   };
 
   type SearchableColumn = {
     key:
-      | keyof T_TractorSellerEquipmentDataInclude
-      | "tractor.mileage"
-      | "tractor.fuelCapacity";
+      | keyof T_TrainedOperatorDataInclude
+      | "firstName"
+      | "lastName"
+      | "displayName";
     label: string;
   };
 
-  const searchableColumns: SearchableColumn[] = [];
+  const searchableColumns: SearchableColumn[] = [
+    { key: "firstName", label: "First Name" },
+    { key: "lastName", label: "Last Name" },
+    { key: "displayName", label: "Display Name" },
+  ];
 
   if (status === "pending") {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
-        <div className="text-gray-500">Loading tractors...</div>
+        <div className="text-gray-500">Loading trained operators...</div>
       </div>
     );
   }
@@ -138,7 +112,7 @@ const TractorsTable = () => {
   if (status === "error") {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
-        <div className="text-red-500">Error loading tractors</div>
+        <div className="text-red-500">Error loading trained operators</div>
       </div>
     );
   }
@@ -149,7 +123,7 @@ const TractorsTable = () => {
         <DataTable
           data={getCurrentPageData()}
           columns={columns as any}
-          noun="tractors"
+          noun="trained operators"
           hasNextPage={hasNextPage}
           isFetching={isFetching}
           isLoadingMore={isFetchingNextPage}
@@ -162,4 +136,4 @@ const TractorsTable = () => {
   );
 };
 
-export default TractorsTable;
+export default TrainedOperatorsTable;

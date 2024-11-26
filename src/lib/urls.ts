@@ -27,12 +27,13 @@ export const urls = {
   DASHBOARD: "/dashboard",
   // tractors
   TRACTORS: "/equipment/tractors",
+  API_TRACTORS: "/api/data/tractors",
   // attachments
   ATTACHMENTS: "/equipment/attachments",
   VIEW_EDIT_TRACTOR: (tractorId: string) => `/equipment/tractors/${tractorId}`,
   CREATE_TRACTOR: "/equipment/tractors/create",
   CREATE_ATTACHMENT: "/equipment/attachments/create",
-  API_TRACTORS: "/api/data/tractors",
+  API_ATTACHMENTS: "/api/data/attachments",
   // inbox
   INBOX: "/inbox",
   INBOX_DETAIL: (inboxId: string) => `/inbox/${inboxId}`,
@@ -73,6 +74,10 @@ export const urls = {
   // wishlist
   WISHLIST: "/wishlist",
   API_WISHLIST: "/api/data/wishlist",
+  // trained operators
+  API_TRAINED_OPERATORS: "/api/data/trained-operators",
+  // dealers
+  API_DEALERS: "/api/data/dealers",
 };
 
 export const publicPaths = new Set<string>([

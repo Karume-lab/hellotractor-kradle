@@ -1,4 +1,4 @@
-import { LinkAsButton } from "@/components";
+import { AttachmentsTable, LinkAsButton } from "@/components";
 import { urls } from "@/lib/urls";
 import React from "react";
 
@@ -10,6 +10,7 @@ const ManageAttachmentsPage = () => {
         redirectTo={urls.PUBLIC_ADMIN_MANAGE_ATTACHMENTS_CREATE}
         text="Add attachment"
       />
+      <AttachmentsTable />
     </div>
   );
 };

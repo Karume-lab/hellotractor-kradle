@@ -34,6 +34,7 @@ import CreateEditTractorForm from "./dashboard/equipment/tractors/CreateEditTrac
 import TractorsTable from "./dashboard/equipment/tractors/TractorsTable";
 // attachments
 import CreateEditAttachmentForm from "./dashboard/equipment/attachments/CreateEditAttatchmentForm";
+import AttachmentsTable from "./dashboard/equipment/attachments/AttachmentsTable";
 // explore
 import TractorsContainer from "./explore/TractorsContainer";
 // tasks
@@ -51,6 +52,10 @@ import TrainedOperatorServicesContainer from "./account-types/TrainedOperatorSer
 import ChatsContainer from "./inbox/ChatsContainer";
 // wishlist
 import WishlistContainer from "./wishlist/WishlistContainer";
+// trained operators
+import TrainedOperatorsTable from "./dashboard/equipment/trained-operators/TrainedOperatorsTable";
+// dealers
+import DealersTable from "./dashboard/equipment/dealers/DealersTable";
 
 export {
   // auth
@@ -87,6 +92,7 @@ export {
   TractorsTable,
   // attachment
   CreateEditAttachmentForm,
+  AttachmentsTable,
   // explore
   TractorsContainer,
   // tasks
@@ -104,4 +110,8 @@ export {
   ChatsContainer,
   // wishlist
   WishlistContainer,
+  // trained operators
+  TrainedOperatorsTable,
+  // dealers
+  DealersTable,
 };
