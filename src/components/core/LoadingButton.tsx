@@ -28,7 +28,7 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(
       <Button
         ref={ref}
         disabled={isLoading}
-        className={cn("flex items-center gap-2", className)}
+        className={cn("flex items-center gap-2 w-full", className)}
         {...props}
       >
         {isLoading ? (
