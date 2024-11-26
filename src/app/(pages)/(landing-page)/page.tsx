@@ -17,18 +17,25 @@ const LandingPage = async () => {
 
   return (
     <>
-
       {!session.user && <HeroSection />}
 
       <FeaturedTractorsContainer />
       <FeaturedAttachmentsContainer />
 
-      <LinkAsButton className="w-fit mx-auto" text="View More" redirectTo={urls.EXPLORE} />
-      <CategorySection />
-      <ValueProposition />
-      <Testimonials />
+      <LinkAsButton
+        className="w-fit mx-auto"
+        text="View More"
+        redirectTo={urls.EXPLORE}
+      />
 
-      {!session.user && <Footer />}
+      {!session.user && (
+        <>
+          <CategorySection />
+          <ValueProposition />
+          <Testimonials />
+          <Footer />
+        </>
+      )}
     </>
   );
 };
