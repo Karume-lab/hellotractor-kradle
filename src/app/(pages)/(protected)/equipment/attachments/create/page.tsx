@@ -4,7 +4,9 @@ import { CreateEditAttachmentForm } from "@/components";
 const NewTractorPage = () => {
   return (
     <>
-      <div>Create Attachment</div>
+      <h1 className="text-4xl text-center my-4">
+        Fill in the attachment details below
+      </h1>
       <CreateEditAttachmentForm />
     </>
   );

@@ -3,7 +3,7 @@ import { useSession } from "@/providers/SessionProvider";
 import { AdminSideBar, SellerSideBar, BuyerSideBar } from "../sidebar";
 
 const SideBar = () => {
-  const { user, isAdmin, isSeller, isBuyer } = useSession();
+  const { user, accountType, isAdmin } = useSession();
 
   if (!user) {
     return;
@@ -11,9 +11,11 @@ const SideBar = () => {
 
   return (
     <>
-      {isAdmin && <AdminSideBar />}
-      {isBuyer && <BuyerSideBar />}
-      {isSeller && <SellerSideBar />}
+      {isAdmin &&
+        accountType?.value !== "buyer" &&
+        accountType?.value !== "seller" && <AdminSideBar />}
+      {accountType?.value === "buyer" && <BuyerSideBar />}
+      {accountType?.value === "seller" && <SellerSideBar />}
     </>
   );
 };

@@ -5,8 +5,13 @@ import React from "react";
 const TractorsPage = () => {
   return (
     <>
-      <span>List of attachments</span>
-      <LinkAsButton redirectTo={urls.CREATE_ATTACHMENT} text="Add Attachment" />
+      <div className="flex items-center justify-center gap-x-4">
+        <h1 className="text-4xl text-center my-4">List of Attachments</h1>
+        <LinkAsButton
+          redirectTo={urls.CREATE_ATTACHMENT}
+          text="Add Attachment"
+        />
+      </div>
       <AttachmentsTable fetchUrl={urls.API_SELLER_ATTACHMENTS} />
     </>
   );

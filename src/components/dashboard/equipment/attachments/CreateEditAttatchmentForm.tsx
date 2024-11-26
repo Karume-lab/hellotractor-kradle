@@ -65,7 +65,7 @@ const CreateEditAttachmentForm: React.FC<CreateEditAttachmentFormProps> = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4 py-4 px-16">
         <CreateEditEquipmentFormFields form={form} />
         <FormField
           control={form.control}
