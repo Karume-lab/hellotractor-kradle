@@ -27,7 +27,10 @@ export default async function ProtectedLayout({
       <SessionProvider session={session.session} user={session.user}>
         <SidebarProvider>
           <SidebarTrigger />
-          <SideBar />
+          {/* Sidebar */}
+          <div className="flex-shrink-0">
+            <SideBar />
+          </div>
           <div className="w-full">
             <nav className="border-b">
               <div>
