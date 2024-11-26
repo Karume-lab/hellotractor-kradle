@@ -59,6 +59,8 @@ import DealersTable from "./dashboard/equipment/dealers/DealersTable";
 // landing page
 import HeroSection from "./landing-page/HeroSection";
 import Footer from "./landing-page/Footer";
+import FeaturedTractorsContainer from "./landing-page/FeaturedTractorsContainer";
+import FeaturedAttachmentsContainer from "./landing-page/FeaturedAttachmentsContainer";
 
 export {
   // auth
@@ -120,4 +122,6 @@ export {
   // landing page
   HeroSection,
   Footer,
+  FeaturedTractorsContainer,
+  FeaturedAttachmentsContainer,
 };

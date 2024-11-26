@@ -8,9 +8,11 @@ import InfiniteScrollContainer from "../core/InfiniteScrollContainer";
 import Loader from "../ui/Loader";
 // import TasksContainerLoadingSkeleton from "./TasksContainerLoadingSkeleton";
 import { QUERY_KEYS } from "@/lib/constants";
-import TractorCard from "./TractorCard";
+import Image from "next/image";
+import { formatPrice } from "@/lib/utils";
+import { Button } from "../ui/button";
 
-const TractorsContainer = () => {
+const FeaturedTractorsContainer = () => {
   const {
     data,
     status,
@@ -48,10 +50,45 @@ const TractorsContainer = () => {
 
   return (
     <InfiniteScrollContainer
+      className="flex"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {tractors.map((tractor) => (
-        <TractorCard key={tractor.id} tractor={tractor} />
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-2 flex flex-col relative w-80 ">
+          <Image
+            src={"/img/Core/tractors/tractor1.png"}
+            alt="tractor"
+            width={200}
+            height={200}
+            className="border w-full"
+          />
+          <span className="absolute top-4 right-4 bg-pink-600 text-xs  rounded-2xl p-2 text-primary ">
+            {tractor.equipment.condition}
+          </span>
+          <div className="flex justify-between mt-2">
+            <span className="text-2xl font-bold text-primary">
+              {tractor.equipment.name}
+            </span>
+          </div>
+          <span className="text-xs uppercase text-muted-foreground">
+            Nairobi, Kenya
+          </span>
+
+          <div className="flex flex-col my-4">
+            <span>{tractor.fuelCapacity}</span>
+            <span>{tractor.mileage}</span>
+          </div>
+
+          <p className="text-2xl text-green-500 font-bold text-primary">
+            {formatPrice(tractor.equipment.price)}
+          </p>
+
+          <div className="flex justify-between gap-2 ">
+            <Button className="grow" variant={"outline"}>
+              Details
+            </Button>
+          </div>
+        </div>
       ))}
 
       {isFetchingNextPage && <Loader className="my-4" />}
@@ -61,4 +98,4 @@ const TractorsContainer = () => {
   );
 };
 
-export default TractorsContainer;
+export default FeaturedTractorsContainer;

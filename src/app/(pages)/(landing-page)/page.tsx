@@ -1,4 +1,9 @@
-import { Footer, HeroSection } from "@/components";
+import {
+  FeaturedAttachmentsContainer,
+  FeaturedTractorsContainer,
+  Footer,
+  HeroSection,
+} from "@/components";
 import { validateRequest } from "@/lib/lucia";
 import React from "react";
 
@@ -8,7 +13,8 @@ const LandingPage = async () => {
   return (
     <>
       {!session.user && <HeroSection />}
-
+      <FeaturedTractorsContainer />
+      <FeaturedAttachmentsContainer />
       {!session.user && <Footer />}
     </>
   );
