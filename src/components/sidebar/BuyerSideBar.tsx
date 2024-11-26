@@ -1,7 +1,7 @@
 import React from "react";
 import BaseSideBar from "../core/BaseSideBar";
 import { T_SideBarItem } from "@/lib/types";
-import { Home, Tractor, Heart, Inbox } from "lucide-react";
+import { Home, Tractor, Heart, MessageCircle } from "lucide-react";
 import { urls } from "@/lib/urls";
 
 const BUYER_ONLY_SIDEBAR_ITEMS: T_SideBarItem[] = [
@@ -21,7 +21,7 @@ const BUYER_ONLY_SIDEBAR_ITEMS: T_SideBarItem[] = [
     redirectTo: urls.WISHLIST,
   },
   {
-    Icon: Inbox,
+    Icon: MessageCircle,
     label: "Inbox",
     redirectTo: urls.INBOX,
   },

@@ -21,7 +21,7 @@ const ChatsContainer = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.inbox, inboxId],
+    queryKey: [QUERY_KEYS.inboxes, inboxId],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(

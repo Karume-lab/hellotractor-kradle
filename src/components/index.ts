@@ -55,6 +55,8 @@ import HeroSection from "./landing-page/HeroSection";
 import Footer from "./landing-page/Footer";
 import FeaturedTractorsContainer from "./landing-page/FeaturedTractorsContainer";
 import FeaturedAttachmentsContainer from "./landing-page/FeaturedAttachmentsContainer";
+// inboxes
+import InboxesContainer from "./inbox/InboxesContainer";
 
 export {
   // auth
@@ -112,4 +114,6 @@ export {
   Footer,
   FeaturedTractorsContainer,
   FeaturedAttachmentsContainer,
+  // inboxes
+  InboxesContainer,
 };

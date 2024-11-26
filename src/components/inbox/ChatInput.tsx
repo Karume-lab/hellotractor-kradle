@@ -69,20 +69,32 @@ const ChatInput = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="flex gap-2">
+      <form
+        onSubmit={form.handleSubmit(handleOnSubmit)}
+        className="flex items-center gap-2 bg-gray-100 p-4 rounded-md shadow-md"
+      >
         <FormField
           control={form.control}
           name="content"
           render={({ field }) => (
-            <FormItem className="flex-1">
+            <FormItem>
               <FormControl>
-                <Input placeholder="Type your message here ..." {...field} />
+                <Input
+                  placeholder="Type your message..."
+                  className="rounded-full px-4 py-2 border-gray-300 focus:ring focus:ring-blue-500 focus:outline-none w-2/3"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <LoadingButton type="submit" text="Send" loadingText="Sending" />
+        <LoadingButton
+          type="submit"
+          text="Send"
+          loadingText="Sending..."
+          className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-all"
+        />
       </form>
     </Form>
   );

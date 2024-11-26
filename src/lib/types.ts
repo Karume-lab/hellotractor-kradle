@@ -144,3 +144,30 @@ export interface DealersPage {
   dealers: T_DealerDataInclude[];
   nextCursor: string | null;
 }
+
+export const inboxDataInclude = {
+  seller: {
+    include: {
+      profile: true,
+    },
+  },
+  buyer: {
+    include: {
+      profile: true,
+    },
+  },
+  messages: {
+    orderBy: {
+      createdAt: "desc",
+    },
+  },
+} satisfies Prisma.InboxInclude;
+
+export type T_InboxDataInclude = Prisma.InboxGetPayload<{
+  include: typeof inboxDataInclude;
+}>;
+
+export interface InboxesPage {
+  inboxes: T_InboxDataInclude[];
+  nextCursor: string | null;
+}

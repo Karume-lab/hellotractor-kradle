@@ -1,5 +1,4 @@
 import { T_Account_Type_Mapping } from "./types";
-import { urls } from "./urls";
 
 export const PAGE_SIZE = 10;
 
@@ -10,7 +9,7 @@ export const KINDLY_TRY_AGAIN = "kindly try again";
 
 export const QUERY_KEYS = {
   tractors: "tractors",
-  inbox: "inbox",
+  inboxes: "inboxes",
   wishlist: "wishlist",
   attachments: "attachments",
   trainedOperators: "trainedOperators",

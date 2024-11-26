@@ -1,16 +1,11 @@
+import React from "react";
 import { ChatsContainer } from "@/components";
 
-interface InboxDetailPageProps {
-  params: {
-    inboxId: string;
-  };
-}
-
-const InboxDetailPage = ({ params }: InboxDetailPageProps) => {
+const InboxDetailPage = () => {
   return (
-      <div className="h-full flex flex-col">
-        <ChatsContainer />
-      </div>
+    <div className="h-full flex flex-col bg-white">
+      <ChatsContainer />
+    </div>
   );
 };
 

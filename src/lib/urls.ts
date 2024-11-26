@@ -41,7 +41,8 @@ export const urls = {
   // inbox
   INBOX: "/inbox",
   INBOX_DETAIL: (inboxId: string) => `/inbox/${inboxId}`,
-  API_INBOX: (inboxId: string) => `/api/data/inbox/${inboxId}`,
+  API_INBOX: (inboxId: string) => `/api/data/inboxes/${inboxId}`,
+  API_INBOXES: "/api/data/inboxes",
   //users
   USER: (userId: string, profileId: string) =>
     `/api/data/users/${userId}/profiles/${profileId}`,
