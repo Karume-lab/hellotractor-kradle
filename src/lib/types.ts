@@ -15,6 +15,7 @@ export const tractorSellerEquipmentDataInclude = {
           logo: true,
         },
       },
+      images: true,
     },
   },
 } satisfies Prisma.TractorInclude;
@@ -38,6 +39,7 @@ export const attachmentSellerEquipmentDataInclude = {
           logo: true,
         },
       },
+      images: true,
     },
   },
 } satisfies Prisma.AttachmentInclude;
