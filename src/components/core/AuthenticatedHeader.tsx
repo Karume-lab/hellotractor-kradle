@@ -14,7 +14,7 @@ const AuthenticatedHeader = () => {
   const { user } = useSession();
 
   return (
-    <header className="flex items-center justify-between px-2 bg-gray-200 py-4">
+    <header className="flex items-center justify-between px-2 py-4">
       <div className="flex items-center">
         <SidebarTrigger />
       </div>

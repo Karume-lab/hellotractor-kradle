@@ -24,7 +24,6 @@ export default async function LandingLayout({
 
             {/* Main Content */}
             <main className="flex-grow flex flex-col">
-              <SidebarTrigger />
               <AuthenticatedHeader />
               <div className="flex-grow">{children}</div>
             </main>
