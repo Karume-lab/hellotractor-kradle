@@ -199,24 +199,41 @@ model FileUpload {
   reviewableFileUpload   ReviewableFileUpload? @relation(fields: [reviewableFileUploadId], references: [id])
   reviewableFileUploadId String?
 
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId String  @unique
+  profile   Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String?  @unique
 
-  trainedOperator   TrainedOperator @relation(fields: [trainedOperatorId], references: [id], onDelete: Cascade)
-  trainedOperatorId String          @unique
+  trainedOperator   TrainedOperator? @relation(fields: [trainedOperatorId], references: [id], onDelete: Cascade)
+  trainedOperatorId String?          @unique
 
-  trainedOperatorService   Service @relation(fields: [trainedOperatorServiceId], references: [id], onDelete: Cascade)
-  trainedOperatorServiceId String
+  trainedOperatorService   Service? @relation(fields: [trainedOperatorServiceId], references: [id], onDelete: Cascade)
+  trainedOperatorServiceId String?
 
-  sellerLicense        Seller  @relation("SellerLicense", fields: [sellerLicenseId], references: [id], onDelete: Cascade)
-  sellerLicenseId      String
+  sellerLicense        Seller? @relation("SellerLicense", fields: [sellerLicenseId], references: [id], onDelete: Cascade)
+  sellerLicenseId      String?
   sellerCoverPicture   Seller? @relation("SellerCoverPicture", fields: [sellerCoverPictureId], references: [id])
-  sellerCoverPictureId String  @unique
+  sellerCoverPictureId String? @unique
   sellerLogo           Seller? @relation("SellerLogo", fields: [sellerLogoId], references: [id])
-  sellerLogoId         String  @unique
+  sellerLogoId         String? @unique
 
-  equipmentImage   Equipment @relation(fields: [equipmentImageId], references: [id], onDelete: Cascade)
-  equipmentImageId String
+  equipmentImage   Equipment? @relation(fields: [equipmentImageId], references: [id], onDelete: Cascade)
+  equipmentImageId String?
+}
+
+model TrainedOperator {
+  id String @id @default(cuid())
+
+  firstName   String
+  lastName    String
+  middleName  String?
+  displayName String?
+  bio         String?
+
+  isVerified Boolean? @default(true)
+
+  profilePicture FileUpload?
+  services       Service[]
+
+  contacts Contact[]
 }
 
 model ReviewableFileUpload {
@@ -235,6 +252,7 @@ enum FileCategoryEnum {
   PROFILE_PICTURE
   TRAINED_OPERATOR_CERTIFICATE
   BUSINESS_LICENSE
+  EQUIPMENT_IMAGE
 }
 
 enum FileExtension {
@@ -255,23 +273,6 @@ model Cart {
   id String @id @default(cuid())
 }
 
-model TrainedOperator {
-  id String @id @default(cuid())
-
-  firstName   String
-  lastName    String
-  middleName  String?
-  displayName String?
-  bio         String?
-
-  isVerified Boolean? @default(true)
-
-  profilePicture FileUpload?
-  services       Service[]
-
-  contacts Contact[]
-}
-
 model Dealer {
   id        String     @id @default(cuid())
   name      String
@@ -281,13 +282,14 @@ model Dealer {
 }
 
 model Location {
-  id        String  @id @default(cuid())
-  address   String?
-  countryId String?
-  countyId  String?
-  dealerId  String
+  id          String  @id @default(cuid())
+  address     String?
+  phoneNumber String?
+  countryId   String?
+  countyId    String?
+  dealerId    String
 
-  dealer  Dealer   @relation(fields: [dealerId], references: [id])
+  dealer  Dealer   @relation(fields: [dealerId], references: [id], onDelete: Cascade)
   country Country? @relation(fields: [countryId], references: [id])
   county  County?  @relation(fields: [countyId], references: [id])
 }
@@ -300,11 +302,10 @@ model Country {
 }
 
 model County {
-  id        String  @id @default(cuid())
+  id        String     @id @default(cuid())
   name      String
   countryId String
-  country   Country @relation(fields: [countryId], references: [id]) // Define relationship
-
+  country   Country    @relation(fields: [countryId], references: [id]) // Define relationship
   locations Location[]
 }
 

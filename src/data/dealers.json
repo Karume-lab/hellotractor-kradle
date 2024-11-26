@@ -1,0 +1,160 @@
+[
+    {
+        "name": "CMC ( New Holland Dealer)",
+        "locations": [
+            {
+                "country": "Kenya",
+                "county": "Nairobi",
+                "phoneNumber": "0722283433",
+                "address": "Lusaka RD"
+            },
+            {
+                "country": "Kenya",
+                "county": "Nakuru",
+                "phoneNumber": "0722316821",
+                "address": "Nakuru Kisumu Rd"
+            },
+            {
+                "country": "Kenya",
+                "county": "Nanyuki",
+                "phoneNumber": "0727443226",
+                "address": "Sagana Rd"
+            },
+            {
+                "country": "Kenya",
+                "county": "Kitale",
+                "phoneNumber": "0723256074",
+                "address": "Eldoret Kisumu Rd"
+            },
+            {
+                "country": "Kenya",
+                "county": "Kisumu",
+                "phoneNumber": "0722540558",
+                "address": "Obote Rd"
+            },
+            {
+                "country": "Kenya",
+                "county": "Mombasa",
+                "phoneNumber": "0720661972",
+                "address": "Archbishop Makarios Rd, Mombasa"
+            }
+        ]
+    },
+    {
+        "name": "Mascor (John Deere)",
+        "locations": [
+            {
+                "country": "Kenya",
+                "county": "Eldoret",
+                "phoneNumber": "254 207 602 298",
+                "address": "Uganda Rd"
+            },
+            {
+                "country": "Kenya",
+                "county": "Kisumu",
+                "phoneNumber": "254 207 602 294",
+                "address": "Obote Road, Kisumu"
+            },
+            {
+                "country": "Kenya",
+                "county": "Nakuru",
+                "phoneNumber": "254 207 602 288",
+                "address": "Old Nairobi Road, Nakuru"
+            },
+            {
+                "country": "Kenya",
+                "county": "Narok",
+                "phoneNumber": "254 720 935 034",
+                "address": ""
+            }
+        ]
+    },
+    {
+        "name": "FMD Marsay Furguson dealership",
+        "locations": []
+    },
+    {
+        "name": "CFAO Motors ( Authorised Case HI dealer)",
+        "locations": [
+            {
+                "country": "Kenya",
+                "county": "Nakuru",
+                "phoneNumber": "207604121",
+                "address": "Town East, George Morara Rd, Nakuru"
+            },
+            {
+                "country": "Kenya",
+                "county": "Kisumu",
+                "phoneNumber": "719029707",
+                "address": ""
+            },
+            {
+                "country": "Kenya",
+                "county": "Nanyuki",
+                "phoneNumber": "0719 029462",
+                "address": "Kenyatta Rd"
+            }
+        ]
+    },
+    {
+        "name": "CADS Motors (Kericho Toyota)",
+        "locations": [
+            {
+                "country": "Kenya",
+                "county": "Kericho",
+                "phoneNumber": "254 708 698 899",
+                "address": "Moi Highway"
+            }
+        ]
+    },
+    {
+        "name": "Sichey Automotive EA Ltd",
+        "locations": [
+            {
+                "country": "Kenya",
+                "county": "Nairobi",
+                "phoneNumber": "254 735 500 500 / +254 768 989 407 / +254 757 487 425",
+                "address": "Pembe Plaza, Ground Floor Homa Bay Road/ Enterprise Road Junction Industrial Area"
+            }
+        ]
+    },
+    {
+        "name": "Terranova Automotive (Bungoma Toyota)",
+        "locations": [
+            {
+                "country": "Kenya",
+                "county": "Bungoma",
+                "phoneNumber": "254 777 222 239",
+                "address": "Webuye Malaba Road – Kandunyi"
+            }
+        ]
+    },
+    {
+        "name": "Uni-Truck World Ltd",
+        "locations": [
+            {
+                "country": "Kenya",
+                "county": "Nakuru",
+                "phoneNumber": "254 727 228 811 / +254 734 228 811 / +254 512216045",
+                "address": "George Morara Avenue Next To Bhogals Toyota"
+            }
+        ]
+    },
+    {
+        "name": "FMD",
+        "locations": [
+            {
+                "country": "Kenya",
+                "county": "Nakuru",
+                "phoneNumber": "722205538",
+                "address": "Town East, Biashara George Morara Ave Nakuru, Kiambu"
+            },
+            {
+                "country": "Kenya",
+                "county": "Eldoret",
+                "phoneNumber": "727509018",
+                "address": "Lima Hse Kapseret, Kipkenyo, Kenyatta ave, Eldore"
+            }
+        ]
+    }
+]
