@@ -245,7 +245,11 @@ export function DataTable<TData, TValue>({
         </div>
 
         {(isFetching || isLoadingMore) && (
-          <div className="text-sm text-muted-foreground">Loading...</div>
+          <div className="flex justify-center items-center space-x-2 w-full h-screen">
+          <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+          <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+          <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+        </div>
         )}
       </div>
     </div>
