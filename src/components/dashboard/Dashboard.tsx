@@ -18,13 +18,21 @@ const Dashboard = () => {
     }
   }, [accountType, isSwitchingAccountType, router]);
 
-  return (
-    <>
-      {accountType?.value === "buyer" && <BuyerDashboard />}
-      {accountType?.value === "seller" && <SellerDashboard />}
-      {user.role === UserRole.ADMIN && <AdminDashboard />}
-    </>
-  );
+  if (!user) {
+    return null;
+  }
+
+  if (user.role === UserRole.ADMIN) {
+    return <AdminDashboard />;
+  }
+
+  if (accountType?.value === "buyer") {
+    return <BuyerDashboard />;
+  }
+
+  if (accountType?.value === "seller") {
+    return <SellerDashboard />;
+  }
 };
 
 export default Dashboard;

@@ -1,23 +1,26 @@
 "use client";
 import { useSession } from "@/providers/SessionProvider";
 import { AdminSideBar, SellerSideBar, BuyerSideBar } from "../sidebar";
+import { UserRole } from "@prisma/client";
 
 const SideBar = () => {
-  const { user, accountType, isAdmin } = useSession();
+  const { user, accountType } = useSession();
 
   if (!user) {
-    return;
+    return null;
   }
 
-  return (
-    <>
-      {isAdmin &&
-        accountType?.value !== "buyer" &&
-        accountType?.value !== "seller" && <AdminSideBar />}
-      {accountType?.value === "buyer" && <BuyerSideBar />}
-      {accountType?.value === "seller" && <SellerSideBar />}
-    </>
-  );
+  if (user.role === UserRole.ADMIN && accountType) {
+    return <AdminSideBar />;
+  }
+
+  if (accountType?.value === "buyer") {
+    return <BuyerSideBar />;
+  }
+
+  if (accountType?.value === "seller") {
+    return <SellerSideBar />;
+  }
 };
 
 export default SideBar;

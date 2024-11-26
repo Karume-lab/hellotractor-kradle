@@ -1,8 +1,17 @@
+"use client";
 import { LinkAsButton } from "@/components";
 import { urls } from "@/lib/urls";
+import { useSession } from "@/providers/SessionProvider";
+import { redirect } from "next/navigation";
 import React from "react";
 
-const SellPage = () => (
+const SellPage = () => {
+  const { accountType } = useSession();
+
+  if (accountType?.value !== "seller") {
+    redirect(urls.ACCOUNT_TYPES);
+  }
+
   <div className="space-y-6 mx-auto w-fit">
     <h1 className="text-2xl font-bold">Sell Your Equipment</h1>
     <p className="text-gray-600">
@@ -34,7 +43,7 @@ const SellPage = () => (
         </p>
       </div>
     </div>
-  </div>
-);
+  </div>;
+};
 
 export default SellPage;
