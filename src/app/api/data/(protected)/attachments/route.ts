@@ -1,4 +1,5 @@
 import { PAGE_SIZE } from "@/lib/constants";
+import { validateRequest } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import {
   attachmentSellerEquipmentDataInclude,
@@ -8,11 +9,19 @@ import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
+    const { user } = await validateRequest();
+
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
     const searchQuery = req.nextUrl.searchParams.get("q") || "";
+    const specificUser = req.nextUrl.searchParams.get("specific-user") || "";
 
     const attachments = await prisma.attachment.findMany({
       where: {
+        equipment: {
+          seller: {
+            id: specificUser ? user?.profile?.seller?.id : undefined,
+          },
+        },
         OR: [
           {
             equipment: {

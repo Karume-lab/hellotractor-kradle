@@ -73,7 +73,13 @@ const columns: ColumnDef<Tractor & T_TractorSellerEquipmentDataInclude>[] = [
   },
 ];
 
-const TractorsTable = () => {
+interface TractorsTableProps {
+  fetchUrl?: string;
+}
+
+const TractorsTable: React.FC<TractorsTableProps> = ({
+  fetchUrl = urls.API_TRACTORS,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
@@ -87,10 +93,7 @@ const TractorsTable = () => {
     queryKey: [QUERY_KEYS.tractors],
     queryFn: ({ pageParam }) =>
       kyInstance
-        .get(
-          urls.API_TRACTORS,
-          pageParam ? { searchParams: { cursor: pageParam } } : {}
-        )
+        .get(fetchUrl, pageParam ? { searchParams: { cursor: pageParam } } : {})
         .json<TractorsPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,

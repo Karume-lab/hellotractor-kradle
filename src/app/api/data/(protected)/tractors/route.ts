@@ -1,18 +1,24 @@
 import { PAGE_SIZE } from "@/lib/constants";
+import { validateRequest } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
-import {
-  tractorSellerEquipmentDataInclude,
-  TractorsPage,
-} from "@/lib/types";
+import { tractorSellerEquipmentDataInclude, TractorsPage } from "@/lib/types";
 import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
+    const { user } = await validateRequest();
+
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
     const searchQuery = req.nextUrl.searchParams.get("q") || "";
+    const specificUser = req.nextUrl.searchParams.get("specific-user") || "";
 
     const tractors = await prisma.tractor.findMany({
       where: {
+        equipment: {
+          seller: {
+            id: specificUser ? user?.profile?.seller?.id : undefined,
+          },
+        },
         OR: [
           {
             equipment: {

@@ -73,7 +73,12 @@ const columns: ColumnDef<Equipment & T_AttachmentSellerEquipmentDataInclude>[] =
     },
   ];
 
-const AttachmentsTable = () => {
+interface AttachmentsTableProps {
+  fetchUrl?: string;
+}
+const AttachmentsTable: React.FC<AttachmentsTableProps> = ({
+  fetchUrl = urls.API_ATTACHMENTS,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
@@ -87,10 +92,7 @@ const AttachmentsTable = () => {
     queryKey: [QUERY_KEYS.attachments],
     queryFn: ({ pageParam }) =>
       kyInstance
-        .get(
-          urls.API_ATTACHMENTS,
-          pageParam ? { searchParams: { cursor: pageParam } } : {}
-        )
+        .get(fetchUrl, pageParam ? { searchParams: { cursor: pageParam } } : {})
         .json<AttachmentsPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,

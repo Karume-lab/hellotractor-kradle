@@ -21,6 +21,10 @@ export const urls = {
   CREATE_PROFILE: (accountType: string) =>
     `/account-types/profile?account-type=${accountType}`,
   CREATE_SERVICES: "/account-types/create/set-up/services",
+  // sellers
+  SELL: "/sell",
+  API_SELLER_TRACTORS: "/api/data/tractors?specific-user=true",
+  API_SELLER_ATTACHMENTS: "/api/data/attachments?specific-user=true",
   // explore
   EXPLORE: "/explore",
   // dashboard
