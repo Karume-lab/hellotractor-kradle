@@ -78,7 +78,7 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
         height={200}
         className="border w-full"
       />
-      <span className="absolute top-4 right-4 bg-pink-600 text-xs  rounded-2xl p-2 text-primary ">
+      <span className="absolute top-4 right-4 bg-[#f8285f] text-xs  rounded-2xl p-2 text-white ">
         {tractor.equipment.condition}
       </span>
       <div className="flex justify-between mt-2">
@@ -98,7 +98,7 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
         <span>{tractor.mileage}</span>
       </div>
 
-      <p className="text-2xl text-green-500 font-bold text-primary">
+      <p className="text-2xl text-green-500 font-bold ">
         {formatPrice(tractor.equipment.price)}
       </p>
       {seller?.businessName ||
@@ -110,10 +110,10 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
 
       {!(seller?.id !== tractor.equipment.sellerId) && (
         <div className="flex justify-between gap-2 ">
-          <Button className="grow" variant={"outline"}>
+          <Button className="grow hover:bg-[#f8285f] transition-colors duration-200 " variant={"outline"}>
             Details
           </Button>
-          <Button className="" onClick={handleContactSellerOnClick}>
+          <Button className="bg-gradient-to-r from-[#f8285f] to-primary" onClick={handleContactSellerOnClick}>
             {
               <>
                 <MessageCircle className="" />

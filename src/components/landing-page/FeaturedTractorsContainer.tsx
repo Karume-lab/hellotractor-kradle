@@ -85,7 +85,7 @@ const FeaturedTractorsContainer = () => {
             </div>
 
             {/* Condition Badge */}
-            <span className="absolute top-4 right-4 bg-pink-600 text-white text-xs rounded-full px-3 py-1 shadow-md">
+            <span className="absolute top-4 right-4 bg-[#f8285f] text-white text-xs rounded-full px-3 py-1 shadow-md">
               {tractor.equipment.condition}
             </span>
 

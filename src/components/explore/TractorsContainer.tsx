@@ -32,12 +32,12 @@ const TractorsContainer = () => {
 
   if (status === "pending") {
     return <div className="flex justify-center items-center space-x-2 w-full h-screen">
-    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-  </div>
-  
-  
+      <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+      <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+      <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+    </div>
+
+
   }
 
   if (status === "error") {
@@ -56,14 +56,20 @@ const TractorsContainer = () => {
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       <div className="grid grid-cols-5 ">
-      {tractors.map((tractor) => (
-        <TractorCard key={tractor.id} tractor={tractor} />
-      ))}
+        {tractors.map((tractor) => (
+          <TractorCard key={tractor.id} tractor={tractor} />
+        ))}
 
-      {isFetchingNextPage && <Loader className="my-4" />}
+        {isFetchingNextPage && <Loader className="my-4" />}
 
       </div>
-      {!hasNextPage && <p className="text-center">You have reached the end of the page</p>}
+      {!hasNextPage && 
+      <div className="my-4 flex items-center space-x-2">
+        <hr className="flex-grow border-gray-300" />
+        <span className="text-sm text-gray-500">End of page</span>
+        <hr className="flex-grow border-gray-300" />
+      </div>}
+
     </InfiniteScrollContainer>
   );
 };

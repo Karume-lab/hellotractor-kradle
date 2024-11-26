@@ -78,13 +78,20 @@ const WishlistContainer = () => {
         </div>
         {isFetchingNextPage && (
           <div className="flex justify-center my-4">
-            <Loader />
+            <div className="flex justify-center  space-x-2">
+              <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+              <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+              <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+            </div>
           </div>
         )}
         {!hasNextPage && items.length > 0 && (
-          <p className="text-center text-gray-500 my-4">
-            You have reached the end
-          </p>
+          <div className="my-4 flex items-center space-x-2">
+            <hr className="flex-grow border-gray-300" />
+            <span className="text-sm text-gray-500">End of page</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+
         )}
       </InfiniteScrollContainer>
     </div>
@@ -111,19 +118,21 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
             className="object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-400">No image</span>
-          </div>
+          <Image
+            src="/img/Core/attachment/attachment.png"
+            alt="Placeholder Image"
+            className="w-full h-full "
+            height={100}
+            width={50}
+          />
         )}
       </div>
       <div className="p-4">
-        <h3 className="font-semibold text-lg">{equipment.name}</h3>
-        <p className="text-primary font-medium mt-2">
-          {formatPrice(equipment.price)}
-        </p>
+        <h3 className="font-semibold text-lg text-gray-900">{equipment.name}</h3>
+        <p className="text-primary font-medium mt-2">{formatPrice(equipment.price)}</p>
         {equipment.condition && (
           <p className="text-sm text-gray-600 mt-1">
-            Condition: {equipment.condition}
+            Condition: <span className="font-medium">{equipment.condition}</span>
           </p>
         )}
         {sellerName && (
@@ -131,6 +140,7 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
         )}
       </div>
     </div>
+
   );
 };
 
@@ -143,6 +153,7 @@ const WishlistLoadingSkeleton = () => (
       >
         <div className="aspect-w-16 aspect-h-9 bg-gray-200" />
         <div className="p-4">
+          <div className="h-20 bg-gray-200 rounded w-full mb-2"/>
           <div className="h-6 bg-gray-200 rounded w-3/4 mb-2" />
           <div className="h-5 bg-gray-200 rounded w-1/4 mb-2" />
           <div className="h-4 bg-gray-200 rounded w-1/2" />
