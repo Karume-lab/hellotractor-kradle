@@ -11,8 +11,8 @@ const SideBar = () => {
 
   return (
     <>
-      {/* {isAdmin && <AdminSideBar />} */}
-      {/* {isBuyer && <BuyerSideBar />} */}
+      {isAdmin && <AdminSideBar />}
+      {isBuyer && <BuyerSideBar />}
       {isSeller && <SellerSideBar />}
     </>
   );
