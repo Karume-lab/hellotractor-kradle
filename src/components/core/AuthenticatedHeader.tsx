@@ -14,11 +14,10 @@ const AuthenticatedHeader = () => {
   const { user } = useSession();
 
   return (
-    <header className="flex items-center justify-between px-2 py-4">
+    <header className="flex items-center justify-between px-2 py-4 bg-white border-b z-10 sticky top-0">
       <div className="flex items-center">
         <SidebarTrigger />
       </div>
-
       <nav className="flex items-center gap-x-4">
         <AccountTypeSwitcher />
         {user.role === UserRole.ADMIN && (

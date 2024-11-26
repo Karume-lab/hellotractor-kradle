@@ -47,50 +47,54 @@ const FeaturedTractorsContainer = () => {
   }
 
   return (
-    <InfiniteScrollContainer
-      className="flex"
-      onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
-    >
-      {tractors.map((tractor) => (
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-2 flex flex-col relative w-80 ">
-          <Image
-            src={"/img/Core/tractors/tractor1.png"}
-            alt="tractor"
-            width={200}
-            height={200}
-            className="border w-full"
-          />
-          <span className="absolute top-4 right-4 bg-pink-600 text-xs  rounded-2xl p-2 text-primary ">
-            {tractor.equipment.condition}
-          </span>
-          <div className="flex justify-between mt-2">
-            <span className="text-2xl font-bold text-primary">
-              {tractor.equipment.name}
+    <div className="px-8 mb-4">
+      <h2 className="text-3xl font-semibold my-4">Featured Tractors</h2>
+      <InfiniteScrollContainer
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+        onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
+      >
+        {tractors.map((tractor) => (
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-2 flex flex-col relative w-full">
+            <Image
+              src={"/img/Core/tractors/tractor1.png"}
+              alt="tractor"
+              width={200}
+              height={200}
+              className="border w-full"
+            />
+            <span className="absolute top-4 right-4 bg-pink-600 text-xs rounded-2xl p-2 text-primary">
+              {tractor.equipment.condition}
             </span>
+            <div className="flex justify-between mt-2">
+              <span className="text-2xl font-bold text-primary">
+                {tractor.equipment.name}
+              </span>
+            </div>
+            <span className="text-xs uppercase text-muted-foreground">
+              Nairobi, Kenya
+            </span>
+
+            <div className="flex flex-col my-4">
+              <span>{tractor.fuelCapacity}</span>
+              <span>{tractor.mileage}</span>
+            </div>
+
+            <p className="text-2xl text-green-500 font-bold text-primary">
+              {formatPrice(tractor.equipment.price)}
+            </p>
+
+            <div className="flex justify-between gap-2 ">
+              <Button className="grow" variant={"outline"}>
+                Details
+              </Button>
+            </div>
           </div>
-          <span className="text-xs uppercase text-muted-foreground">
-            Nairobi, Kenya
-          </span>
+        ))}
 
-          <div className="flex flex-col my-4">
-            <span>{tractor.fuelCapacity}</span>
-            <span>{tractor.mileage}</span>
-          </div>
+        {isFetchingNextPage && <Loader className="my-4" />}
+      </InfiniteScrollContainer>
+    </div>
 
-          <p className="text-2xl text-green-500 font-bold text-primary">
-            {formatPrice(tractor.equipment.price)}
-          </p>
-
-          <div className="flex justify-between gap-2 ">
-            <Button className="grow" variant={"outline"}>
-              Details
-            </Button>
-          </div>
-        </div>
-      ))}
-
-      {isFetchingNextPage && <Loader className="my-4" />}
-    </InfiniteScrollContainer>
   );
 };
 

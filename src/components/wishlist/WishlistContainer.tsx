@@ -67,25 +67,27 @@ const WishlistContainer = () => {
   }
 
   return (
-    <InfiniteScrollContainer
-      onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item) => (
-          <EquipmentCard key={item.id} equipment={item} />
-        ))}
-      </div>
-      {isFetchingNextPage && (
-        <div className="flex justify-center my-4">
-          <Loader />
+    <div className="p-8">
+      <InfiniteScrollContainer
+        onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {items.map((item) => (
+            <EquipmentCard key={item.id} equipment={item} />
+          ))}
         </div>
-      )}
-      {!hasNextPage && items.length > 0 && (
-        <p className="text-center text-gray-500 my-4">
-          You have reached the end
-        </p>
-      )}
-    </InfiniteScrollContainer>
+        {isFetchingNextPage && (
+          <div className="flex justify-center my-4">
+            <Loader />
+          </div>
+        )}
+        {!hasNextPage && items.length > 0 && (
+          <p className="text-center text-gray-500 my-4">
+            You have reached the end
+          </p>
+        )}
+      </InfiniteScrollContainer>
+    </div>
   );
 };
 
