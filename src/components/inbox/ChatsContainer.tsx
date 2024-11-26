@@ -37,10 +37,18 @@ const ChatsContainer = () => {
   const inboxData = data?.pages[0] ?? null;
 
   return (
-    <ChatProvider inboxActive={inboxData as any}>
-      <ChatBubblesContainer />
+    <section className=" h-full w-full relative">
+  <ChatProvider inboxActive={inboxData as any}>
+    <div className=" h-full flex flex-col">
+      {/* Chat Messages Container */}
+      <ChatBubblesContainer  />
+
+      {/* Sticky Chat Input */}
       <ChatInput />
-    </ChatProvider>
+    </div>
+  </ChatProvider>
+</section>
+
   );
 };
 

@@ -24,13 +24,13 @@ const InboxCard: React.FC<InboxCardProps> = ({ inbox }) => {
 
   return (
     <div
-      className="group relative p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+      className="group relative p-4 border-b border-gray-100 hover:bg-gray-50 rounded-xl transition-colors duration-200 cursor-pointer"
       onClick={handleOnClick}
     >
       <div className="flex items-center space-x-4">
         <div className="relative">
-          <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-            <User className="w-6 h-6 text-blue-600" />
+          <div className="w-12 h-12 rounded-full bg-[#f7cfda] flex items-center justify-center">
+            <User className="w-6 h-6 text-[#f8285f]" />
           </div>
           {lastMessage && (
             <div className="absolute -bottom-1 -right-1 bg-green-500 w-3 h-3 rounded-full border-2 border-white"></div>
@@ -39,7 +39,7 @@ const InboxCard: React.FC<InboxCardProps> = ({ inbox }) => {
 
         <div className="flex-1 overflow-hidden">
           <div className="flex justify-between items-center">
-            <h3 className="font-semibold text-lg text-gray-800 truncate">
+            <h3 className="font-semibold text-lg text-[#2f1c54] truncate">
               {recipient}
             </h3>
             {lastMessage && (
