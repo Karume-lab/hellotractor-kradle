@@ -4,7 +4,7 @@ import { T_SideBarItem } from "@/lib/types";
 import { ADMIN_SELLER_SHARED_SIDEBAR_ITEMS } from "./AdminSideBar";
 import { FaMoneyBill } from "react-icons/fa6";
 import { urls } from "@/lib/urls";
-import { Tractor, Unlink2 } from "lucide-react";
+import { MessageCircle, Tractor, Unlink2 } from "lucide-react";
 
 const SELLER_SIDEBAR_ITEMS: T_SideBarItem[] = [
   ...ADMIN_SELLER_SHARED_SIDEBAR_ITEMS,
@@ -22,6 +22,11 @@ const SELLER_SIDEBAR_ITEMS: T_SideBarItem[] = [
     label: "Attachments",
     Icon: Unlink2,
     redirectTo: urls.ATTACHMENTS,
+  },
+  {
+    Icon: MessageCircle,
+    label: "Inbox",
+    redirectTo: urls.INBOX,
   },
 ];
 
