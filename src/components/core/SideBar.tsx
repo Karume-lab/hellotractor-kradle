@@ -11,7 +11,7 @@ const SideBar = () => {
   }
 
   if (user.role === UserRole.ADMIN && accountType) {
-    // return <AdminSideBar />;
+    return <AdminSideBar />;
   }
 
   if (accountType?.value === "buyer") {
