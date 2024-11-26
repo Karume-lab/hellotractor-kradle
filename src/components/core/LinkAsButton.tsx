@@ -36,7 +36,7 @@ const LinkAsButtonk = React.forwardRef<HTMLButtonElement, LinkAsButtonkProps>(
         asChild
         ref={ref}
         disabled={isLoading || disabled}
-        className={cn("flex items-center gap-2", className)}
+        className={cn("flex items-center gap-2 p-2", className)}
         {...props}
       >
         <Link href={redirectTo}>
