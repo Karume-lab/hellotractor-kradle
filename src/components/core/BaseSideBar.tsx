@@ -1,4 +1,3 @@
-// BaseSideBar.tsx
 "use client";
 import Link from "next/link";
 import {
@@ -6,6 +5,7 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -19,7 +19,7 @@ interface BaseSideBarProps {
 
 const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -33,14 +33,16 @@ const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
                 />
               </SidebarMenuItem>
               {items.map(({ Icon, redirectTo, label }) => (
-                <Link href={redirectTo} key={label}>
-                  <SidebarMenuItem>
-                    <div className="flex flex-col items-center gap-1">
-                      <Icon size={64} />
-                      <span>{label}</span>
-                    </div>
-                  </SidebarMenuItem>
-                </Link>
+                <SidebarMenuItem key={label}>
+                  <SidebarMenuButton>
+                    <Link href={redirectTo} className="flex gap-2">
+                      <Icon />
+                      <span className="text-xs lg:text-sm text-center mt-1">
+                        {label}
+                      </span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
