@@ -9,6 +9,10 @@ export default {
 	],
 	theme: {
     	extend: {
+			backgroundImage: {
+			  'custom-radial': 'radial-gradient(circle, rgba(255,70,30,1) 0%, rgba(250,47,79,1) 86%, rgba(248,40,95,1) 100%)',
+			},
+			
     		colors: {
     			background: 'hsl(var(--background))',
     			foreground: 'hsl(var(--foreground))',
@@ -59,7 +63,7 @@ export default {
     				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
     				border: 'hsl(var(--sidebar-border))',
     				ring: 'hsl(var(--sidebar-ring))'
-    			}
+    			},
     		},
     		fontFamily: {
     			manrope: ['var(--font-manrope)', 'sans-serif'],
