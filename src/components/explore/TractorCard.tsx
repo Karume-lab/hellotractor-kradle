@@ -102,18 +102,23 @@ const TractorCard: React.FC<TractorProps> = ({ tractor }) => {
         {formatPrice(tractor.equipment.price)}
       </p>
       {seller?.businessName ||
-        `${seller?.profile.firstName} ${seller?.profile.lastName}`}
-      <p>
-        {/* {seller?.businessName && `${seller.businessName} - `}
-        {seller?.profile.firstName} {seller?.profile.lastName} */}
-      </p>
+        `${seller?.profile?.firstName ?? ""} ${
+          seller?.profile?.lastName ?? ""
+        }`.trim() ||
+        ""}
 
       {!(seller?.id !== tractor.equipment.sellerId) && (
         <div className="flex justify-between gap-2 ">
-          <Button className="grow hover:bg-[#f8285f] transition-colors duration-200 " variant={"outline"}>
+          <Button
+            className="grow hover:bg-[#f8285f] transition-colors duration-200 "
+            variant={"outline"}
+          >
             Details
           </Button>
-          <Button className="bg-gradient-to-r from-[#f8285f] to-primary" onClick={handleContactSellerOnClick}>
+          <Button
+            className="bg-gradient-to-r from-[#f8285f] to-primary"
+            onClick={handleContactSellerOnClick}
+          >
             {
               <>
                 <MessageCircle className="" />
