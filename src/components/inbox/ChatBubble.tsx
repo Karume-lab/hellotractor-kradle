@@ -19,7 +19,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
   return (
     <div
       className={clsx(
-        "flex items-start space-x-2 my-2",
+        "flex items-start space-x-2 my-2 ",
         isSender ? "justify-end" : "justify-start"
       )}
     >
@@ -27,12 +27,12 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
         className={clsx(
           "max-w-xs md:max-w-sm p-3 rounded-lg shadow-sm",
           isSender
-            ? "bg-blue-500 text-white self-end"
+            ? "bg-gradient-to-r from-primary to-[#f8285f] text-white self-end"
             : "bg-gray-200 text-gray-800 self-start"
         )}
       >
         <p className="text-sm">{content}</p>
-        <span className="text-xs text-gray-400 mt-1 block">
+        <span className="text-xs text-gray-200 mt-1 block">
           {new Date(createdAt).toLocaleString(undefined, {
             hour: "2-digit",
             minute: "2-digit",

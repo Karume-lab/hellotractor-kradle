@@ -8,6 +8,7 @@ import Loader from "../ui/Loader";
 import { QUERY_KEYS } from "@/lib/constants";
 import { InboxesPage, T_InboxDataInclude } from "@/lib/types";
 import InboxCard from "./InboxCard";
+import LinkAsButton from "../core/LinkAsButton";
 
 const InboxesContainer = () => {
   const {
@@ -30,7 +31,11 @@ const InboxesContainer = () => {
   });
 
   if (status === "pending") {
-    return <Loader />;
+    return <div className="flex justify-center items-center space-x-2">
+    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+    <div className="w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+  </div>;
   }
 
   if (status === "error") {
@@ -41,12 +46,20 @@ const InboxesContainer = () => {
     data?.pages.flatMap((page) => page.inboxes) || [];
 
   if (status === "success" && !inboxes.length && !hasNextPage) {
-    return <div>No inboxes</div>;
+    return <div className="flex flex-col items-center h-full justify-center">
+      <p className="text-2xl text-center font-semibold text-gray-700 ">Oops, you don't have any chats yet</p>
+      <p className="text-center text-gray-500 mt-2">Find something interesting, and start a conversation with a seller </p>
+      <LinkAsButton
+        className="w-fit mx-auto mt-4"
+        text="Explore"
+        redirectTo={urls.EXPLORE}
+        />
+    </div>;
   }
 
   return (
     <InfiniteScrollContainer
-      className="p-4 "
+      className="p-4 overflow-y-auto "
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {inboxes.map((inbox) => (
@@ -56,9 +69,11 @@ const InboxesContainer = () => {
       {isFetchingNextPage && <Loader />}
 
       {!hasNextPage && (
-        <div className="text-center text-gray-500 mt-4">
-          You have reached the end of the page
-        </div>
+        <div className="my-4 flex items-center space-x-2">
+        <hr className="flex-grow border-gray-300" />
+        <span className="text-sm text-gray-500">End of conversations</span>
+        <hr className="flex-grow border-gray-300" />
+      </div>
       )}
     </InfiniteScrollContainer>
   );
