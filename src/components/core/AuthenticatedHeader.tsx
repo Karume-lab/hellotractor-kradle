@@ -27,7 +27,7 @@ const AuthenticatedHeader = () => {
   const { user } = useSession();
 
   return (
-    <header className="flex flex-row items-center  justify-between px-2">
+    <header>
       <Image
         src="/img/Core/Logos/HT_LOGO_RGB_Orange.png"
         alt="logo"
@@ -35,8 +35,8 @@ const AuthenticatedHeader = () => {
         height={150}
       />
 
-      <nav className="border-b">
-        <div className="container mx-auto py-4 flex justify-end gap-x-4">
+      <nav >
+        <div>
           <AccountTypeSwitcher />
           {user.role === UserRole.ADMIN && (
             <Button asChild>
@@ -46,12 +46,6 @@ const AuthenticatedHeader = () => {
           <SignOut children="Sign out" />
         </div>
       </nav>
-
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>Browse</NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
 
       <div className="flex flex-row gap-4 items-center">
         {/* <ThemeChanger /> */}

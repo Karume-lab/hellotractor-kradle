@@ -56,6 +56,9 @@ import WishlistContainer from "./wishlist/WishlistContainer";
 import TrainedOperatorsTable from "./dashboard/equipment/trained-operators/TrainedOperatorsTable";
 // dealers
 import DealersTable from "./dashboard/equipment/dealers/DealersTable";
+// landing page
+import HeroSection from "./landing-page/HeroSection";
+import Footer from "./landing-page/Footer";
 
 export {
   // auth
@@ -114,4 +117,7 @@ export {
   TrainedOperatorsTable,
   // dealers
   DealersTable,
+  // landing page
+  HeroSection,
+  Footer,
 };

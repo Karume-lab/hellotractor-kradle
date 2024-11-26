@@ -1,10 +1,15 @@
+import { Footer, HeroSection } from "@/components";
+import { validateRequest } from "@/lib/lucia";
 import React from "react";
 
-const LandingPage = () => {
+const LandingPage = async () => {
+  const session = await validateRequest();
+
   return (
     <>
-      Everyone a right
-      
+      {!session.user && <HeroSection />}
+
+      {!session.user && <Footer />}
     </>
   );
 };
