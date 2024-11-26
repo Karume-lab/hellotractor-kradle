@@ -28,9 +28,9 @@ export default async function ProtectedLayout({
         <SidebarProvider>
           <SidebarTrigger />
           <SideBar />
-          <div className="min-h-screen bg-background">
+          <div className="w-full">
             <nav className="border-b">
-              <div className="container mx-auto py-4 flex justify-end gap-x-4">
+              <div>
                 <AccountTypeSwitcher />
                 {session.user.role === UserRole.ADMIN && (
                   <Button asChild>
@@ -40,7 +40,7 @@ export default async function ProtectedLayout({
                 <SignOut children="Sign out" />
               </div>
             </nav>
-            <main className="container mx-auto py-4">{children}</main>
+            <main>{children}</main>
           </div>
         </SidebarProvider>
       </SessionProvider>

@@ -16,9 +16,9 @@ export default async function LandingLayout({
     <SharedLayout>
       <SessionProvider session={session.session} user={session.user}>
         <SidebarProvider>
-          <SidebarTrigger />
           <SideBar />
-          <main>
+          <main className="w-full">
+            <SidebarTrigger />
             <AuthenticatedHeader />
             <div>{children}</div>
           </main>

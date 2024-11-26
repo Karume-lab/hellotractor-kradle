@@ -9,7 +9,7 @@ const SignUpToday = React.forwardRef<HTMLAnchorElement, SignUpTodayProps>(
     return (
       <Button asChild>
         <Link href={urls.AUTH} ref={ref}>
-          Log in
+          Sign up today
         </Link>
       </Button>
     );

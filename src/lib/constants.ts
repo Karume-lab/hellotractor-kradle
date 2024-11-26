@@ -1,4 +1,5 @@
 import { T_Account_Type_Mapping } from "./types";
+import { urls } from "./urls";
 
 export const PAGE_SIZE = 10;
 
