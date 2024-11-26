@@ -13,13 +13,14 @@ import {
 import { T_SideBarItem } from "@/lib/types";
 import Image from "next/image";
 
+
 interface BaseSideBarProps {
   items: T_SideBarItem[];
 }
 
 const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -37,9 +38,9 @@ const BaseSideBar: React.FC<BaseSideBarProps> = ({ items }) => {
                   <SidebarMenuButton asChild>
                     <Link
                       href={redirectTo}
-                      className="flex flex-col items-center gap-1 h-fit lg:gap-0"
+                      className="flex gap-2"
                     >
-                      <Icon className="w-8 h-8 lg:w-12 lg:h-12" />
+                      <Icon size={20} />
                       <span className="text-xs lg:text-sm text-center mt-1">
                         {label}
                       </span>
