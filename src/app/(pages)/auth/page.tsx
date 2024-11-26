@@ -6,27 +6,34 @@ const SignInTabValue = "signIn";
 const SignUpTabValue = "signUp";
 
 const Auth = async () => {
-
   return (
-    <section className="flex justify-center items-center h-screen">
-      <div className="border p-4 rounded ">
-
-        <Tabs defaultValue={SignInTabValue} className="w-fit flex flex-col justify-center mx-auto">
+    <section className="flex justify-center items-center h-screen m-4 my-8">
+      <div className="border p-4 rounded w-full max-w-6xl">
+        <Tabs
+          defaultValue={SignInTabValue}
+          className="flex flex-col justify-center"
+        >
           {/* Tab Triggers */}
-          <TabsList className="flex flex-col md:flex-row justify-center mx-auto w-full">
-            <TabsTrigger value={SignInTabValue} className="px-4 py-2 grow">Sign in</TabsTrigger>
-            <TabsTrigger value={SignUpTabValue} className="px-4 py-2 grow">Sign up</TabsTrigger>
+          <TabsList className="flex">
+            <TabsTrigger value={SignInTabValue} className="text-center grow">
+              Sign in
+            </TabsTrigger>
+            <TabsTrigger value={SignUpTabValue} className="text-center grow">
+              Sign up
+            </TabsTrigger>
           </TabsList>
 
           {/* Tab Content */}
-          <TabsContent value={SignInTabValue} className="w-fit">
-            <SignInForm />
-          </TabsContent>
-          <TabsContent value={SignUpTabValue} className="w-fit">
-            <SignUpForm />
-          </TabsContent>
+          <div className="max-h-xl">
+            {/* Fixed height container */}
+            <TabsContent value={SignInTabValue}>
+              <SignInForm />
+            </TabsContent>
+            <TabsContent value={SignUpTabValue}>
+              <SignUpForm />
+            </TabsContent>
+          </div>
         </Tabs>
-
       </div>
     </section>
   );

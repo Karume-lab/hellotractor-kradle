@@ -65,7 +65,8 @@ const SignInForm = () => {
         />
         <p className="text-3xl font-bold text-gray-800">Welcome Back!</p>
         <p className="text-lg text-gray-600">
-          Sign in to access your account and continue exploring amazing features.
+          Sign in to access your account and continue exploring amazing
+          features.
         </p>
       </div>
 
@@ -156,7 +157,6 @@ const SignInForm = () => {
         </CardContent>
       </Card>
     </section>
-
   );
 };
 
