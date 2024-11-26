@@ -6,7 +6,6 @@ import { urls } from "@/lib/urls";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScrollContainer from "../core/InfiniteScrollContainer";
 import Loader from "../ui/Loader";
-// import TasksContainerLoadingSkeleton from "./TasksContainerLoadingSkeleton";
 import { QUERY_KEYS } from "@/lib/constants";
 import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
@@ -35,7 +34,6 @@ const FeaturedAttachmentsContainer = () => {
 
   if (status === "pending") {
     return <p>Loading ...</p>;
-    // return <TasksContainerLoadingSkeleton />;
   }
 
   if (status === "error") {
@@ -91,8 +89,6 @@ const FeaturedAttachmentsContainer = () => {
       ))}
 
       {isFetchingNextPage && <Loader className="my-4" />}
-
-      {/* {!hasNextPage && <p>You have reached the end</p>} */}
     </InfiniteScrollContainer>
   );
 };

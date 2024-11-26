@@ -6,7 +6,6 @@ import { urls } from "@/lib/urls";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScrollContainer from "../core/InfiniteScrollContainer";
 import Loader from "../ui/Loader";
-// import TasksContainerLoadingSkeleton from "./TasksContainerLoadingSkeleton";
 import { QUERY_KEYS } from "@/lib/constants";
 import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
@@ -21,7 +20,7 @@ const FeaturedTractorsContainer = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.tasks],
+    queryKey: [QUERY_KEYS.tractors],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(
@@ -35,7 +34,6 @@ const FeaturedTractorsContainer = () => {
 
   if (status === "pending") {
     return <p>Loading ...</p>;
-    // return <TasksContainerLoadingSkeleton />;
   }
 
   if (status === "error") {
@@ -92,8 +90,6 @@ const FeaturedTractorsContainer = () => {
       ))}
 
       {isFetchingNextPage && <Loader className="my-4" />}
-
-      {/* {!hasNextPage && <p>You have reached the end</p>} */}
     </InfiniteScrollContainer>
   );
 };

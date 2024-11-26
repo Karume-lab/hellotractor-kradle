@@ -23,7 +23,6 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
-import FilterHeading from "../admin/tasks/tasks-table/FilterHeading";
 import { useDataTable } from "@/providers/DataTableProvider";
 
 interface SearchableColumn<TData> {
@@ -128,7 +127,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <FilterHeading />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

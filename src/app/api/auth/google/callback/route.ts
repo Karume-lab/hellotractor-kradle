@@ -89,5 +89,5 @@ export const GET = async (req: NextRequest) => {
   } catch (error) {
     console.error(error);
   }
-  return redirect(urls.PUBLIC_TASKS);
+  return redirect(urls.EXPLORE);
 };

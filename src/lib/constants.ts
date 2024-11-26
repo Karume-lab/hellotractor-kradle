@@ -9,7 +9,6 @@ export const KINDLY_WAIT = "kindly wait as we redirect you";
 export const KINDLY_TRY_AGAIN = "kindly try again";
 
 export const QUERY_KEYS = {
-  tasks: "tasks",
   tractors: "tractors",
   inbox: "inbox",
   wishlist: "wishlist",

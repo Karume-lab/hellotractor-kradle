@@ -28,11 +28,6 @@ export const contactSchema = z.object({
 });
 export type T_ContactSchema = z.infer<typeof contactSchema>;
 
-export const createTaskSchema = z.object({
-  title: z.string(),
-});
-export type T_CreateTaskSchema = z.infer<typeof createTaskSchema>;
-
 export const filterSchema = z.object({
   title: z.string().optional(),
 });

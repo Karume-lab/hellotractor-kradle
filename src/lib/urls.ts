@@ -38,12 +38,6 @@ export const urls = {
   INBOX: "/inbox",
   INBOX_DETAIL: (inboxId: string) => `/inbox/${inboxId}`,
   API_INBOX: (inboxId: string) => `/api/data/inbox/${inboxId}`,
-  // tasks
-  PUBLIC_TASKS: "/tasks",
-  PUBLIC_TASKS_VIEW_EDIT: (taskId: string) => `/tasks/${taskId}`,
-  PUBLIC_TASKS_NEW: "/tasks/new",
-  API_TASKS: "/api/data/tasks",
-  API_TASK: (taskId: string) => `/api/data/tasks/${taskId}`,
   //users
   USER: (userId: string, profileId: string) =>
     `/api/data/users/${userId}/profiles/${profileId}`,
@@ -69,7 +63,6 @@ export const urls = {
   PUBLIC_ADMIN_MANAGE_DEALERS_CREATE: "/admin/manage/dealers/create",
   PUBLIC_ADMIN_MANAGE_DEALERS_SETUP_SERVICES: (dealerId: string) =>
     `/admin/manage/dealers/create/setup/services?${URL_QUERY_STATES.dealerId}=${dealerId}`,
-  PUBLIC_ADMIN_MANAGE_TASKS: "/admin/manage/tasks",
   API_ADMIN: "/api/data/admin",
   // wishlist
   WISHLIST: "/wishlist",
@@ -88,7 +81,12 @@ export const publicPaths = new Set<string>([
   urls.API_TRACTORS,
 ]);
 
-export const publicApiPaths = new Set<string>([urls.API_TASKS]);
+export const publicApiPaths = new Set<string>([
+  urls.API_ATTACHMENTS,
+  urls.API_DEALERS,
+  urls.API_TRACTORS,
+  urls.API_TRAINED_OPERATORS,
+]);
 
 export function isPublicPath(path: string): boolean {
   if (publicPaths.has(path) || publicApiPaths.has(path)) return true;

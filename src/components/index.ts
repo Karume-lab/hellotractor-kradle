@@ -37,15 +37,9 @@ import CreateEditAttachmentForm from "./dashboard/equipment/attachments/CreateEd
 import AttachmentsTable from "./dashboard/equipment/attachments/AttachmentsTable";
 // explore
 import TractorsContainer from "./explore/TractorsContainer";
-// tasks
-import TasksContainer from "@/components/tasks/TasksContainer";
-import CreateEditTask from "@/components/tasks/CreateEditTask";
-import TasksContainerLoadingSkeleton from "@/components/tasks/TasksContainerLoadingSkeleton";
-import TaskActionsDropdown from "@/components/tasks/TaskActionsDropdown";
 // ui
 import Loader from "./ui/Loader";
 // admin
-import TasksTable from "./admin/tasks/tasks-table/TasksTable";
 import DealerServicesContainer from "./account-types/DealerServicesContainer";
 import TrainedOperatorServicesContainer from "./account-types/TrainedOperatorServicesContainer";
 // chat
@@ -100,15 +94,9 @@ export {
   AttachmentsTable,
   // explore
   TractorsContainer,
-  // tasks
-  TasksContainer,
-  CreateEditTask,
-  TasksContainerLoadingSkeleton,
-  TaskActionsDropdown,
   // ui
   Loader,
   // admin
-  TasksTable,
   DealerServicesContainer,
   TrainedOperatorServicesContainer,
   // chat

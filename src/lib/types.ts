@@ -1,14 +1,9 @@
-import { Inbox, Message, Prisma, Task } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { ACCOUNT_TYPES_MAPPING } from "./constants";
 import { LucideProps } from "lucide-react";
 import { Server as NetServer, Socket } from "net";
 import { NextApiResponse } from "next";
 import { Server as SocketIOServer } from "socket.io";
-
-export interface TasksPage {
-  tasks: Task[];
-  nextCursor: string | null;
-}
 
 export const tractorSellerEquipmentDataInclude = {
   equipment: {

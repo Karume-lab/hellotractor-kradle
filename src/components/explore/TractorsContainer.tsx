@@ -6,7 +6,6 @@ import { urls } from "@/lib/urls";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScrollContainer from "../core/InfiniteScrollContainer";
 import Loader from "../ui/Loader";
-// import TasksContainerLoadingSkeleton from "./TasksContainerLoadingSkeleton";
 import { QUERY_KEYS } from "@/lib/constants";
 import TractorCard from "./TractorCard";
 
@@ -19,7 +18,7 @@ const TractorsContainer = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.tasks],
+    queryKey: [QUERY_KEYS.tractors],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(
@@ -33,7 +32,6 @@ const TractorsContainer = () => {
 
   if (status === "pending") {
     return <p>Loading ...</p>;
-    // return <TasksContainerLoadingSkeleton />;
   }
 
   if (status === "error") {

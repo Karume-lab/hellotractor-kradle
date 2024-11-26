@@ -12,7 +12,7 @@ export default async function AdminLayout({
   const session = await validateRequest();
 
   if (!session.user || session.user.role !== UserRole.ADMIN) {
-    redirect(urls.PUBLIC_TASKS);
+    redirect(urls.EXPLORE);
   }
 
   return (
