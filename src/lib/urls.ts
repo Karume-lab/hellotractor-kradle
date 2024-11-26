@@ -97,3 +97,10 @@ export function isPublicPath(path: string): boolean {
     path.startsWith(publicPath)
   );
 }
+
+export const NAV_LINKS = [
+  {
+    label: "EXPLORE",
+    link: urls.EXPLORE,
+  },
+];

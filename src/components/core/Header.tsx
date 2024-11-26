@@ -2,6 +2,8 @@
 import React from "react";
 import SignUpToday from "../auth/SignUpToday";
 import Image from "next/image";
+import { NAV_LINKS } from "@/lib/urls";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -12,6 +14,16 @@ const Header = () => {
         width={150}
         height={150}
       />
+
+      <nav>
+        <ul>
+          {NAV_LINKS.map(({ label, link }) => (
+            <li key={link}>
+              <Link href={link}>{label}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <div className="flex flex-row gap-4 items-center ">
         <SignUpToday />

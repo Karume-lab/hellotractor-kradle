@@ -92,7 +92,7 @@ const FeaturedAttachmentsContainer = () => {
 
       {isFetchingNextPage && <Loader className="my-4" />}
 
-      {!hasNextPage && <p>You have reached the end</p>}
+      {/* {!hasNextPage && <p>You have reached the end</p>} */}
     </InfiniteScrollContainer>
   );
 };
