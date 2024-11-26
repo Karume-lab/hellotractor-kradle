@@ -54,7 +54,7 @@ const AuthenticatedHeader = () => {
       </NavigationMenu>
 
       <div className="flex flex-row gap-4 items-center">
-        <ThemeChanger />
+        {/* <ThemeChanger /> */}
       </div>
     </header>
   );

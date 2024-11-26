@@ -38,7 +38,7 @@ const Header = () => {
 
       <div className="flex flex-row gap-4 items-center ">
       <SignUpToday />
-      <ThemeChanger />
+      {/* <ThemeChanger /> */}
       </div>
     </header>
   );
