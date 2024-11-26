@@ -63,15 +63,33 @@ const CreateEditBuyerForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
-        <LoadingButton
-          text="Create a buyer account"
-          loadingText="Creating"
-          isLoading={mutation.isPending}
-        />
-      </form>
-    </Form>
+    <div className=" flex flex-col items-center h-screen w-full max-w-xl mx-auto p-4">
+      {/* Step Progress Bar */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-800 text-center mb-2">
+          Step 4 of 4: Start Exploring!!!
+        </h1>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full">
+          <div className="h-2 bg-primary rounded-full" style={{ width: '100%' }}></div>
+        </div>
+      </div>
+
+      {/* Form */}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-6">
+          {/* Create Account Button */}
+          <div className="mt-6">
+            <LoadingButton
+              text="Start Exploring"
+              loadingText="Creating"
+              isLoading={mutation.isPending}
+            />
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 };
 

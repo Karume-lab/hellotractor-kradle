@@ -65,85 +65,129 @@ const CreateEditProfileForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name={"firstName"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter first name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <div className="w-full max-w-xl mx-auto p-4">
+      {/* Step Progress Bar */}
+      <div className="mb-6">
+      <h1 className="text-2xl font-bold text-gray-800 text-center mb-2">
+          Step 3 of 4: Profile Details
+        </h1>
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold text-gray-600">Step 3 of 4</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full">
+          <div className="h-2 bg-primary rounded-full" style={{ width: '75%' }}></div>
+        </div>
+      </div>
 
-        <FormField
-          control={form.control}
-          name={"middleName"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Middle Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter middle name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      {/* Form */}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleOnSubmit)} className="space-y-6">
+          {/* First Name Field */}
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Enter first name"
+                    {...field}
+                    className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name={"lastName"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter last name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {/* Middle Name Field */}
+          <FormField
+            control={form.control}
+            name="middleName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Middle Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Enter middle name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name={"displayName"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Display Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter display name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {/* Last Name Field */}
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Enter last name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name={"bio"}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Enter your bio" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {/* Display Name Field */}
+          <FormField
+            control={form.control}
+            name="displayName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Display Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Enter display name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <LoadingButton
-          text="Save"
-          loadingText="Saving"
-          isLoading={mutation.isPending}
-        />
-      </form>
-    </Form>
+          {/* Bio Field */}
+          <FormField
+            control={form.control}
+            name="bio"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Bio</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Enter your bio"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Save Button */}
+          <div className="mt-6">
+            <LoadingButton
+              text="Save"
+              loadingText="Saving"
+              isLoading={mutation.isPending}
+            />
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 };
 
