@@ -16,7 +16,7 @@ export default async function LandingLayout({
     <SharedLayout>
       <SessionProvider session={session.session} user={session.user}>
         <SidebarProvider>
-          <div className="flex h-full min-h-screen">
+          <div className="flex h-full min-h-screen w-full ">
             {/* Sidebar */}
             <div className="flex-shrink-0">
               <SideBar />
